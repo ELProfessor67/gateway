@@ -23,6 +23,7 @@ from django.views.generic import TemplateView
 
 from account2.views import login_view
 from pages.views import home
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -89,8 +90,7 @@ urlpatterns = [
     #Custum set password done page redirect
     path('accounts/password/set/', login_required(MyPasswordSetView.as_view()), name="account_set_password"),
 
-
-    
-
 ]
+
+urlpatterns += staticfiles_urlpatterns()
 
