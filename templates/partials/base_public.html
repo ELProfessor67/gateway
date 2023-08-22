@@ -1,0 +1,155 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zxx">
+<head>
+    <title>Home | Card website</title>
+   
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <meta charset="utf-8">
+    <link rel="apple-touch-icon" sizes="57x57" href="images_public/favicon/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="images_public/favicon/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images_public/favicon/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="images_public/favicon/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images_public/favicon/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="images_public/favicon/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="images_public/favicon/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="images_public/favicon/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images_public/favicon/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="images_public/favicon/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images_public/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="images_public/favicon/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images_public/favicon/favicon-16x16.png">
+    <link rel="manifest" href="images_public/favicon/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+
+    {% block css %}
+    {% block extra_css %}
+    {% endblock %}
+    <!-- Latest compiled and minified CSS -->
+    <link href="{% static 'bootstrap_public/bootstrap.min.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'js_public/bootstrap.min.js' %}">
+    <!-- Font Awesome link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <!-- StyleSheet link CSS -->
+    <link href="{% static 'css_public/style.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css_public/responsive.css' %}" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{% static 'css_public/custom-style.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'css_public/special-classes.css' %}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    {% endblock css %}
+
+
+</head>
+<body>
+<div class="topbar">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 sol-sm-12">
+                <div class="email">
+                    <figure class="mb-0 emailicon">
+                        <img src="./images_public/header-emailicon.png" alt="" class="img-fluid">
+                    </figure>
+                    <a href="mailto:support@gatewaytrifecta.com" class="mb-0 text-size-16 text-white">support@gatewaytrifecta.com</a>
+                </div>
+            </div>
+            <div class="col-lg-6 col-md-6 sol-sm-12 d-md-block d-none">
+                <div class="mb-0 social-icons">
+                    <ul class="mb-0 list-unstyled">
+                        <li>Follow us on:</li>
+                        <li>
+                            <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa-brands fa-twitter"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa-brands fa-pinterest-p"></i></a>
+                        </li>
+                        <li>
+                            <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Header-->
+<header class="header">
+    <div class="container">
+        <nav class="navbar position-relative navbar-expand-lg navbar-light">
+            <a class="navbar-brand" href="#"><figure class="mb-0"><img src="{% static 'images_public/banner-logo.png' %}" alt="" class="img-fluid"></figure></a>
+            <button class="navbar-toggler collapsed" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" 
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{% url 'home22' %}">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'service' %}">Service</a>
+                    </li>
+                  
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'contact_us' %}">Contact Us</a>
+                    </li>
+                  
+                   
+                    <li class="nav-item">
+                        <a class="nav-link signup" href="{% url 'account_login' %}"><i class="fa-solid fa-user-lock"></i>Sign In</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</header>
+
+
+
+
+
+
+<!-- end page title -->
+{% block contents %}
+
+{% endblock %}
+
+<!-- End Page-content -->
+
+{% block extra_content %}            
+{% endblock %}
+
+{% block footer %}
+{% include 'partials/footer_public.html' %}
+{% endblock %}
+
+
+
+  
+
+{% block javascript %}
+<!-- JAVASCRIPT -->
+
+<script src="{% static 'js_public/jquery-3.6.0.min.js' %}"> </script>
+<script src="{% static 'js_public/bootstrap.min.js' %}"> </script>
+<script src="{% static 'js_public/video_link.js' %}"></script>
+<script src="{% static 'js_public/video.js' %}"></script>
+<script src="{% static 'js_public/counter.js' %}"></script>
+<script src="{% static 'js_public/custom.js' %}"></script>
+<script src="{% static 'js_public/animation_links.js' %}"></script>
+<script src="{% static 'js_public/animation.js' %}"></script>
+
+
+{% block extra_javascript %}
+{% endblock %}
+
+<script src="{% static 'js/app.js' %}"></script>    
+{% endblock javascript %}

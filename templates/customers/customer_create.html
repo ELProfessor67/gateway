@@ -1,0 +1,52 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% load widget_tweaks %}
+
+
+{% block extra_css %}
+    {{ form.media.css }}
+{% endblock %}
+
+{% block contents %}
+
+    <h1>Create Customer</h1>
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.customer_id.id_for_label }}">Customer ID</label>
+            {{ form.customer_id|add_class:'form-control' }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.bill_company.id_for_label }}">Bill Company</label>
+            {{ form.bill_company|add_class:'form-control' }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.bill_first_name.id_for_label }}">Bill First Name</label>
+            {{ form.bill_first_name|add_class:'form-control' }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.bill_last_name.id_for_label }}">Bill Last Name</label>
+            {{ form.bill_last_name|add_class:'form-control' }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.recurring_schedule.id_for_label }}">Recurring Schedule</label>
+            {{ form.recurring_schedule|add_class:'form-control' }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.bill_phone_number.id_for_label }}">Bill Phone Number</label>
+            {{ form.bill_phone_number|add_class:'form-control' }}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.email.id_for_label }}">Email</label>
+            {{ form.email|add_class:'form-control' }}
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+{% endblock %}
+
+{% block extra_javascript %}
+    {{ form.media.js }}
+{% endblock %}

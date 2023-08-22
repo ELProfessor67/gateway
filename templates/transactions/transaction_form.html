@@ -1,0 +1,292 @@
+
+
+{% extends 'partials/base.html' %}
+{% load static %}
+
+{% load widget_tweaks %}
+
+
+{% block extra_css %}
+    {{ form.media.css }}
+    <link href="{% static 'libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- dropzone css -->
+    <link href="{% static 'libs/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block contents %}
+
+
+
+
+
+
+
+    <form method="POST" >
+       
+        
+        {% csrf_token %}
+        <div class="row">
+            <div class="col-md-6">
+                
+                <div class="row">
+                    <div class="col-lg-6">
+                     
+                        <div class="form-group">
+                            <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                            {{ form.first_name|add_class:'form-control' }}
+                        </div>
+
+                    </div>
+                    <div class="col-lg-6">
+
+                        <div class="form-group">
+                            <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                            {{ form.last_name|add_class:'form-control' }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="{{ form.company.id_for_label }}">Company</label>
+                            {{ form.company|add_class:'form-control' }}
+                        </div>
+                     
+                    </div>
+                     <div class="col-lg-6">
+
+                        <div class="form-group">
+                            <label for="{{ form.address.id_for_label }}">Address</label>
+                            {{ form.address|add_class:'form-control' }}
+                        </div>
+                     
+                    </div>
+
+                </div>
+
+
+
+                <div class="row">
+                    
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="{{ form.city.id_for_label }}">City</label>
+                            {{ form.city|add_class:'form-control' }}
+                        </div>
+                    </div>
+
+                     <div class="col-lg-6">
+
+                        <div class="form-group">
+                            <label for="{{ form.state.id_for_label }}">State</label>
+                            {{ form.state|add_class:'form-control' }}
+                        </div>
+                     
+                    </div>
+
+                </div>
+
+                <div class="row">
+                                                    
+
+                    <div class="col-lg-6">
+
+                        <div class="form-group">
+                            <label for="{{ form.zip_code.id_for_label }}">Zip Code</label>
+                            {{ form.zip_code|add_class:'form-control' }}
+                        </div>
+
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="{{ form.country.id_for_label }}">Country</label>
+                            {{ form.country|add_class:'form-control' }}
+                        </div>
+                    </div>
+
+                </div>
+                
+                <div class="row">
+                                                    
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="{{ form.phone_number.id_for_label }}">Phone Number</label>
+                            {{ form.phone_number|add_class:'form-control' }}
+                        </div>
+                    </div>
+
+                </div>
+                
+            </div>
+            <div class="col-md-6">
+
+
+                <div class="row">
+                    
+                    <div class="col-lg-12">
+
+                        <div class="form-group">
+                            <label for="{{ form.amount.id_for_label }}">Amount</label>
+                            {{ form.amount|add_class:'form-control' }}
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    
+                    <div class="col-lg-12">
+
+                        <div class="form-group">
+                            <label for="{{ form.payment_method.id_for_label }}">Payment Method</label>
+                            {{ form.payment_method|add_class:'form-control2' }}
+                        </div>
+
+                    </div>
+
+
+                </div>
+
+
+                 
+                <div class="row">
+                    
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="{{ form.transaction_type.id_for_label }}">Transaction Type</label>
+                            {{ form.transaction_type|add_class:'form-control' }}
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+
+                        <div class="form-group">
+                            <label for="{{ form.card_number.id_for_label }}">Card Number</label>
+                            {{ form.card_number|add_class:'form-control' }}
+
+                            <div class="cardNumberError" id="cardNumberError"></div>
+                            {% if form.card_number.errors %}
+                                <div class="invalid-feedback">
+                                    {{ form.card_number.errors}}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                    <div class="col-lg-2">
+
+                        <div class="form-group">
+                            <label for="{{ form.exp_month.id_for_label }}">Exp Month</label>
+                            {{ form.exp_month|add_class:'form-control' }}
+                        </div>
+                    
+                    </div>
+                    <div class="col-lg-2">
+
+                        <div class="form-group">
+                            <label for="{{ form.exp_year.id_for_label }}">Exp Year</label>
+                            {{ form.exp_year|add_class:'form-control' }}
+                        </div>
+                    
+                    </div>
+                    <div class="col-lg-2">
+
+                        <div class="form-group">
+                            <label for="{{ form.cvv.id_for_label }}">CVV</label>
+                            {{ form.cvv|add_class:'form-control' }}
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <div class="row">
+                    
+                    <div class="col-lg-12">
+
+                        <div class="form-group">
+                            <label for="{{ form.email.id_for_label }}">Email</label>
+                            {{ form.email|add_class:'form-control' }}
+                        </div>
+
+                        <div class="form-group" style="display:none1">
+                            <label for="{{ form.transaction_id.id_for_label }}">transaction_id</label>
+                            {{ form.transaction_id|add_class:'form-control' }}
+                        </div>
+
+                    </div>
+
+                   
+
+                </div>
+
+
+                <script>
+                jQuery(document).ready(function() {
+                  // Get the card number input element
+                  var cardNumberInput = jQuery('#id_card_number');
+
+                  // Add event listener for input change
+                  cardNumberInput.on('input', function() {
+                    var cardNumber = cardNumberInput.val();
+
+                    // Check if the card number has exactly 16 digits
+                    if (cardNumber.length !== 16) {
+                      jQuery('#cardNumberError').html('<span style="color:red">Card number must be 16 digits.</span>');
+                      cardNumberInput.addClass('is-invalid');
+                    } else {
+                      jQuery('#cardNumberError').text('');
+                      cardNumberInput.removeClass('is-invalid');
+                    }
+                  });
+                });
+                </script>
+
+
+                <script type="text/javascript">
+                    jQuery(document).ready(function() {
+                        
+                        var id_transaction_id = jQuery("#id_transaction_id").val();
+                        if(id_transaction_id=="")
+                        {
+                            jQuery("#id_transaction_id").val('111');
+                        }
+                        // Attach submit event listener to the form
+                        
+                    });
+                </script>
+
+            </div>
+        </div>
+     
+
+ 
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+
+       
+{% endblock %}
+
+{% block extra_javascript %}
+    {{ form.media.js }}
+    <!-- bootstrap datepicker -->
+    <script src="{% static 'libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
+
+    <!-- dropzone plugin -->
+    <script src="{% static 'libs/dropzone/dist/min/dropzone.min.js' %}"></script>
+
+    <script src="{% static 'js/pages/project-create.init.js' %}"></script>
+
+{% endblock %}

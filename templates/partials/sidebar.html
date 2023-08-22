@@ -1,0 +1,134 @@
+{% load static %} {% block sidebar %}
+    <!-- ========== Left Sidebar Start ========== -->
+    <div class="vertical-menu">
+      <div data-simplebar class="h-100">
+        <!--- Sidemenu -->
+        <div id="sidebar-menu">
+          <!-- Left Menu Start -->
+          <ul class="metismenu list-unstyled" id="side-menu">
+       
+
+            <li>
+              <a href="{% url 'dashboard' %}"  class="has-arrow waves-effect">
+                <i class="bx bxs-dashboard"></i
+                >
+                <span key="t-dashboards">Dashboards</span>
+              </a>
+             
+            </li>
+
+
+      
+      
+
+              <li>
+                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                  <i class="bx bx-credit-card"></i>
+                  <span key="t-projects">Transactions</span>
+                </a>
+                <ul class="sub-menu" aria-expanded="false">
+                 
+                  <li>
+                    <a href="{% url 'transactions:transaction_list' %}" key="t-p-list">Transactions List</a>
+                  </li>
+                  
+                  <li>
+                    <a href="{% url 'transactions:transaction_create' %}" key="t-create-new">Create New Transaction</a>
+                  </li>
+                </ul>
+              </li>
+
+
+
+       
+              <li>
+                <a href="{% url 'projects:report' %}"  class=" waves-effect">
+                  <i class="bx bxs-report"></i>
+                  <span key="t-projects">Reports</span>
+                </a>
+                
+              </li>
+       
+          
+              <li>
+                <a href="{% url 'projects:gift' %}"  class=" waves-effect">
+                  <i class="bx bx-gift"></i>
+                  <span key="t-projects">Gift Report</span>
+                </a>
+                
+              </li>
+        
+              <li>
+                <a href="{% url 'projects:batches' %}"  class=" waves-effect">
+                  <i class="bx bx-wallet"></i>
+                  <span key="t-projects">Batches</span>
+                </a>
+                
+              </li>
+
+          
+
+
+
+              <li>
+                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                  <i class="bx bx-credit-card"></i>
+                  <span key="t-projects">Customers</span>
+                </a>
+                <ul class="sub-menu" aria-expanded="false">
+                 
+                  <li>
+                    <a href="{% url 'customers:customer_list' %}" key="t-p-list">Customers List</a>
+                  </li>
+                  
+                  <li>
+                    <a href="{% url 'customers:customer_create' %}" key="t-create-new">Create New Customers</a>
+                  </li>
+                </ul>
+              </li>
+
+
+              <li>
+                <a href="{% url 'projects:recurring' %}"  class=" waves-effect">
+                  <i class="bx bx-history"></i>
+                  <span key="t-projects">Recurring Schedules</span>
+                </a>
+                
+              </li>
+
+              <li>
+                <a href="{% url 'projects:send_payment' %}"  class=" waves-effect">
+                  <i class="bx bxs-credit-card"></i>
+                  <span key="t-projects">Send Payment Request</span>
+                </a>
+                
+              </li>
+
+              <li>
+                <a href="{% url 'projects:settings' %}"  class=" waves-effect">
+                  <i class="bx bx-cog"></i>
+                  <span key="t-projects">Settings</span>
+                </a>
+                
+              </li>
+
+              <li>
+                <a href="{% url 'projects:help' %}"  class=" waves-effect">
+                  <i class="bx bx-briefcase-alt-2"></i>
+                  <span key="t-projects">Help</span>
+                </a>
+                
+              </li>
+
+       
+
+      
+
+      
+          </ul>
+        </div>
+        <!-- Sidebar -->
+      </div>
+    </div>
+    <!-- Left Sidebar End -->
+{% endblock %}

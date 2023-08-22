@@ -1,0 +1,8 @@
+<p>Are you sure you want to delete transaction "{{ transaction.reference_number }}"?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, delete it</button>
+</form>
+
+<a href="{% url 'transactions:transaction_list' %}">No, cancel</a>

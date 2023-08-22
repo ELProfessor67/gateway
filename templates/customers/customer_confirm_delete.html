@@ -1,0 +1,8 @@
+<p>Are you sure you want to delete transaction "{{ customer.customer_id }}"?</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, delete it</button>
+</form>
+
+<a href="{% url 'customers:customer_list' %}">No, cancel</a>
