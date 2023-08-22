@@ -27,3 +27,10 @@ urllib3
 django-flatpickr
 rest_framework_simplejwt
 django-widget-tweaks
+djangorestframework
+cryptography
+Django
+Requests
+whitenoise
+Brotli
+gunicorn
