@@ -1,12 +1,22 @@
 from django import forms
 from .models import Transaction
+from uuid import uuid1
 
 class TransactionForm(forms.ModelForm):
-    transaction_id = forms.CharField(
-        label='Transaction ID',
-        widget=forms.TextInput(attrs={'class': 'form-control'}),
-        initial='11'
+    # transaction_id = forms.CharField(
+    #     label='Transaction ID',
+    #     widget=forms.TextInput(attrs={'class': 'form-control'}),
+    #     initial=uuid1
+    # )
+
+    exp_month = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control','type':'text','maxlength':'2'})
     )
+
+    exp_year = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control','type':'text','maxlength':'4'})
+    )
+
     class Meta:
         model = Transaction
         fields = [
@@ -27,13 +37,13 @@ class TransactionForm(forms.ModelForm):
             'exp_month',
             'cvv',
             'email',
-            'transaction_id'  # Corrected field name to lowercase 'transaction_id'
+            # 'transaction_id'  # Corrected field name to lowercase 'transaction_id'
         ]
         
         widgets = {
             'amount': forms.Textarea(attrs={'rows': 1, 'cols': 30}),
             'payment_method': forms.RadioSelect(choices=[('credit', 'Credit Card'), ('check', 'Check')]),
-            'transaction_type': forms.Select(choices=[('change1', 'Change 1'), ('change2', 'Change 2')]),
+            'transaction_type': forms.Select(choices=[('refund', 'Refund'),('charge','Charge'),('save','Save'),('auth_only','Auth Only'),('post_auth','Post Auth'),('gift_issue','Gift Issue'),('gift_redeem','Gift Redeem')]),
         }
 
     def clean_card_number(self):

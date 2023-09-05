@@ -1,27 +1,131 @@
 {% extends 'partials/base.html' %}
 {% load static %}
-{% block contents %}
-{% include 'partials/content.html' %}
+
 
 {% block extra_css %}
-    <link rel="stylesheet" type="text/css" href="{% static 'libs/toastr/build/toastr.min.css' %}">
-{% endblock extra_css %}
-    
-{% block extra_content %}
-                    <!-- subscribeModal -->
-                    
-                    <!-- end modal -->
-{% endblock extra_content %} 
+<link href="{% static 'libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+
+<!-- dropzone css -->
+<link href="{% static 'libs/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
 {% endblock %}
+{% block contents %}
+<div class="row" style="width: 100%; margin-top: 2rem;">
+    <form  class="d-flex justify-content-center align-items-center w-100 my-4">
+      <input type="date" class="py-1 px-2" style="cursor: pointer;" id="date" name="date"/>
+    </form>
+
+    <div style="display: grid;grid-template-columns: repeat(4,1fr);flex: none;gap: 2rem;max-width: 100%;width: 100%;">
+        <div class="card shadow-sm">
+            <h5 class="card-header text-center" style="background-color: #007FFF; color: white;">Orders</h5>
+            <div class="card-body">
+                <h5 class="fs-2 text-gray-300 text-center">{{orders}}</h5>
+            </div>
+        </div>
+        <div class="card shadow-sm">
+            <h5 class="card-header text-center" style="background-color: #007FFF; color: white;">Total</h5>
+            <div class="card-body">
+                <h5 class="fs-2 text-gray-300 text-center">{{total}}$</h5>
+               
+            </div>
+        </div>
+        <div class="card shadow-sm">
+            <h5 class="card-header text-center" style="background-color: #007FFF; color: white;">Avg. Transaction</h5>
+            <div class="card-body">
+                <h5 class="fs-2 text-gray-300 text-center">{{avg}}$</h5>
+                
+            </div>
+        </div>
+        <div class="card shadow-sm">
+            <h5 class="card-header text-center" style="background-color: #007FFF; color: white;">Credit</h5>
+            <div class="card-body">
+                <h5 class="fs-2 text-gray-300 text-center">{{refund}}$</h5>
+            </div>
+        </div>
+        
+    </div>
+    <!-- chart  -->
+    <div class="w-75 m-auto py-4 px-2">
+        <input type="text" hidden="true" value="{{chart_transaction}}" id="chart_transaction"/>
+        <canvas id="myChart"></canvas>
+    </div>
+
+    <div class="w-75 m-auto py-4 px-2 h-50" style="height: 40rem !important; display: flex; justify-content: center;">
+      <input type="text" id="doughnut_data" value="{{doughnut_data}}" hidden="true"/>
+      <canvas id="doughnut"></canvas>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('myChart');
+    const doughnut = document.getElementById('doughnut');
+    const chart_transaction = JSON.parse(document.getElementById('chart_transaction').value);
+    console.log(chart_transaction)
+    const {week_list} = chart_transaction
+    const chart = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: [week_list[0],week_list[1],week_list[2],week_list[3],week_list[4],week_list[5],week_list[6]],
+        datasets: [{
+          label: 'this week',
+          data: [chart_transaction[week_list[0]].length, chart_transaction[week_list[1]].length, chart_transaction[week_list[2]].length, chart_transaction[week_list[3]].length, chart_transaction[week_list[4]].length, chart_transaction[week_list[5]].length,chart_transaction[week_list[6]].length],
+          borderWidth: 1
+        }]
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true
+          }
+        }
+      }
+    });
+    
+    const doughnut_data = JSON.parse(document.getElementById('doughnut_data').value)
+    const dl = Object.keys(doughnut_data);
+    dought_values = []
+    dl.forEach(ele => {
+      dought_values.push(doughnut_data[ele])
+    })
+    const doughnutdata = {
+      labels: dl,
+      datasets: [{
+        label: 'My First Dataset',
+        data: dought_values,
+        backgroundColor: [
+          'rgb(255, 99, 132)',
+          'rgb(54, 162, 235)',
+          'rgb(255, 205, 86)'
+        ],
+        hoverOffset: 4
+      }]
+    };
+
+    const doughnutchart = new Chart(doughnut, {
+      type: 'doughnut',
+      data: doughnutdata
+    });
 
 
-{% block extra_javascript %}
-    <!-- apexcharts -->
-    <script src="{% static 'libs/apexcharts/dist/apexcharts.min.js' %}"></script>
-    <!-- toastr plugin -->
-    <script src="{% static 'libs/toastr/build/toastr.min.js' %}"></script>
+    // date logic 
+    const dateInput = document.getElementById('date');
+    const date = new URLSearchParams(window.location.search).get('date')
+    if(date) dateInput.value = date;
+    dateInput.onchange = function (e){
+      this.form.submit();
+    }
 
-    <!-- dashboard init -->
-    <script src="{% static 'js/pages/dashboard.init.js' %}"></script>
-
+    const selectedDate = new Date(dateInput.value);
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+      if (
+        selectedDate.getFullYear() === yesterday.getFullYear() &&
+        selectedDate.getMonth() === yesterday.getMonth() &&
+        selectedDate.getDate() === yesterday.getDate()
+      ) {
+        dateInput.placeholder = 'Yesterday';
+      } else {
+        dateInput.placeholder = '';
+      }
+</script>
 {% endblock %}

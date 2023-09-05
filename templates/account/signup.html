@@ -13,6 +13,11 @@
             .btn-primary { margin-left:12px !important }
             label{width: 95px}
             .helptext{ display:block; }
+
+            .errorlist
+            {
+                color: red;
+            }
         </style>
         <div class="account-pages my-5 pt-sm-5">
             <div class="container">
@@ -61,6 +66,7 @@
                                         {% endfor %}
                                         {% csrf_token %}
                                         {{ form.as_p }}
+                                        <!-- {{form.errors}} -->
                                         <div class="mt-4 d-grid">
                                             <button class="btn btn-primary waves-effect waves-light" type="submit">Register</button>
                                         </div>

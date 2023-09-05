@@ -46,6 +46,7 @@ ALLOWED_HOSTS = ['127.0.0.1','localhost','2da188c804ec.ngrok.io','157.230.1.31',
 
 
 INSTALLED_APPS = [
+    'django_crontab',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -248,3 +249,8 @@ SOCIALACCOUNT_PROVIDERS = {
         }
     }
 }
+
+
+CRONJOBS = [
+    ('*/5 * * * *', 'transactions.cron.my_scheduled_job')
+]

@@ -59,6 +59,7 @@ def signup_view(request):
 	
 	if request.method == 'POST':
 		form = RegistrationForm(data=request.POST)
+		print(form.errors)
 		if form.is_valid():
 		    form.save()
 		    return redirect(reverse('transactions:transaction_list')) 

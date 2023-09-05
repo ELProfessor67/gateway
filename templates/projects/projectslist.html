@@ -12,25 +12,30 @@
 {% endblock %}
 
 {% block contents %}
-
 <div class="row">
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
                 <div class="row mb-2">
                     <div class="col-sm">
-                        <div class="search-box me-2 d-inline-block">
-                            <div class="position-relative">
-                                <input type="text" class="form-control" autocomplete="off" id="searchTableList" placeholder="Search...">
-                                <i class="bx bx-search-alt search-icon"></i>
+                        <form class="search-box me-2 d-inline-block">
+                            <div class="w-100 d-flex">
+                                <div class="d-flex flex-column mr-2">
+                                    <label class="mb-1 fs-3" for="start">start</label>
+                                    <input type="date" name="start" class="p-2" id="start"/>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <label class="mb-1 fs-3" for="end">end</label>
+                                    <input type="date" name="end" class="p-2" id="end"/>
+                                </div>
                             </div>
-                        </div>
+                        </form>
                     </div>
                     <!-- end col -->
                     <div class="col-sm-auto">
-                        <div class="text-sm-end">
-                            <a href="{% url 'projects:projects-createview' %}" class="btn btn-success btn-rounded" id="addProject-btn"><i class="mdi mdi-plus me-1"></i> Add New Project</a>
-                        </div>
+                        <!-- <div class="text-sm-end">
+                            <a href="{% url 'projects:projects-createview' %}" class="btn btn-success btn-rounded" id="addProject-btn"><i class="mdi mdi-plus me-1"></i> Add New Batch</a>
+                        </div> -->
                     </div>
                     <!-- end col -->
                 </div>
@@ -41,16 +46,154 @@
                             <thead class="table-light">
                                 <tr>
                                     <th scope="col" style="width: 60px">#</th>
-                                    <th scope="col">Projects</th>
+        
+                                    <th scope="col">Total</th>
+                                    <th scope="col">Sales</th>
+                                    <th scope="col">Credit</th>
                                     <th scope="col">Due Date</th>
-                                    <th scope="col">Status</th>
-                                    <th scope="col">Team</th>
                                     <th scope="col">Action</th>
                                 </tr>
                             </thead>
+                            <tbody>
+                                {% for batch in batchs %}
+                                <tr>
+                                    <th scope="col" style="width: 60px">
+                                        <a href="/projects/list/{{batch.id}}" class="text-decoration-none">{{forloop.counter}}</a>
+                                    </th>
+                                   
+                                    
+                                    <th scope="col">{{batch.total}}$</th>
+                                    <th scope="col">{{batch.sales}}$</th>
+                                    <th scope="col">{{batch.credit}}$</th>
+                                    <th scope="col">{{batch.date}}</th>
+                                    <th scope="col">
+                                        <a href="/projects/list/{{batch.id}}" class="text-decoration-none">View all Transaction</a>
+                                    </th>
+                                    <!-- {% if batch.status == "Pending" %}
+                                        <th scope="col">
+                                            <span class="py-1 px-2 rounded text-white" style="background: grey;">{{batch.status}}</span>
+                                        </th>
+                                    {% endif %}
+
+                                    {% if batch.status == "Complete" %}
+                                        <th scope="col">
+                                            <span class="py-1 px-2 rounded text-white" style="background: green;">{{batch.status}}</span>
+                                        </th>
+                                    {% endif %}
+
+                                    {% if batch.status == "Failed" %}
+                                        <th scope="col">
+                                            <span class="py-1 px-2 rounded text-white" style="background: red;">{{batch.status}}</span>
+                                        </th>
+                                    {% endif %} -->
+                                </tr>
+                                {% endfor %}
+                            </tbody>
                         </table>
                     </div>
                 </div>
+
+
+
+                <!-- graphs  -->
+                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                <div class="py-4 px-2 mt-5" style="display: grid; grid-template-columns: 1fr 1fr;">
+                    <div>
+                        <input id="sale_data" value="{{sale_data}}" type="text" hidden="true"/>
+                        <h3 class="fs-5 text-center mb-5">Sales Summary By Card Type</h3>
+                        <div class="dought_graph w-75 m-auto">
+                            <canvas id="dought_graph_1"/>
+                        </div>
+                    </div>
+                    <div>
+                        <input id="credit_data" value="{{credit_data}}" type="text" hidden="true"/>
+                        <h4 class="fs-5 text-center mb-5">Credit Summary By Card Types</h4>
+                        <div class="dought_graph w-75 m-auto">
+                            <canvas id="dought_graph_2"/>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+
+                    const doughnut1 = document.getElementById('dought_graph_1');
+                    const doughnut2 = document.getElementById('dought_graph_2');
+                    const sale_data = JSON.parse(document.getElementById('sale_data').value)
+                    const credit_data = JSON.parse(document.getElementById('credit_data').value)
+
+                    datalabels1 = Object.keys(sale_data);
+                    datalabels2 = Object.keys(credit_data);
+                    datasets1 = []
+                    datasets2 = []
+
+                    datalabels1.forEach(element => {
+                        datasets1.push(sale_data[element])
+                    });
+
+                    datalabels2.forEach(element => {
+                        datasets2.push(credit_data[element])
+                    });
+
+                    const data1 = {
+                        labels: datalabels1,
+                        datasets: [{
+                            label: 'Sales Summary',
+                            data: datasets1,
+                            backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 205, 86)'
+                            ],
+                            hoverOffset: 4
+                        }]
+                    };
+
+                    const data2 = {
+                        labels: datalabels2,
+                        datasets: [{
+                            label: 'Credit Summary',
+                            data: datasets2,
+                            backgroundColor: [
+                            'rgb(255, 99, 132)',
+                            'rgb(54, 162, 235)',
+                            'rgb(255, 205, 86)'
+                            ],
+                            hoverOffset: 4
+                        }]
+                    };
+
+                    const config1 = {
+                        type: 'doughnut',
+                        data: data1,
+                    };
+
+                    const config2 = {
+                        type: 'doughnut',
+                        data: data2,
+                    };
+
+                    new Chart(doughnut1,config1);
+                    new Chart(doughnut2,config2);
+
+
+                    // on change submit 
+                    const startinput = document.getElementById('start');
+                    const endinput = document.getElementById('end');
+
+                    function change(){
+                        this.form.submit();
+                    }
+
+                    startinput.onchange = change;
+                    endinput.onchange = change
+
+                    const params = new URLSearchParams(window.location.search);
+                    const startvalue = params.get('start');
+                    const endvalue = params.get('end');
+
+                    if(startvalue) startinput.value = startvalue;
+                    if(endvalue) endinput.value = endvalue;
+                </script>
             </div>
         </div>
         <!-- end card -->
@@ -91,14 +234,14 @@
 
 
     <!-- Required datatable js -->
-    <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js'%}"></script>
+    {% comment %} <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js'%}"></script>
     <script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
     
     <!-- Responsive examples -->
     <script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js'%}"></script>
     <script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js'%}"></script>
 
-    <script src="{% static 'js/pages/project-list.init.js'%}"></script>
+    <script src="{% static 'js/pages/project-list.init.js'%}"></script> {% endcomment %}
 
 {% endblock %}
 

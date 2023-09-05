@@ -1,6 +1,9 @@
 from django.db import models
+import datetime
+import re
 
 class Transaction(models.Model):
+    username = models.CharField(max_length=100, default='')
     first_name = models.CharField(max_length=100, verbose_name='First Name',default='')
     last_name = models.CharField(max_length=100, verbose_name='Last Name',default='')
     company = models.CharField(max_length=100, verbose_name='Company',default='')
@@ -18,5 +21,22 @@ class Transaction(models.Model):
     exp_month = models.CharField(max_length=5, verbose_name='Expiration Month',default='')
     cvv = models.CharField(max_length=4, verbose_name='CVV',default='')
     email = models.EmailField(max_length=100, verbose_name='Email',default='')
-    transaction_id = models.CharField(max_length=5, verbose_name='Transaction_id',default='12')
+    transaction_id = models.CharField(max_length=150, verbose_name='Transaction_id',default='')
+    date = models.DateTimeField(default=datetime.datetime.now)
+    status = models.CharField(default='Complete',max_length=50)
+
+    def get_card_company(self):
+        card_number = self.card_number
+        # Define regular expressions for different card companies
+        patterns = {
+            'visa': r'^4[0-9]{12}(?:[0-9]{3})?$',
+            'mastercard': r'^5[1-5][0-9]{14}$',
+            # Add more patterns for other card companies here
+        }
+
+        for company, pattern in patterns.items():
+            if re.match(pattern, card_number):
+                return company
+        # If no company is detected, return 'unknown'
+        return 'unknown'
     

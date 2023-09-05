@@ -1,15 +1,18 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect, get_object_or_404,HttpResponse
 from .models import Transaction
 from .forms import TransactionForm
 from django.urls import reverse
 from .crypto import Cryptography
 from django.views.decorators.csrf import csrf_exempt
-
+from django.contrib.auth.decorators import login_required
+from .models import Transaction
 from .filters import TransactionFilter
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
+from uuid import uuid1
+from customers.models import Customer
 
 import requests
 
@@ -17,31 +20,37 @@ import json
 from json import dumps
 import base64
 
+def cutfess(amount):
+    amount = int(amount)
+    return (amount*2)/100
+
 
 # for hashing transactions
 KEY = 'Z_wXA1eKA99N-ddUodDW-LIgWLTsCyYWpcMjeO2vnqk='
 crypto = Cryptography(KEY)
-payment_process_url = 'https://payment-processor.onrender.com'
-payment_process_access_token = "40037539-8cd9-495a-bd7f-4e5c8721e3a8"
+# payment_process_url = 'https://payment-processor.onrender.com'
+payment_process_url = 'http://localhost:4000'
+payment_process_access_token = "27be761f-1046-49b0-be1f-35a678a41781"
 
-
+@login_required(login_url='/account/login/')
 def transaction_list(request):
-
+    
+    print(request.user.email)
 
     # BlueSnap API endpoint for tokenization
     api_url = 'https://sandbox.bluesnap.com/services/2/payment-fields-tokens'
 
-    # BlueSnap API credentials
+    # # BlueSnap API credentials
     username = 'API_16872799899141798439898'
     password = 'Findaway11!$'
 
-    # Credit card details
+    # # Credit card details
     card_number = '4111111111111111'
     expiration_month = '12'
     expiration_year = '2025'
     cvv = '123'
 
-    # Prepare the request payload
+    # # Prepare the request payload
     payload = {
         'number': card_number,
         'expMonth': expiration_month,
@@ -49,7 +58,7 @@ def transaction_list(request):
         'cvv': cvv
     }
 
-    # Send the request
+    # # Send the request
     response = requests.post(api_url, data=json.dumps(payload), auth=(username, password))
     print("====================");
     print(response.text);
@@ -63,45 +72,60 @@ def transaction_list(request):
         # Handle the error
         print('Error:', response.text)
 
-
-    transactions = Transaction.objects.all()
+    if request.user.is_superuser:
+        transactions = Transaction.objects.all().values()
+    else:
+        transactions = Transaction.objects.filter(username = request.user.username).values()
+    
+    for i in range(len(transactions)):
+        fee = cutfess(transactions[i].get('amount'))
+        transactions[i]['fee'] = fee
+        transactions[i]['total'] = int(transactions[i].get('amount'))-fee
 
     form = TransactionForm(request.POST)
     
     transaction_filter = TransactionFilter(request.GET, queryset=Transaction.objects.all())
-
+    print(transaction_filter)
     return render(request, 'transactions/transaction_list.html', {'transactions': transactions,'filter': transaction_filter ,'form':form})
 
 
-
 @csrf_exempt
+@login_required(login_url='/account/login/')
 def transaction_create(request):
     if request.method == 'POST':
+        
         form = TransactionForm(request.POST)
-        if form.is_valid():
-            form.save()
 
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            company = form.cleaned_data['company']
-            address = form.cleaned_data['address']
-            city = form.cleaned_data['city']
-            state = form.cleaned_data['state']
-            zip_code = form.cleaned_data['zip_code']
-            country = form.cleaned_data['country']
-            phone_number = form.cleaned_data['phone_number']
-            amount = form.cleaned_data['amount']
-            payment_method = form.cleaned_data['payment_method']
-            transaction_type = form.cleaned_data['transaction_type']
-            card_number = form.cleaned_data['card_number']
-            exp_year = form.cleaned_data['exp_year']
-            exp_month = form.cleaned_data['exp_month']
-            cvv = form.cleaned_data['cvv']
-            email = form.cleaned_data['email']
-            # transaction_id = form.cleaned_data['transaction_id']
-            transaction_id = request.POST['transaction_id']
+        
+        if form.is_valid():
+            # form.save()
+
+            authusername = request.user.username
+            transaction_id = str(uuid1())
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            company = request.POST['company']
+            address = request.POST['address']
+            city = request.POST['city']
+            state = request.POST['state']
+            zip_code = request.POST['zip_code']
+            country = request.POST['country']
+            phone_number = request.POST['phone_number']
+            amount = request.POST['amount']
+            payment_method = request.POST['payment_method']
+            transaction_type = request.POST['transaction_type']
+            card_number = request.POST['card_number']
+            exp_year = request.POST['exp_year']
+            exp_month = request.POST['exp_month']
+            cvv = request.POST['cvv']
+            email = request.POST['email']
+            customer = request.POST.get('customer')
+            print('customert',)
+
+            Transaction.objects.create(payment_method=payment_method,transaction_type=transaction_type,amount=amount,email=email,cvv=cvv,exp_month=exp_month,exp_year=exp_year,card_number=card_number,phone_number=phone_number,country=country,zip_code=zip_code,state=state,city=city,address=address,company=company,username=authusername,transaction_id=transaction_id,first_name=first_name,last_name=last_name)
 
             transaction = {
+                "authusername": authusername,
                 "first_name": first_name,
                 "last_name": last_name,
                 "company": company,
@@ -129,12 +153,19 @@ def transaction_create(request):
             }
 
             # send to peyment processor 
-            res = requests.post(f"{payment_process_url}/transation/add/?token={payment_process_access_token}",data=data)
-            print(res.text)
+            try:
+                res = requests.post(f"{payment_process_url}/transation/add/?token={payment_process_access_token}",data=data)
+                print(res.text)
+            except Exception as e:
+                print(e)
+            
+            if customer == 'on':
+                Customer.objects.create(email=email,cvv=cvv,exp_month=exp_month,exp_year=exp_year,card_number=card_number,phone_number=phone_number,country=country,zip_code=zip_code,state=state,city=city,address=address,company=company,username=authusername,first_name=first_name,last_name=last_name)
 
             return redirect(reverse('transactions:transaction_list'))
     else:
         form = TransactionForm()
+    
     button_text = "Add Transaction"
     return render(request, 'transactions/transaction_form.html', {'form': form, 'button_text': button_text})
 
@@ -145,25 +176,28 @@ def transaction_create_ajax(request):
         if form.is_valid():
 
             # Retrieve the dynamic values from the form
-            first_name = form.cleaned_data['first_name']
-            last_name = form.cleaned_data['last_name']
-            company = form.cleaned_data['company']
-            address = form.cleaned_data['address']
-            city = form.cleaned_data['city']
-            state = form.cleaned_data['state']
-            zip_code = form.cleaned_data['zip_code']
-            country = form.cleaned_data['country']
-            phone_number = form.cleaned_data['phone_number']
-            amount = form.cleaned_data['amount']
-            payment_method = form.cleaned_data['payment_method']
-            transaction_type = form.cleaned_data['transaction_type']
-            card_number = form.cleaned_data['card_number']
-            exp_year = form.cleaned_data['exp_year']
-            exp_month = form.cleaned_data['exp_month']
-            cvv = form.cleaned_data['cvv']
-            email = form.cleaned_data['email']
-            # transaction_id = form.cleaned_data['transaction_id']
-            transaction_id = request.POST['transaction_id']
+            authusername = request.user.username
+            transaction_id = str(uuid1())
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            company = request.POST['company']
+            address = request.POST['address']
+            city = request.POST['city']
+            state = request.POST['state']
+            zip_code = request.POST['zip_code']
+            country = request.POST['country']
+            phone_number = request.POST['phone_number']
+            amount = request.POST['amount']
+            payment_method = request.POST['payment_method']
+            transaction_type = request.POST['transaction_type']
+            card_number = request.POST['card_number']
+            exp_year = request.POST['exp_year']
+            exp_month = request.POST['exp_month']
+            cvv = request.POST['cvv']
+            email = request.POST['email']
+            
+            
+
 
 
             url = "https://sandbox.bluesnap.com/services/2/transactions"
@@ -204,6 +238,7 @@ def transaction_create_ajax(request):
             }
             
             transaction = {
+                "authusername": authusername,
                 "first_name": first_name,
                 "last_name": last_name,
                 "company": company,
@@ -246,7 +281,8 @@ def transaction_create_ajax(request):
                 #token = response_json['creditCard']['token']
                 #form.instance.credit_card_number = token  # Store the token in the credit_card_number field
                 form.instance.transaction_id = str(transaction_id)
-                form.save()
+                # form.save()
+                Transaction.objects.create(email=email,cvv=cvv,exp_month=exp_month,exp_year=exp_year,card_number=card_number,transaction_type=transaction_type,payment_method=payment_method,amount=amount,phone_number=phone_number,country=country,zip_code=zip_code,state=state,city=city,address=address,company=company,username=authusername,transaction_id=transaction_id,first_name=first_name,last_name=last_name)
                 # send to peyment processor 
                 res = requests.post(f"{payment_process_url}/transation/add/?token={payment_process_access_token}",data=data)
                 print(res.text)
