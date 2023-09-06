@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Batchs
+from .models import Batchs, Shedules
 # Register your models here.
 
 class BatchsAdmin(admin.ModelAdmin):
@@ -8,3 +8,4 @@ class BatchsAdmin(admin.ModelAdmin):
     search_fields = ('name','description','username')
 
 admin.site.register(Batchs,BatchsAdmin)
+admin.site.register(Shedules)

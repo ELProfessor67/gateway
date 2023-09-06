@@ -1,0 +1,6 @@
+id,username,first_name,last_name,company,address,city,state,zip_code,country,phone_number,amount,payment_method,transaction_type,card_number,exp_year,exp_month,cvv,email,transaction_id,date,status,fee,total
+14,johndoe,john,dow,Testing,127.0.0.1,8000,http,235465,India,08798909876,100,credit,refund,4263982640269299,2026,02,837,user@gmail.com,7cfa17ab-4be0-11ee-ac62-ecf4bb328172,2023-09-05 04:36:43.661643,Complete,2.0,98.0
+15,johndoe,john,dow,Testing,127.0.0.1,8000,http,235465,India,08798909876,80,credit,save,2222420000001113,2026,08,377,john@gmail.com,bea796a8-4be0-11ee-920d-ecf4bb328172,2023-09-05 04:38:33.849571,Complete,1.6,78.4
+16,johndoe,john,dow,Testing,127.0.0.1,8000,http,235465,India,08798909876,120,credit,save,4263982640269299,2026,02,837,john@gmail.com,dc02ccf2-4be0-11ee-b019-ecf4bb328172,2023-09-05 04:39:23.100236,Complete,2.4,117.6
+17,johndoe,john,dow,Testing,127.0.0.1,8000,http,235465,India,08798909876,80,credit,refund,2222420000001113,2027,09,765,john@gmail.com,fdf2d686-4be0-11ee-abfa-ecf4bb328172,2023-09-05 04:40:20.038140,Complete,1.6,78.4
+18,johndoe,john,dow,Testing,127.0.0.1,8000,http,235465,India,08798909876,45,credit,save,4263982640269299,2028,07,765,john@gmail.com,1bddd600-4be1-11ee-ba53-ecf4bb328172,2023-09-05 04:41:10.232189,Complete,0.9,44.1

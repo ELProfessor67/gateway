@@ -3,7 +3,7 @@ from django.views import View
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Batchs
+from .models import Batchs, Shedules
 from transactions.models import Transaction
 from json import dumps,loads
 from transactions.forms import TransactionForm
@@ -185,12 +185,37 @@ class ProjectsListView(LoginRequiredMixin,View):
                 all_credit_trsansaction_card_data[i] = 1
 
         
+        path = "src/csv"
+        csv_file_name = f"{path}/{username}.csv"
+        if len(batchs) != 0:
+            with open(csv_file_name,mode='w',newline='') as file:
+                writer = csv.writer(file)
+                if batchs is not None:
+                    header = []
+                    values = []
+                    for key,value in batchs[0].items():
+                        if key != 'transactions':
+                            header.append(key)
+                
+                    for batch in batchs:
+                        valuerow = []
+                        for key,value in batch.items():
+                            if key != 'transactions':
+                                valuerow.append(value)
+                        values.append(valuerow)
+                    
+                    data = [header,*values]
+
+                    writer.writerows(data)
+
+
         greeting = {}
         greeting['heading'] = "Batch List"
         greeting['pageview'] = "Batch"
         greeting['batchs'] = batchs
         greeting['credit_data'] = dumps(all_credit_trsansaction_card_data)
         greeting['sale_data'] = dumps(all_sale_transaction_card_data)
+        greeting['username'] = username
         return render(request,'projects/projectslist.html',greeting)
 
 
@@ -293,3 +318,65 @@ class batch_transaction_list(LoginRequiredMixin,View):
 
         form = TransactionForm(request.POST)
         return render(request, 'transactions/transaction_list.html', {'transactions': transactions,'form':form})
+
+
+
+class create_shedule(LoginRequiredMixin,View):
+    def get(self,request):
+        return render(request,'projects/create_shedule.html')
+
+    def post(self,request):
+        form_data = request.POST
+        custom = form_data.get('custom')
+        email = form_data.get('email')
+        username = request.user.username
+        first_name = form_data.get('first_name')
+        last_name = form_data.get('last_name')
+        company = form_data.get('company')
+        address = form_data.get('address')
+        city = form_data.get('city')
+        state = form_data.get('state')
+        zip_code = form_data.get('zip_code')
+        country =   form_data.get('country')
+        phone_number = form_data.get('phone_number')
+
+        # payments fields 
+        payment_name = form_data.get('payment_name')
+        card_number = form_data.get('card_number')
+        exp_year = form_data.get('exp_year')
+        exp_month = form_data.get('exp_month')
+        cvv = form_data.get('cvv')
+
+        # recustion feilds
+        name = form_data.get('name')
+        description = form_data.get('description')
+        amount = form_data.get('amount')
+        every = form_data.get('every')
+        gap = form_data.get('gap')
+        start = form_data.get('start')
+        end = form_data.get('end')
+        after = form_data.get('after')
+        afterwith = form_data.get('afterwith')
+
+        schedule = Shedules.objects.create(custom=custom,email=email,username=username,first_name=first_name,last_name=last_name,company=company,address=address,city=city,state=state,zip_code=zip_code,country=country,phone_number=phone_number,payment_name=payment_name,card_number=card_number,exp_year=exp_year,exp_month=exp_month,cvv=cvv,name=name,description=description,amount=amount,every=every,gap=gap,start=start,end=end,after=after,afterwith=afterwith)
+
+        
+        return redirect('/projects/recurring_list')
+
+
+
+class shedule_list(LoginRequiredMixin,View):
+    def get(self,request):
+        username = request.user.username
+        start = request.GET.get('start')
+        end = request.GET.get('end')
+        
+        query = Q()
+        query &= Q(username=username)
+        if start and end:
+            if start == end:
+                query &= Q(date__date=start)
+            else:
+                query &= Q(date__range=(start,end))
+        schedules = Shedules.objects.filter(query)
+        return render(request,'projects/schedules_list.html',{'schedules':schedules})

@@ -87,13 +87,21 @@
                 </ul>
               </li>
 
-
               <li>
-                <a href="{% url 'projects:recurring' %}"  class=" waves-effect">
-                  <i class="bx bx-history"></i>
+                <a href="javascript: void(0);" class="has-arrow waves-effect">
+                  <i class="bx bx-credit-card"></i>
                   <span key="t-projects">Recurring Schedules</span>
                 </a>
-                
+                <ul class="sub-menu" aria-expanded="false">
+                 
+                  <li>
+                    <a href="/projects/recurring_list" key="t-p-list">Schedules List</a>
+                  </li>
+                  
+                  <li>
+                    <a href="/projects/recurring_create" key="t-create-new">Create New Schedules</a>
+                  </li>
+                </ul>
               </li>
 
               <li>

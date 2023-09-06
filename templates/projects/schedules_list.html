@@ -1,0 +1,153 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+{% block extra_css %}
+
+
+    <!-- DataTables -->
+    <link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+
+    <!-- Responsive datatable examples -->
+    <link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />  
+
+{% endblock %}
+
+{% block contents %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="row mb-2">
+                    <div class="col-sm">
+                        <form class="search-box me-2 d-inline-block">
+                            <div class="w-100 d-flex">
+                                <div class="d-flex flex-column mr-2">
+                                    <label class="mb-1 fs-3" for="start">start</label>
+                                    <input type="date" name="start" class="p-2" id="start"/>
+                                </div>
+                                <div class="d-flex flex-column">
+                                    <label class="mb-1 fs-3" for="end">end</label>
+                                    <input type="date" name="end" class="p-2" id="end"/>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- end col -->
+                    <div class="col-sm-auto">
+                        <!-- <div class="text-sm-end">
+                            <a href="{% url 'projects:projects-createview' %}" class="btn btn-success btn-rounded" id="addProject-btn"><i class="mdi mdi-plus me-1"></i> Add New Batch</a>
+                        </div> -->
+                    </div>
+                    <!-- end col -->
+                </div>
+                <!-- end row -->
+                <div class="">
+                    <div class="table-responsive">
+                        <table class="table project-list-table align-middle table-nowrap dt-responsive nowrap w-100 table-borderless" id="projectList-table">
+                            <thead class="table-light">
+                                <tr>
+                                    <th scope="col" style="width: 60px">#</th>
+                                    <th scope="col">Schedule Name</th>
+                                    <th scope="col">First Name</th>
+                                    <th scope="col">Phone Number</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Card Number</th>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Every</th>
+                                    <th scope="col">Start</th>
+                                    <th scope="col">End</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for schedule in schedules %}
+                                <tr>
+                                    <th scope="col" style="width: 60px">
+                                        <a href="#" class="text-decoration-none">{{forloop.counter}}</a>
+                                    </th>
+                                   
+                                    
+                                    <th scope="col">{{schedule.name}}</th>
+                                    <th scope="col">{{schedule.first_name}}</th>
+                                    <th scope="col">{{schedule.phone_number}}</th>
+                                    <th scope="col">{{schedule.date}}</th>
+                                    <th scope="col">xxxx xxxx xxxx {{schedule.card_number|slice:"-4:"}}</th>
+                                    <th scope="col">{{schedule.amount}}</th>
+                                    <th scope="col">{{schedule.every}} {{schedule.gap}}</th>
+                                    <th scope="col">{{schedule.start}}</th>
+                                    <th scope="col">{{schedule.end}}</th>
+                                    
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            // on change submit 
+            const startinput = document.getElementById('start');
+            const endinput = document.getElementById('end');
+
+            function change(){
+                this.form.submit();
+            }
+
+            startinput.onchange = change;
+            endinput.onchange = change
+
+            const params = new URLSearchParams(window.location.search);
+            const startvalue = params.get('start');
+            const endvalue = params.get('end');
+
+            if(startvalue) startinput.value = startvalue;
+            if(endvalue) endinput.value = endvalue;
+        </script>
+        <!-- end card -->
+    </div>
+</div>
+<!-- end row -->
+{% endblock %}
+
+{% block extra_content %}          
+<!-- Modal -->
+<div class="modal fade" id="removeItemModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content">
+            <div class="modal-body px-4 py-5 text-center">
+                <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="avatar-sm mb-4 mx-auto">
+                    <div class="avatar-title bg-primary text-primary bg-opacity-10 font-size-20 rounded-3">
+                        <i class="mdi mdi-trash-can-outline"></i>
+                    </div>
+                </div>
+                <p class="text-muted font-size-16 mb-4">Are you Sure You want to Remove this Order ?</p>
+                
+                <div class="hstack gap-2 justify-content-center mb-0">
+                    <button type="button" class="btn btn-danger" id="remove-item">Remove Now</button>
+                    <button type="button" class="btn btn-secondary" id="close-removeProjectModal" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- end removeItemModal -->  
+ {% endblock %}
+
+
+
+
+{% block extra_javascript %}
+
+
+    <!-- Required datatable js -->
+    {% comment %} <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js'%}"></script>
+    <script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
+    
+    <!-- Responsive examples -->
+    <script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js'%}"></script>
+    <script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js'%}"></script>
+
+    <script src="{% static 'js/pages/project-list.init.js'%}"></script> {% endcomment %}
+
+{% endblock %}
+
