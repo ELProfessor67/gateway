@@ -162,7 +162,7 @@ def transaction_create(request):
             if customer == 'on':
                 Customer.objects.create(email=email,cvv=cvv,exp_month=exp_month,exp_year=exp_year,card_number=card_number,phone_number=phone_number,country=country,zip_code=zip_code,state=state,city=city,address=address,company=company,username=authusername,first_name=first_name,last_name=last_name)
 
-            return redirect(reverse('transactions:transaction_list'))
+            return redirect('/projects/report')
     else:
         form = TransactionForm()
     

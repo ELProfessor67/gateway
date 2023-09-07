@@ -34,3 +34,4 @@ Requests
 whitenoise
 Brotli
 gunicorn
+django-crontab

@@ -252,5 +252,5 @@ SOCIALACCOUNT_PROVIDERS = {
 
 
 CRONJOBS = [
-    ('*/5 * * * *', 'transactions.cron.my_scheduled_job')
+    ('*/1 * * * *', 'transactions.cron.my_scheduled_job')
 ]

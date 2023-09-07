@@ -9,6 +9,7 @@ from transactions.models import Transaction
 from datetime import datetime, timedelta, date
 from json import dumps
 from collections import defaultdict
+from math import trunc
 
 def get_card_transaction_lengths(transactions):
     card_transaction_lengths = defaultdict(int)
@@ -43,7 +44,7 @@ class DashboardView(LoginRequiredMixin,View):
         if len(void_transactions) == 0:
             greeting['avg'] = 0
         else:
-            greeting['avg'] = total/len(void_transactions)
+            greeting['avg'] = trunc(total/len(void_transactions))
         
         refund_transactions = Transaction.objects.filter(transaction_type = 'refund',username=username,date__date = dateinput).values()
 

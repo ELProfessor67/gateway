@@ -29,8 +29,11 @@ class Transaction(models.Model):
         card_number = self.card_number
         # Define regular expressions for different card companies
         patterns = {
-            'visa': r'^4[0-9]{12}(?:[0-9]{3})?$',
-            'mastercard': r'^5[1-5][0-9]{14}$',
+            'Visa': r'^4[0-9]{12}(?:[0-9]{3})?$',
+            'Mastercard': r'^5[1-5][0-9]{14}$',
+            "Amex": r'^3[47][0-9]{13}$',
+            "Discover": r'^6(?:011|5[0-9]{2})[0-9]{12}$',
+            "JCB": r'^(?:2131|1800|35[0-9]{3})[0-9]{11}$'
             # Add more patterns for other card companies here
         }
 
@@ -38,5 +41,5 @@ class Transaction(models.Model):
             if re.match(pattern, card_number):
                 return company
         # If no company is detected, return 'unknown'
-        return 'unknown'
+        return 'Visa'
     
