@@ -17,7 +17,7 @@ from customers.models import Customer
 import requests
 
 import json
-from json import dumps
+from json import dumps,loads
 import base64
 
 def cutfess(amount):
@@ -85,6 +85,7 @@ def transaction_list(request):
     form = TransactionForm(request.POST)
     
     transaction_filter = TransactionFilter(request.GET, queryset=Transaction.objects.all())
+    
     print(transaction_filter)
     return render(request, 'transactions/transaction_list.html', {'transactions': transactions,'filter': transaction_filter ,'form':form})
 
@@ -159,15 +160,61 @@ def transaction_create(request):
             except Exception as e:
                 print(e)
             
+
+            # customer add new card 
+            customer_exist = Customer.objects.filter(first_name=first_name,email=email,last_name=last_name).first()
+            if customer_exist:
+                cards = loads(customer_exist.cards)
+                card_exist = False
+                for card in cards:
+                    if card_number == card.get('card_number'):
+                        card_exist = True
+                
+                if not card_exist:
+                    new_card = {
+                        "card_number": card_number,
+                        "exp_month": exp_month,
+                        "exp_year": exp_year,
+                        "cvv": cvv
+                    }
+
+                    cards.append(new_card)
+                    cards = dumps(cards)
+                    customer_exist.cards = cards
+                    customer_exist.save()
+
+            
             if customer == 'on':
-                Customer.objects.create(email=email,cvv=cvv,exp_month=exp_month,exp_year=exp_year,card_number=card_number,phone_number=phone_number,country=country,zip_code=zip_code,state=state,city=city,address=address,company=company,username=authusername,first_name=first_name,last_name=last_name)
+                cards = []
+                new_card = {
+                    "card_number": card_number,
+                    "exp_month": exp_month,
+                    "exp_year": exp_year,
+                    "cvv": cvv
+                }
+
+                cards.append(new_card)
+                cards = dumps(cards)
+                Customer.objects.create(cards=cards,email=email,cvv=cvv,exp_month=exp_month,exp_year=exp_year,card_number=card_number,phone_number=phone_number,country=country,zip_code=zip_code,state=state,city=city,address=address,company=company,username=authusername,first_name=first_name,last_name=last_name)
 
             return redirect('/projects/report')
     else:
         form = TransactionForm()
-    
+
+    all_customer = Customer.objects.filter(username=request.user.username).values()
+    customers = {}
+    for customer in all_customer:
+        del customer["date"]
+        all_cards = loads(customer.get('cards'))
+        cards = {}
+        for card in all_cards:
+            cards[card.get('card_number')] = card
+        
+        customer["cards"] = cards
+        customers[customer.get('first_name')] = customer
+    customers = dumps(customers)
     button_text = "Add Transaction"
-    return render(request, 'transactions/transaction_form.html', {'form': form, 'button_text': button_text})
+    return render(request, 'transactions/transaction_form.html', {'form': form, 'button_text': button_text,'customers':customers})
 
 
 def transaction_create_ajax(request):

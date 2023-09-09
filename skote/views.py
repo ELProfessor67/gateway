@@ -10,6 +10,7 @@ from datetime import datetime, timedelta, date
 from json import dumps
 from collections import defaultdict
 from math import trunc
+from django.db.models import Q
 
 def get_card_transaction_lengths(transactions):
     card_transaction_lengths = defaultdict(int)
@@ -30,15 +31,30 @@ class DashboardView(LoginRequiredMixin,View):
         greeting['pageview'] = "Dashboards"
         username = request.user.username
         dateinput = request.GET.get('date')
+
+        query = Q()
+        query &= Q(username=username)
         
-        if (dateinput is None):
-            dateinput = datetime.now()
-        else:
-            year,month,day = dateinput.split('-')
-            dateinput = datetime(int(year), int(month), int(day),0,0,0)
-            dateinput = dateinput + timedelta(hours=13)
-        
-        void_transactions = Transaction.objects.filter(username=username,date__date=dateinput).exclude(transaction_type = 'refund').values()
+        if (dateinput is not None):
+            current_date = datetime.now()
+            if dateinput == 'yesterday':
+                yesterday = current_date - timedelta(days=1)
+                query &= Q(date__date = yesterday)
+            elif dateinput == 'last week':
+                last_7_days = current_date - timedelta(weeks=1)
+                query &= Q(date__range=(last_7_days,current_date))
+            elif dateinput == 'last year':
+                last_year = current_date - timedelta(days=365)
+                query &= Q(date__range=(last_year,current_date))
+            elif dateinput == 'today':
+                query &= Q(date__date = current_date)
+            else:
+                query &= Q(date__date=dateinput)
+
+            
+        # .exclude(transaction_type = 'refund')
+        void_transactions = Transaction.objects.filter(query).values()
+        # print(len(void_transactions))
         total = sum([int(transaction.get('amount')) for transaction in void_transactions])
         greeting['total'] = total
         if len(void_transactions) == 0:
@@ -46,15 +62,18 @@ class DashboardView(LoginRequiredMixin,View):
         else:
             greeting['avg'] = trunc(total/len(void_transactions))
         
-        refund_transactions = Transaction.objects.filter(transaction_type = 'refund',username=username,date__date = dateinput).values()
+        refund_query = query
+        refund_query &= Q(transaction_type = 'refund')
+        refund_transactions = Transaction.objects.filter(refund_query).values()
+        # print(len(refund_transactions))
 
         refund = sum([int(transaction.get('amount')) for transaction in refund_transactions])
         
         # login for line chart data
-        end_date = dateinput
+        end_date = datetime.now()
         start_date = end_date - timedelta(days=6)
         chart_transactions = Transaction.objects.filter(date__range=(start_date, end_date),username=username)
-        today = dateinput
+        today = datetime.now()
         today_index = today.weekday()
         days_of_week = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
 
@@ -83,13 +102,29 @@ class DashboardView(LoginRequiredMixin,View):
         
 
         # logic fot dougnut graph
-        all_transactions = Transaction.objects.filter(date__date=dateinput,username=username)
+        all_transactions = Transaction.objects.filter(query)
         card_transaction_lengths = get_card_transaction_lengths(all_transactions)
+
+        # save 
+        save_transaction = Transaction.objects.filter(query).filter(transaction_type='save').values()
+        greeting['save'] = sum([int(transaction.get('amount')) for transaction in save_transaction])
+
+        # charge
+        charge_transaction = Transaction.objects.filter(query).filter(transaction_type='charge').values()
+        greeting['charge'] = sum([int(transaction.get('amount')) for transaction in charge_transaction])
+
+        # auth_only
+        auth_only_transaction = Transaction.objects.filter(query).filter(transaction_type='auth_only').values()
+        greeting['auth_only'] = sum([int(transaction.get('amount')) for transaction in auth_only_transaction])
+        
+        # post_auth
+        post_auth_transaction = Transaction.objects.filter(query).filter(transaction_type='post_auth').values()
+        greeting['post_auth'] = sum([int(transaction.get('amount')) for transaction in post_auth_transaction])
 
         greeting['chart_transaction'] = dumps(transactions_by_day)
         greeting['doughnut_data'] = dumps(card_transaction_lengths)
         greeting['refund'] = refund
-        greeting['orders'] = len(void_transactions) + len(refund_transactions)
+        greeting['orders'] = len(void_transactions)
         return render(request, 'dashboard/dashboard.html',greeting)
 
 

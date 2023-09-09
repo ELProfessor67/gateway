@@ -11,7 +11,11 @@
 {% block contents %}
 <div class="row" style="width: 100%; margin-top: 2rem;">
     <form  class="d-flex justify-content-center align-items-center w-100 my-4">
-      <input type="date" class="py-1 px-2" style="cursor: pointer;" id="date" name="date"/>
+      <button class="btn btn-primary mr-4" type="button" onclick="submithandler('last year')">Last Year</button>
+      <button class="btn btn-primary mr-4" type="button" onclick="submithandler('last week')">Last Week</button>
+      <button class="btn btn-primary mr-4" type="button" onclick="submithandler('yesterday')">Yesterday</button>
+      <button class="btn btn-primary mr-4" type="button" onclick="submithandler('today')">Today</button>
+      <input type="date" class="py-2 px-2" style="cursor: pointer; background: #556ee6; border: none; border-radius: .2rem; color: white;" id="date" name="date"/>
     </form>
 
     <div style="display: grid;grid-template-columns: repeat(4,1fr);flex: none;gap: 2rem;max-width: 100%;width: 100%;">
@@ -41,18 +45,46 @@
                 <h5 class="fs-2 text-gray-300 text-center">{{refund}}$</h5>
             </div>
         </div>
+
+        <div class="card shadow-sm">
+            <h5 class="card-header text-center" style="background-color: #007FFF; color: white;">Save</h5>
+            <div class="card-body">
+                <h5 class="fs-2 text-gray-300 text-center">{{save}}$</h5>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <h5 class="card-header text-center" style="background-color: #007FFF; color: white;">Charge</h5>
+            <div class="card-body">
+                <h5 class="fs-2 text-gray-300 text-center">{{charge}}$</h5>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <h5 class="card-header text-center" style="background-color: #007FFF; color: white;">Auth Only</h5>
+            <div class="card-body">
+                <h5 class="fs-2 text-gray-300 text-center">{{auth_only}}$</h5>
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <h5 class="card-header text-center" style="background-color: #007FFF; color: white;">Post Auth</h5>
+            <div class="card-body">
+                <h5 class="fs-2 text-gray-300 text-center">{{post_auth}}$</h5>
+            </div>
+        </div>
         
     </div>
     <!-- chart  -->
+    <div class="w-75 m-auto py-4 px-2 h-50" style="height: 40rem !important; display: flex; justify-content: center;">
+      <input type="text" id="doughnut_data" value="{{doughnut_data}}" hidden="true"/>
+      <canvas id="doughnut"></canvas>
+    </div>
+
     <div class="w-75 m-auto py-4 px-2">
         <input type="text" hidden="true" value="{{chart_transaction}}" id="chart_transaction"/>
         <canvas id="myChart"></canvas>
     </div>
-
-    <div class="w-75 m-auto py-4 px-2 h-50" style="height: 40rem !important; display: flex; justify-content: center;">
-      <input type="text" id="doughnut_data" value="{{doughnut_data}}" hidden="true"/>
-      <canvas id="doughnut"></canvas>
-  </div>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -88,7 +120,7 @@
       dought_values.push(doughnut_data[ele])
     })
     const doughnutdata = {
-      labels: dl,
+      labels: dl.length !== 0 ? dl : ['No Transaction'],
       datasets: [{
         label: 'My First Dataset',
         data: dought_values,
@@ -126,6 +158,11 @@
         dateInput.placeholder = 'Yesterday';
       } else {
         dateInput.placeholder = '';
+      }
+    
+      function submithandler(datearg){
+        const url = window.location.origin + window.location.pathname + `?date=${datearg}`;
+        window.location.href = url;
       }
 </script>
 {% endblock %}

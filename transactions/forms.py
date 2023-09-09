@@ -17,6 +17,14 @@ class TransactionForm(forms.ModelForm):
         widget=forms.TextInput(attrs={'class': 'form-control','type':'text','maxlength':'4'})
     )
 
+    first_name = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control','type':'text','list':'customers-list'})
+    )
+
+    card_number = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control','type':'text','list':'cards-list'})
+    )
+
     class Meta:
         model = Transaction
         fields = [

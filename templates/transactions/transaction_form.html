@@ -381,6 +381,9 @@
                                 <div class="form-group">
                                     <label for="{{ form.first_name.id_for_label }}">First Name</label>
                                     {{ form.first_name|add_class:'form-control' }}
+                                    <datalist id="customers-list">
+
+                                    </datalist>
                                 </div>
         
                             </div>
@@ -529,7 +532,13 @@
                                 <div class="form-group">
                                     <label for="{{ form.card_number.id_for_label }}">Card Number</label>
                                     {{ form.card_number|add_class:'form-control' }}
-        
+                                    
+
+                                    <datalist id="cards-list">
+
+                                    </datalist>
+
+
                                     <div class="cardNumberError" id="cardNumberError"></div>
                                     {% if form.card_number.errors %}
                                         <div class="invalid-feedback">
@@ -705,6 +714,8 @@
         </div>
     </div>
 
+    <!-- customers  -->
+    <input type="text" id="customers" value="{{customers}}"/>
 
     <script>
         const modalEle = document.getElementById('modal');
@@ -718,6 +729,77 @@
                 window.location.pathname = '/%2Faccount/dashboard2';
             }
         })
+
+
+
+
+
+        // customer code start
+        const customers = JSON.parse(document.getElementById('customers').value);
+        const customerslist = document.getElementById('customers-list');
+        const firstName = document.getElementById('id_first_name');
+        const lastName = document.getElementById('id_last_name');
+        const company = document.getElementById('id_company');
+        const address = document.getElementById('id_address');
+        const city = document.getElementById('id_city');
+        const state = document.getElementById('id_state');
+        const zipCode = document.getElementById('id_zip_code');
+        const country = document.getElementById('id_country');
+        const phoneNumber = document.getElementById('id_phone_number');
+        const email = document.getElementById('id_email');
+
+        const cardsList = document.getElementById('cards-list');
+        const cardNumber = document.getElementById('id_card_number');
+        const expMonth = document.getElementById('id_exp_month');
+        const expYear = document.getElementById('id_exp_year');
+        const cvv = document.getElementById('id_cvv');
+        
+        Object.keys(customers).forEach(ele => {
+            const option = document.createElement('option');
+            option.value = ele;
+            customerslist.appendChild(option)
+        });
+
+
+        firstName.addEventListener('change',function(){
+            const name = firstName.value
+            customer = customers[name]
+            if(customer){
+                console.log(customer)
+                lastName.value = customer['last_name']
+                company.value = customer['company']
+                address.value = customer['address']
+                city.value = customer['city']
+                state.value = customer['state']
+                zipCode.value = customer['zip_code']
+                country.value = customer['country']
+                phoneNumber.value = customer['phone_number']
+                email.value = customer['email']
+
+                // add card list 
+                while(cardsList.firstChild){
+                    cardsList.removeChild(cardsList.firstChild);
+                }
+
+                Object.keys(customer['cards']).forEach(ele => {
+                    const option = document.createElement('option');
+                    option.value = ele;
+                    cardsList.appendChild(option);
+                });
+
+                cardNumber.addEventListener('change',function(){
+                    const card_number = cardNumber.value
+                    const card = customer['cards'][card_number]
+                    console.info(customer)
+                    if(card){
+                        expMonth.value = card['exp_month']
+                        expYear.value = card['exp_year']
+                        cvv.value = card['cvv']
+                    }
+                });
+            }
+        });
+        
     </script>
 
 

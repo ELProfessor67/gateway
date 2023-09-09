@@ -22,6 +22,8 @@ class Customer(models.Model):
     email = models.EmailField(max_length=100, verbose_name='Email',default='')
     # transaction_type = models.CharField(max_length=100, verbose_name='Transaction Type',default='')
     date = models.DateTimeField(default=datetime.datetime.now)
-    status = models.CharField(default='Complete',max_length=50)
+    # status = models.CharField(default='Complete',max_length=50)
     customer_id = models.CharField(max_length=150, verbose_name='Transaction_id',default=uuid1)
+
+    cards = models.TextField(default='[]')
 

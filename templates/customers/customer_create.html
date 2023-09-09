@@ -174,40 +174,44 @@
 
                         <div class="form-group">
                             <label for="{{ form.card_number.id_for_label }}">Card Number</label>
-                            {{ form.card_number|add_class:'form-control' }}
-
+                            <input type="text" class="form-control" id="id_card_number" name="card_number" maxlength="16"/>
+                            <!-- {{ form.card_number|add_class:'form-control' }} -->
+                            
                             <div class="cardNumberError" id="cardNumberError"></div>
                             {% if form.card_number.errors %}
-                                <div class="invalid-feedback">
-                                    {{ form.card_number.errors}}
-                                </div>
+                            <div class="invalid-feedback">
+                                {{ form.card_number.errors}}
+                            </div>
                             {% endif %}
                         </div>
-
+                        
                     </div>
                     <div class="col-lg-2">
-
+                        
                         <div class="form-group">
                             <label for="{{ form.exp_month.id_for_label }}">Exp Month</label>
-                            {{ form.exp_month|add_class:'form-control' }}
+                            <input type="text" class="form-control" id="id_exp_month" name="exp_month" maxlength="2"/>
+                            <!-- {{ form.exp_month|add_class:'form-control' }} -->
                             <div class="expmondaterror" id="expmondaterror"></div>
                         </div>
-                    
+                        
                     </div>
                     <div class="col-lg-2">
-
+                        
                         <div class="form-group">
                             <label for="{{ form.exp_year.id_for_label }}">Exp Year</label>
-                            {{ form.exp_year|add_class:'form-control' }}
+                            <!-- {{ form.exp_year|add_class:'form-control' }} -->
+                            <input type="text" class="form-control" id="id_exp_year" name="exp_year" maxlength="4"/>
                             <div class="" id="expyearerror"></div>
                         </div>
-                    
+                        
                     </div>
                     <div class="col-lg-2">
-
+                        
                         <div class="form-group">
                             <label for="{{ form.cvv.id_for_label }}">CVV</label>
-                            {{ form.cvv|add_class:'form-control' }}
+                            <input type="text" class="form-control" id="id_cvv" name="cvv" maxlength="3"/>
+                            <!-- {{ form.cvv|add_class:'form-control' }} -->
                         </div>
 
                     </div>
@@ -313,7 +317,7 @@
                 
                   form.on('submit',function(e){
                     // Add event listener for input change
-                    if(!isValid){
+                    if(false){
                         e.preventDefault();
                     }
                   });

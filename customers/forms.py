@@ -10,13 +10,21 @@ class CustomerForm(forms.ModelForm):
     # )
 
     exp_month = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control','type':'text','maxlength':'2'})
+        widget=forms.TextInput(attrs={'class': 'form-control','type':'text','maxlength':'2','required': 'false'})
     )
 
     exp_year = forms.CharField(
-        widget=forms.TextInput(attrs={'class': 'form-control','type':'text','maxlength':'4'})
+        widget=forms.TextInput(attrs={'class': 'form-control','type':'text','maxlength':'4','required': 'false'})
     )
 
+
+    cvv = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control','type':'text','maxlength':'3','required': 'false'})
+    )
+
+    card_number = forms.CharField(
+        widget=forms.TextInput(attrs={'class': 'form-control','type':'text','maxlength':'16','required': 'false'})
+    )
     class Meta:
         model = Customer
         fields = [

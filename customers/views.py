@@ -8,7 +8,7 @@ from transactions.forms import TransactionForm
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-
+from json import dumps,loads
 
 def customer_list(request):
     username = request.user.username
@@ -34,8 +34,21 @@ def customer_create(request):
         cvv = request.POST['cvv']
         email = request.POST['email']
         card_number=request.POST['card_number']
+        cards = []
+        if card_number and exp_month and exp_year and cvv:
+            
+            new_card = {
+                "card_number": card_number,
+                "exp_month": exp_month,
+                "exp_year": exp_year,
+                "cvv": cvv
+            }
+            cards.append(new_card)
+        
+        cards = dumps(cards)
 
-        Customer.objects.create(email=email,cvv=cvv,exp_month=exp_month,exp_year=exp_year,card_number=card_number,phone_number=phone_number,country=country,zip_code=zip_code,state=state,city=city,address=address,company=company,username=authusername,first_name=first_name,last_name=last_name)
+
+        Customer.objects.create(cards=cards,email=email,cvv=cvv,exp_month=exp_month,exp_year=exp_year,card_number=card_number,phone_number=phone_number,country=country,zip_code=zip_code,state=state,city=city,address=address,company=company,username=authusername,first_name=first_name,last_name=last_name)
         return redirect('/customers/customers_list/')
     form = CustomerForm()
     button_text = "Add Transaction"
