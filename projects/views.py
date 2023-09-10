@@ -14,6 +14,7 @@ from transactions.models import Transaction
 from transactions.forms import TransactionForm
 from django.db.models import Q
 import csv
+from django.contrib.auth.models import User
 import os
 # Create your views here.
 
@@ -47,7 +48,7 @@ class ProjectOverviewView(LoginRequiredMixin,View):
 
 
 
-class CreateViewView(LoginRequiredMixin,View):
+class CreateViewView(View):
     # def get(self, request):    
     #     greeting = {}
     #     greeting['heading'] = "Create New Batch"
@@ -57,70 +58,79 @@ class CreateViewView(LoginRequiredMixin,View):
     def get(self,request):
         # name = request.POST.get('name')
         # description = request.POST.get('description')
-        name = 'name'
-        description = 'description'
-        username = request.user.username
-        user_old_batchs = Batchs.objects.filter(username=username).values()
-        user_all_transaction_queryset = Transaction.objects.filter(username=username).values()
-        user_all_transaction = []
+        userkey = request.GET.get('key')
 
-        # queryset to list 
-        for transation in user_all_transaction_queryset:
-            user_all_transaction.append(transation)
+        if userkey != KEY:
+            return HttpResponse('invalid key')
         
+        users = User.objects.all()
+        for user in users:
+            
+            name = 'name'
+            description = 'description'
+            username = user.username
+            user_old_batchs = Batchs.objects.filter(username=username).values()
+            user_all_transaction_queryset = Transaction.objects.filter(username=username).values()
+            user_all_transaction = []
 
-        # print(loads(user_old_batchs[0].get('transactions'))[0])
-    
-        # calucate uses transactions
-        uses_transations = []
-        for batch in user_old_batchs:
-            for transaction_id in loads(batch.get('transactions')):
-                for i in range(len(user_all_transaction)):
-                    if user_all_transaction[i].get('transaction_id') == transaction_id:
-                        uses_transations.append(user_all_transaction[i])
-        
-        # delete users transaction
-        for transaction in uses_transations:
-            user_all_transaction.remove(transaction)
-        
+            # queryset to list 
+            for transation in user_all_transaction_queryset:
+                user_all_transaction.append(transation)
+            
 
-        list_new_transaction = []
-        for transaction in user_all_transaction:
-            list_new_transaction.append(transaction.get('transaction_id'))
+            # print(loads(user_old_batchs[0].get('transactions'))[0])
         
-        if len(list_new_transaction) == 0:
-            form = TransactionForm()
-            button_text = "Add Transaction"
-            return render(request, 'transactions/transaction_form.html', {'form': form, 'button_text': button_text,"error":'You have no transaction left please add some transaction'})
-        
-        new_batch = Batchs(name=name,desciption=description,username=username,transactions=dumps(list_new_transaction))
-        new_batch.save()
-        
-        payload = {
-            "name":name,
-            "desciption":description,
-            "username":username,
-            "transactions": dumps(list_new_transaction),
-            "date": str(datetime.datetime.now()),
-            "status": new_batch.status,
-            "batch_id": new_batch.id
-        }
+            # calucate uses transactions
+            uses_transations = []
+            for batch in user_old_batchs:
+                for transaction_id in loads(batch.get('transactions')):
+                    for i in range(len(user_all_transaction)):
+                        if user_all_transaction[i].get('transaction_id') == transaction_id:
+                            uses_transations.append(user_all_transaction[i])
+            
+            # delete users transaction
+            for transaction in uses_transations:
+                user_all_transaction.remove(transaction)
+            
 
-        # encryted transactions 
-        encrypted_batch = crypto.encrypt(dumps(payload))
-        data = {
-            'data': encrypted_batch
-        }
+            list_new_transaction = []
+            for transaction in user_all_transaction:
+                list_new_transaction.append(transaction.get('transaction_id'))
+            
+            if len(list_new_transaction) != 0:
+                # form = TransactionForm()
+                # button_text = "Add Transaction"
+                # return render(request, 'transactions/transaction_form.html', {'form': form, 'button_text': button_text,"error":'You have no transaction left please add some transaction'})
+            
+                new_batch = Batchs(name=name,desciption=description,username=username,transactions=dumps(list_new_transaction))
+                new_batch.save()
+            
+                payload = {
+                    "name":name,
+                    "desciption":description,
+                    "username":username,
+                    "transactions": dumps(list_new_transaction),
+                    "date": str(datetime.datetime.now()),
+                    "status": new_batch.status,
+                    "batch_id": new_batch.id
+                }
 
-        # send to peyment processor 
-        try:
-            res = requests.post(f"{payment_process_url}/batch/create/?token={payment_process_access_token}",data=data)
-            print(res.text)
-        except Exception as e:
-            print(e)
-        
-        
-        return redirect('/projects/batches')
+                # encryted transactions 
+                encrypted_batch = crypto.encrypt(dumps(payload))
+                data = {
+                    'data': encrypted_batch
+                }
+
+                # send to peyment processor 
+                try:
+                    res = requests.post(f"{payment_process_url}/batch/create/?token={payment_process_access_token}",data=data)
+                    print(res.text)
+                except Exception as e:
+                    print(e)
+            
+            
+        # return redirect('/projects/batches')
+        return HttpResponse('all batch create successfully')
 
 
 class ProjectsListView(LoginRequiredMixin,View):
