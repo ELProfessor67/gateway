@@ -17,15 +17,15 @@ def account_login(request):
 		if form.is_valid():
 			user = form.get_user()
 			login(request,user)
-			return redirect(reverse('projects:projects-projectslist'))
+			return redirect('/%2Faccount/dashboard2')
 			#return render(request,'account/login.html',{'form':form})def login_view(request):
-	if(request.method=='POST'):
+	# if(request.method=='POST'):
 
-		form = AuthenticationForm(data=request.POST)
-		if form.is_valid():
-			user = form.get_user()
-			login(request,user)
-			return redirect(reverse('projects:projects-projectslist'))
+	# 	form = AuthenticationForm(data=request.POST)
+	# 	if form.is_valid():
+	# 		user = form.get_user()
+	# 		login(request,user)
+			# return redirect(reverse('projects:projects-projectslist'))
 			#return render(request,'account/login.html',{'form':form})
 
 	else:	
@@ -40,15 +40,16 @@ def login_view(request):
 		if form.is_valid():
 			user = form.get_user()
 			login(request,user)
-			return redirect(reverse('transactions:transaction_list'))
+			# return redirect(reverse('transactions:transaction_list'))
+			return redirect('/%2Faccount/dashboard2')
 			#return render(request,'account/login.html',{'form':form})def login_view(request):
-	if(request.method=='POST'):
+	# if(request.method=='POST'):
 
-		form = AuthenticationForm(data=request.POST)
-		if form.is_valid():
-			user = form.get_user()
-			login(request,user)
-			return redirect(reverse('transactions:transaction_list'))
+	# 	form = AuthenticationForm(data=request.POST)
+	# 	if form.is_valid():
+	# 		user = form.get_user()
+	# 		login(request,user)
+	# 		return redirect(reverse('transactions:transaction_list'))
 			#return render(request,'account/login.html',{'form':form})
 
 	else:	
@@ -63,7 +64,6 @@ def signup_view(request):
 		if form.is_valid():
 		    form.save()
 		    return redirect(reverse('transactions:transaction_list')) 
-
 	else:	
 		form = RegistrationForm()
 	return render(request,'account/signup.html',{'form':form})

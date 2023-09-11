@@ -41,5 +41,5 @@ class Transaction(models.Model):
             if re.match(pattern, card_number):
                 return company
         # If no company is detected, return 'unknown'
-        return 'Visa'
+        return 'Amex'
     

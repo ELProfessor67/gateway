@@ -29,9 +29,28 @@
                   </span>
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
-                 
-                  <li>
+                  <style>
+                    .new
+                    {
+                      display: block !important;
+                      padding: .5rem .8rem !important;
+                      background: #34c38f;
+                      border-radius: .5rem !important;
+                      color: white !important;
+                      visibility: hidden;
+                      opacity: 0;
+                      transition: .3s;
+                    }
+
+                    .new-li:hover .new
+                    {
+                      visibility: visible;
+                      opacity: 1;
+                    }
+                  </style>
+                  <li class="d-flex new-li">
                     <a href="{% url 'transactions:transaction_list' %}" key="t-p-list">Transactions List</a>
+                    <a href="/transactions/create/" class="new">new</a>
                   </li>
                   
                   <li>

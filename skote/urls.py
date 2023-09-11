@@ -30,10 +30,10 @@ urlpatterns = [
 
     # Dashboards View
 
-    path('',home.as_view(),name='home'),
+    path('home/',home.as_view(),name='home'),
     path('/account/dashboard2', login_required(views.DashboardView.as_view(), login_url='account_login'), name='dashboard'),
 
-    path('account/login/', login_view, name='account_login'),
+    path('', login_view, name='account_login'),
 
     #path('',views.DashboardView.as_view(),name='dashboard'),
     path('dashboard_saas',views.SaasView.as_view(),name='dashboard_saas'),
