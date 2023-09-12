@@ -15,6 +15,8 @@
 {% block contents %}
 
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 <script type="text/javascript" src="{% static 'libs/datatables.net-autofill-bs4/js/model_autoload.js' %}"></script>
 
 <script type="text/javascript">
@@ -84,7 +86,7 @@ function confirmDelete() {
                 </div>
                 <!-- end row -->
 
-                    <input type="number" value={{length}} id="length" hidden="true"/>
+                    <input type="text" value={{length}} id="length" hidden="true"/>
                     <div class="table-responsive">
                         <table class="table transaction-list-table align-middle table-nowrap dt-responsive nowrap w-100 table-borderless" id="transactionList-table">
                         <thead class="table-light">
@@ -105,9 +107,12 @@ function confirmDelete() {
                                 <!-- <th scope="col">CVV</th> -->
                                 <th scope="col">Email</th>
                                 <th scope="col">Date</th>
+                                <th scope="col">Action</th>
+        
                             </tr>
                         </thead>
                         <tbody>
+                            <input hidden="true" type="number" value="{{lenght}}" id="lenght"/>
                             {% for customer in customers %}
                                 <tr>
                                     <td id="btn{{forloop.counter}}" style="cursor: pointer;">{{ forloop.counter }}</td>
@@ -126,12 +131,54 @@ function confirmDelete() {
                                     <!-- <td>{{ customer.cvv }}</td>    -->
                                     <td>{{ customer.email }}</td>
                                     <td>{{ customer.date }}</td>
+                                    <td><p class="text-primary" style="cursor: pointer;" id="btn-{{forloop.counter}}">View Cards</p></td>
+                                    
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="modal-{{forloop.counter}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticBackdropLabel">Customer Cards</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-{{forloop.counter}}">X</button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    {% for card in customer.cards %}
+                                                    <div style="display: flex; justify-content: space-between;">
+                                                        <p>XXXX XXXX XXXX {{card.card_number|slice:"-4:"}}</p>
+                                                        <p>{{card.exp_month}}/{{card.exp_year}}</p>
+                                                        <p>{{card.cvv}}</p>
+                                                    </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
                                 </tr>
                             {% empty %}
                                 <tr>
                                     <td colspan="18" class="text-center">No transactions.</td>
                                 </tr>
                             {% endfor %}
+                            <script>
+                                const len = +document.getElementById('lenght').value;
+                                console.warn('len',len)
+        
+                                for (let index = 1; index < len+1; index++) {
+                                    const btn = document.getElementById(`btn-${index}`);
+                                    console.info(btn)
+                                    const close = document.getElementById(`close-${index}`);
+                                    console.log(close)
+                                    btn.addEventListener('click',() => {
+                                        const model = new bootstrap.Modal(document.getElementById(`modal-${index}`), {});
+                                        model.show();
+        
+                                        close.addEventListener('click',() => {
+                                            model.hide();
+                                        });
+                                    });
+                                }
+                            </script>
                         </tbody>
                     </table>
                     </div>

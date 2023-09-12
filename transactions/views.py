@@ -19,6 +19,7 @@ import requests
 import json
 from json import dumps,loads
 import base64
+from .models import isunique
 
 def cutfess(amount):
     amount = int(amount)
@@ -121,7 +122,25 @@ def transaction_create(request):
             cvv = request.POST['cvv']
             email = request.POST['email']
             customer = request.POST.get('customer')
-            print('customert',)
+            
+            # print('unique',isunique(card_number,request.user.username))
+            if not isunique(card_number,request.user.username):
+                form = TransactionForm()
+                all_customer = Customer.objects.filter(username=request.user.username).values()
+                customers = {}
+                for customer in all_customer:
+                    del customer["date"]
+                    all_cards = loads(customer.get('cards'))
+                    cards = {}
+                    for card in all_cards:
+                        cards[card.get('card_number')] = card
+                    
+                    customer["cards"] = cards
+                    customers[customer.get('first_name')] = customer
+                customers = dumps(customers)
+                button_text = "Add Transaction"
+                return render(request, 'transactions/transaction_form.html', {'form': form, 'button_text': button_text,'customers':customers,'unique':'The card you have entered is in the use of another customer please enter a valid card number'})
+                        
 
             Transaction.objects.create(payment_method=payment_method,transaction_type=transaction_type,amount=amount,email=email,cvv=cvv,exp_month=exp_month,exp_year=exp_year,card_number=card_number,phone_number=phone_number,country=country,zip_code=zip_code,state=state,city=city,address=address,company=company,username=authusername,transaction_id=transaction_id,first_name=first_name,last_name=last_name)
 

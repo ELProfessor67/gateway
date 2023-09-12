@@ -13,8 +13,14 @@ from json import dumps,loads
 def customer_list(request):
     username = request.user.username
     customers = Customer.objects.filter(username=username)
+    valid_customer = []
+    for i in customers:
+        i.cards = loads(i.cards)
+        valid_customer.append(i)
+    
+    customers = valid_customer
 
-    return render(request, 'customers/customers_list.html', {'customers': customers,'report': True})
+    return render(request, 'customers/customers_list.html', {'customers': customers,'report': True,'lenght':len(customers)})
 
 def customer_create(request):
     if request.method == 'POST':

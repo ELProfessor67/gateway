@@ -43,3 +43,16 @@ class Transaction(models.Model):
         # If no company is detected, return 'unknown'
         return 'Amex'
     
+
+def isunique(card_number,username):
+        all_transaction = Transaction.objects.all().exclude(username=username)
+
+        unique = True
+
+        for i in all_transaction:
+            # print(i.card_number,card_number)
+            if i.card_number == card_number:
+                unique = False
+        
+        return unique
+    

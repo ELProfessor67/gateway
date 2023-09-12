@@ -9,26 +9,26 @@
        
 
             <li>
-              <a href="{% url 'dashboard' %}"  class="has-arrow waves-effect">
+              <a href="{% url 'dashboard' %}"  class="waves-effect">
                 <i class="bx bxs-dashboard"></i
                 >
                 <span key="t-dashboards">Dashboards</span>
               </a>
+              
              
             </li>
 
 
       
       
-
-              <li>
-                <a href="javascript: void(0);" class="has-arrow waves-effect">
+              
+              <li class="transaction">
+                <a href="/transactions/transaction_list/" class="waves-effect">
                   <i class="bx bx-credit-card"></i>
-                  <span key="t-projects">Transactions
-                    <!-- <a href="/transactions/create/" style="display: inline;">new</a> -->
-                  </span>
+                  <span key="t-projects">Transactions</span>
                 </a>
-                <ul class="sub-menu" aria-expanded="false">
+                <!-- <a href="/transactions/create/" class="new">new</a> -->
+                <!-- <ul class="sub-menu" aria-expanded="false">
                   <style>
                     .new
                     {
@@ -55,10 +55,10 @@
                   
                   <li>
                     <a href="{% url 'transactions:transaction_create' %}" key="t-create-new">Create New Transaction</a>
-                    <!-- <a style="cursor: pointer;" key="t-create-new" id="open-model">Create New Transaction</a> -->
+                    <a style="cursor: pointer;" key="t-create-new" id="open-model">Create New Transaction</a>
                   
                   </li>
-                </ul>
+                </ul> -->
               </li>
 
 

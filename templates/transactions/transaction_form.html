@@ -532,8 +532,11 @@
                                 <div class="form-group">
                                     <label for="{{ form.card_number.id_for_label }}">Card Number</label>
                                     {{ form.card_number|add_class:'form-control' }}
-                                    
-
+                                    <p style='color: red;' id="unique">{{unique}}</p>
+                                    <script>
+                                        const unique = document.getElementById('unique');
+                                        setTimeout(() => unique.style.display = 'none',5000);
+                                    </script>
                                     <datalist id="cards-list">
 
                                     </datalist>
@@ -775,7 +778,12 @@
                 country.value = customer['country']
                 phoneNumber.value = customer['phone_number']
                 email.value = customer['email']
-
+                card_number = Object.keys(customer['cards'])[0]
+                const card = customer['cards'][card_number]
+                cardNumber.value = card_number || ''
+                expMonth.value = card['exp_month']
+                expYear.value = card['exp_year']
+                cvv.value = card['cvv']
                 // add card list 
                 while(cardsList.firstChild){
                     cardsList.removeChild(cardsList.firstChild);
