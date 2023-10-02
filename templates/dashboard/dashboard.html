@@ -15,7 +15,14 @@
       <button class="btn btn-primary mr-4" type="button" onclick="submithandler('last week')">Last Week</button>
       <button class="btn btn-primary mr-4" type="button" onclick="submithandler('yesterday')">Yesterday</button>
       <button class="btn btn-primary mr-4" type="button" onclick="submithandler('today')">Today</button>
-      <input type="date" class="py-2 px-2" style="cursor: pointer; background: #556ee6; border: none; border-radius: .2rem; color: white;" id="date" name="date"/>
+      <div style="display: flex; flex-direction: column; margin-right: 1.5rem; margin-top: -2rem;">
+        <label>Start</label>
+        <input type="date" class="py-2 px-2" style="cursor: pointer; background: #556ee6; border: none; border-radius: .2rem; color: white;" id="start" name="start"/>
+      </div>
+      <div style="display: flex; flex-direction: column; margin-right: 1.5rem; margin-top: -2rem;">
+        <label>End</label>
+        <input type="date" class="py-2 px-2" style="cursor: pointer; background: #556ee6; border: none; border-radius: .2rem; color: white;" id="end" name="end"/>
+      </div>
     </form>
 
     <div style="display: grid;grid-template-columns: repeat(4,1fr);flex: none;gap: 2rem;max-width: 100%;width: 100%;">
@@ -140,10 +147,16 @@
 
 
     // date logic 
-    const dateInput = document.getElementById('date');
-    const date = new URLSearchParams(window.location.search).get('date')
-    if(date) dateInput.value = date;
-    dateInput.onchange = function (e){
+    const start_ele = document.getElementById('start');
+    const end_ele = document.getElementById('end');
+    const start= new URLSearchParams(window.location.search).get('start')
+    const end = new URLSearchParams(window.location.search).get('end')
+    if(start) start_ele.value = start;
+    if(end) end_ele.value = end;
+    start_ele.onchange = function (e){
+      this.form.submit();
+    }
+    end_ele.onchange = function (e){
       this.form.submit();
     }
 

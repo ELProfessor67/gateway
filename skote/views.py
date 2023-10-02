@@ -31,6 +31,8 @@ class DashboardView(LoginRequiredMixin,View):
         greeting['pageview'] = "Dashboards"
         username = request.user.username
         dateinput = request.GET.get('date')
+        start = request.GET.get('start')
+        end = request.GET.get('end')
 
         query = Q()
         query &= Q(username=username)
@@ -48,8 +50,9 @@ class DashboardView(LoginRequiredMixin,View):
                 query &= Q(date__range=(last_year,current_date))
             elif dateinput == 'today':
                 query &= Q(date__date = current_date)
-            else:
-                query &= Q(date__date=dateinput)
+        
+        if end and start:
+            query &= Q(date__range = (start,end))
 
             
         # .exclude(transaction_type = 'refund')
