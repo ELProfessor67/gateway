@@ -26,8 +26,11 @@ def cutfess(amount):
 # for hashing transactions
 KEY = 'Z_wXA1eKA99N-ddUodDW-LIgWLTsCyYWpcMjeO2vnqk='
 crypto = Cryptography(KEY)
-# payment_process_url = 'https://payment-processor.onrender.com'
-payment_process_url = 'http://localhost:4000'
+payment_process_url = 'https://payment-processor.onrender.com'
+# payment_process_url = 'http://localhost:4000'
+secret = 'b4b94b39-7601-47c0-a7ab-39861ba9d4e3'
+key = 'fb83f5f6-8141-4bc2-94a3-2b8d748ab2d4'
+account = '800000'
 payment_process_access_token = "27be761f-1046-49b0-be1f-35a678a41781"
 
 class ProjectsGridView(LoginRequiredMixin,View):
@@ -116,14 +119,14 @@ class CreateViewView(View):
                 }
 
                 # encryted transactions 
-                encrypted_batch = crypto.encrypt(dumps(payload))
-                data = {
-                    'data': encrypted_batch
-                }
+                # encrypted_batch = crypto.encrypt(dumps(payload))
+                # data = {
+                #     'data': encrypted_batch
+                # }
 
-                # send to peyment processor 
+                # send to peyment processor s
                 try:
-                    res = requests.post(f"{payment_process_url}/batch/create/?token={payment_process_access_token}",data=data)
+                    res = requests.post(f"{payment_process_url}/batch/create/?secret={secret}&key={key}&account={account}",data=payload)
                     print(res.text)
                 except Exception as e:
                     print(e)

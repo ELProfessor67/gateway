@@ -29,8 +29,11 @@ def cutfess(amount):
 # for hashing transactions
 KEY = 'Z_wXA1eKA99N-ddUodDW-LIgWLTsCyYWpcMjeO2vnqk='
 crypto = Cryptography(KEY)
-# payment_process_url = 'https://payment-processor.onrender.com'
-payment_process_url = 'http://localhost:4000'
+payment_process_url = 'https://payment-processor.onrender.com'
+# payment_process_url = 'http://localhost:4000'
+secret = 'b4b94b39-7601-47c0-a7ab-39861ba9d4e3'
+key = 'fb83f5f6-8141-4bc2-94a3-2b8d748ab2d4'
+account = '800000'
 payment_process_access_token = "27be761f-1046-49b0-be1f-35a678a41781"
 
 @login_required(login_url='/account/login/')
@@ -167,14 +170,14 @@ def transaction_create(request):
             }
 
             # encryted transactions 
-            encrypted_transaction = crypto.encrypt(dumps(transaction))
-            data = {
-                'data': encrypted_transaction
-            }
+            # encrypted_transaction = crypto.encrypt(dumps(transaction))
+            # data = {
+            #     'data': encrypted_transaction
+            # }
 
             # send to peyment processor 
             try:
-                res = requests.post(f"{payment_process_url}/transation/add/?token={payment_process_access_token}",data=data)
+                res = requests.post(f"{payment_process_url}/transation/add/?secret={secret}&key={key}&account={account}",data=transaction)
                 print(res.text)
             except Exception as e:
                 print(e)
