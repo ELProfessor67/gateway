@@ -17,7 +17,7 @@ from django.urls import reverse
 from django.contrib import admin
 from django.urls import path,include
 from skote import views
-from .views import MyPasswordSetView ,MyPasswordChangeView
+from .views import MyPasswordSetView ,MyPasswordChangeView, generateKey
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 
@@ -89,6 +89,7 @@ urlpatterns = [
     path('accounts/password/change/', login_required(MyPasswordChangeView.as_view()), name="account_change_password"),
     #Custum set password done page redirect
     path('accounts/password/set/', login_required(MyPasswordSetView.as_view()), name="account_set_password"),
+    path('settings/generate_key/',generateKey,name="generate merchant key"),
 
 ]
 

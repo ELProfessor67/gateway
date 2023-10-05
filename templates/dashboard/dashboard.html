@@ -10,6 +10,9 @@
 {% endblock %}
 {% block contents %}
 <div class="row" style="width: 100%; margin-top: 2rem;">
+    {% if user.is_superuser %}
+    <a href="{{reportdownload}}" class="btn btn-success" style="z-index: 100; cursor:pointer;  margin: auto; margin-top: -4.5rem; margin-bottom: 3rem;">Download Report</a>
+    {% endif %}
     <form  class="d-flex justify-content-center align-items-center w-100 my-4">
       <button class="btn btn-primary mr-4" type="button" onclick="submithandler('last year')">Last Year</button>
       <button class="btn btn-primary mr-4" type="button" onclick="submithandler('last week')">Last Week</button>

@@ -1,6 +1,7 @@
 from django.db import models
 import datetime
 import re
+from uuid import uuid4
 
 class Transaction(models.Model):
     username = models.CharField(max_length=100, default='')
@@ -55,4 +56,13 @@ def isunique(card_number,username):
                 unique = False
         
         return unique
+
+
+class ApproveMails(models.Model):
+    email = models.CharField(max_length=300)
+    status = models.CharField(choices=(('approve','Approve'),('disapprove','Disapprove')),default='1',max_length=200)
     
+
+class MerchantsKey(models.Model):
+     key = models.CharField(max_length=50,default=uuid4)
+     username = models.CharField(max_length=200)

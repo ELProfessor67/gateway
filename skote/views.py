@@ -1,16 +1,22 @@
 from django.http import request
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, HttpResponse
 from django.views import View   
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.base import TemplateView
 from allauth.account.views import PasswordSetView,PasswordChangeView
 from django.urls import reverse_lazy
-from transactions.models import Transaction
+from transactions.models import Transaction,MerchantsKey
 from datetime import datetime, timedelta, date
 from json import dumps
 from collections import defaultdict
 from math import trunc
 from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+payment_process_url = 'https://payment-processor.onrender.com'
+# payment_process_url = 'http://localhost:4000'
+secret = 'b4b94b39-7601-47c0-a7ab-39861ba9d4e3'
+key = 'fb83f5f6-8141-4bc2-94a3-2b8d748ab2d4'
+account = '800000'
 
 def get_card_transaction_lengths(transactions):
     card_transaction_lengths = defaultdict(int)
@@ -128,6 +134,7 @@ class DashboardView(LoginRequiredMixin,View):
         greeting['doughnut_data'] = dumps(card_transaction_lengths)
         greeting['refund'] = refund
         greeting['orders'] = len(void_transactions)
+        greeting['reportdownload'] = f"{payment_process_url}/report/?account={account}&secret={secret}&key={key}"
         return render(request, 'dashboard/dashboard.html',greeting)
 
 
@@ -240,3 +247,19 @@ class MyPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
 class MyPasswordSetView(LoginRequiredMixin, PasswordSetView):
     success_url = reverse_lazy('dashboard')
 
+
+
+
+@login_required(login_url='/')
+def generateKey(request):
+    greeting = {}
+    greeting['heading'] = "Generate Key"
+    greeting['pageview'] = "Generate Key"
+    if request.method == 'POST':
+        new_key = MerchantsKey.objects.create(username=request.user.username)
+        return redirect('/settings/generate_key/')
+    
+    users_keys = MerchantsKey.objects.filter(username=request.user.username)
+    greeting['keys'] = users_keys
+    return render(request,'dashboard/generatekey.html',greeting)
+    

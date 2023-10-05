@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth import login,logout
+from transactions.models import ApproveMails
 from django.contrib.auth.forms import (
     AdminPasswordChangeForm,
     UserChangeForm,
@@ -57,16 +58,28 @@ def login_view(request):
 	return render(request,'account/login.html',{'form':form})
 
 def signup_view(request):
-	
+	form = RegistrationForm()
+
 	if request.method == 'POST':
 		form = RegistrationForm(data=request.POST)
-		print(form.errors)
+		email = request.POST.get('email')
+		
+		email_approval_list = ApproveMails.objects.filter(email=email).first()
+
+		if email_approval_list == None:
+			return render(request,'account/signup.html',{'form':form,"error_message": "notapply"})
+		
+		if email_approval_list.status == 'disapprove':
+			return render(request,'account/signup.html',{'form':form,"error_message": "disapproved"})
+
 		if form.is_valid():
 		    form.save()
-		    return redirect(reverse('transactions:transaction_list')) 
-	else:	
-		form = RegistrationForm()
+		    return redirect(reverse('transactions:transaction_list'))
+		
+		else:
+			form = RegistrationForm()
 	return render(request,'account/signup.html',{'form':form})
+
 
 def logout_view(request):
 	logout(request)
