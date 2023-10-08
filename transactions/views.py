@@ -5,8 +5,9 @@ from django.urls import reverse
 from .crypto import Cryptography
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from .models import Transaction
+from .models import Transaction,MerchantsKey
 from .filters import TransactionFilter
+import os
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -20,6 +21,16 @@ import json
 from json import dumps,loads
 import base64
 from .models import isunique
+from datetime import datetime,timedelta
+
+
+def get_client_ip(request):
+    x_forwardef_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwardef_for:
+        ip = x_forwardef_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
 
 def cutfess(amount):
     amount = int(amount)
@@ -28,6 +39,8 @@ def cutfess(amount):
 
 # for hashing transactions
 KEY = 'Z_wXA1eKA99N-ddUodDW-LIgWLTsCyYWpcMjeO2vnqk='
+# KEY = os.environ.get('encryption_key')
+
 crypto = Cryptography(KEY)
 payment_process_url = 'https://payment-processor.onrender.com'
 # payment_process_url = 'http://localhost:4000'
@@ -35,6 +48,168 @@ secret = 'b4b94b39-7601-47c0-a7ab-39861ba9d4e3'
 key = 'fb83f5f6-8141-4bc2-94a3-2b8d748ab2d4'
 account = '800000'
 payment_process_access_token = "27be761f-1046-49b0-be1f-35a678a41781"
+
+@login_required(login_url='/account/login/')
+def transaction_creates(request):
+    if request.method == 'POST':
+        
+        form = TransactionForm(request.POST)
+
+        
+        if form.is_valid():
+            # form.save()
+
+            authusername = request.user.username
+            transaction_id = str(uuid1())
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            company = request.POST['company']
+            address = request.POST['address']
+            city = request.POST['city']
+            state = request.POST['state']
+            zip_code = request.POST['zip_code']
+            country = request.POST['country']
+            phone_number = request.POST['phone_number']
+            amount = request.POST['amount']
+            payment_method = request.POST['payment_method']
+            transaction_type = request.POST['transaction_type']
+            card_number = request.POST['card_number']
+            exp_year = request.POST['exp_year']
+            exp_month = request.POST['exp_month']
+            cvv = request.POST['cvv']
+            email = request.POST['email']
+            customer = request.POST.get('customer')
+            
+            # print('unique',isunique(card_number,request.user.username))
+            if not isunique(card_number,request.user.username):
+                form = TransactionForm()
+                all_customer = Customer.objects.filter(username=request.user.username).values()
+                customers = {}
+                for customer in all_customer:
+                    del customer["date"]
+                    all_cards = loads(customer.get('cards'))
+                    cards = {}
+                    for card in all_cards:
+                        cards[card.get('card_number')] = card
+                    
+                    customer["cards"] = cards
+                    customers[customer.get('first_name')] = customer
+                customers = dumps(customers)
+                button_text = "Add Transaction"
+                return render(request, 'transactions/transaction_form.html', {'form': form, 'button_text': button_text,'customers':customers,'unique':'The card you have entered is in the use of another customer please enter a valid card number'})
+                        
+            
+
+            transaction = {
+                "authusername": authusername,
+                "first_name": first_name,
+                "last_name": last_name,
+                "company": company,
+                "address": address,
+                "city": city,
+                "state": state,
+                "zip_code": zip_code,
+                "country": country,
+                "phone_number": phone_number,
+                "amount": amount,
+                "payment_method": payment_method,
+                "transaction_type": transaction_type,
+                "card_number": card_number,
+                "exp_year": exp_year,
+                "exp_month": exp_month,
+                "cvv": cvv,
+                "email": email,
+                "transaction_id": transaction_id
+            }
+            encrypt_transaction = crypto.encrypt(transaction)
+            Transaction.objects.create(username=authusername,transaction=encrypt_transaction)
+
+
+            # send to peyment processor 
+            try:
+                res = requests.post(f"{payment_process_url}/transation/add/?secret={secret}&key={key}&account={account}",data=transaction)
+                print(res.text)
+            except Exception as e:
+                print(e)
+            
+
+            # customer add new card 
+            customer_exist = Customer.objects.filter(first_name=first_name,email=email,last_name=last_name).first()
+            if customer_exist:
+                cards = loads(customer_exist.cards)
+                card_exist = False
+                for card in cards:
+                    if card_number == card.get('card_number'):
+                        card_exist = True
+                
+                if not card_exist:
+                    new_card = {
+                        "card_number": card_number,
+                        "exp_month": exp_month,
+                        "exp_year": exp_year,
+                        "cvv": cvv
+                    }
+
+                    cards.append(new_card)
+                    cards = dumps(cards)
+                    customer_exist.cards = cards
+                    customer_exist.save()
+
+            
+            if customer == 'on':
+                cards = []
+                new_card = {
+                    "card_number": card_number,
+                    "exp_month": exp_month,
+                    "exp_year": exp_year,
+                    "cvv": cvv
+                }
+
+                cards.append(new_card)
+                cards = dumps(cards)
+                Customer.objects.create(cards=cards,email=email,cvv=cvv,exp_month=exp_month,exp_year=exp_year,card_number=card_number,phone_number=phone_number,country=country,zip_code=zip_code,state=state,city=city,address=address,company=company,username=authusername,first_name=first_name,last_name=last_name)
+
+            return redirect('/projects/report')
+    else:
+        form = TransactionForm()
+
+    all_customer = Customer.objects.filter(username=request.user.username).values()
+    customers = {}
+    for customer in all_customer:
+        del customer["date"]
+        all_cards = loads(customer.get('cards'))
+        cards = {}
+        for card in all_cards:
+            cards[card.get('card_number')] = card
+        
+        customer["cards"] = cards
+        customers[customer.get('first_name')] = customer
+    customers = dumps(customers)
+    button_text = "Add Transaction"
+    return render(request, 'transactions/transaction_form.html', {'form': form, 'button_text': button_text,'customers':customers})
+
+
+users_ips_count = {}
+max_limit = 5
+def getMechant(request):
+        user_ip = get_client_ip(request)
+        merchant_key = request.GET.get('merchant_key')
+        
+        if user_ip in users_ips_count:
+            users_ips_count[user_ip]['count'] += 1
+            users_ips_count[user_ip]['last_attempt'] += datetime.now()
+        else:
+            users_ips_count[user_ip] = {"count":1,"last_attempt":datetime.now()}
+        
+
+        if users_ips_count[user_ip] > max_limit:
+            if users_ips_count[user_ip] < datetime.now() + timedelta(minutes=60):
+                return HttpResponse('too many attempted please try again after 60 minutes')
+            else:
+                users_ips_count[user_ip] = {"count":1,"last_attempt":datetime.now()}
+        
+        merchantUser = MerchantsKey.objects.filter(key=merchant_key).first()
+        return HttpResponse(dumps(merchant_key),status=200)
 
 @login_required(login_url='/account/login/')
 def transaction_list(request):
