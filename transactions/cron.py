@@ -1,9 +1,12 @@
-import logging
+from django.contrib.auth.models import User
+from .models import MerchantsKey
 
-logger = logging.getLogger(__name__)
-
-def my_scheduled_job():
-    print('hello')
-    with open('text.txt',mode='w',encoding='utf-8') as file:
-        file.writelines('hello world')
-    logging.info('crob job running')
+# limiter
+def limiter():
+    users = User.objects.all()
+    for user in users:
+        merchant_key = MerchantsKey.objects.filter(username=user.username).first()
+        if merchant_key is not None:
+            shuffled_key = merchant_key.shuffling_key()
+            merchant_key.key = shuffled_key
+            merchant_key.save()

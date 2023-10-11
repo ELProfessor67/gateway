@@ -9,6 +9,8 @@ from .models import Transaction,MerchantsKey
 from .filters import TransactionFilter
 import os
 
+
+
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.http import JsonResponse
@@ -36,6 +38,17 @@ def cutfess(amount):
     amount = int(amount)
     return (amount*2)/100
 
+def check_token(recaptcha_secret_key,recaptcha_token):
+    data = {
+        'secret':recaptcha_secret_key,
+        'response':recaptcha_token
+    }
+    res = requests.post('https://www.google.com/recaptcha/api/siteverify',data=data)
+    result = res.json()
+    if result['success']:
+        return True
+    else:
+        return False
 
 # for hashing transactions
 KEY = 'Z_wXA1eKA99N-ddUodDW-LIgWLTsCyYWpcMjeO2vnqk='
@@ -191,25 +204,41 @@ def transaction_creates(request):
 
 users_ips_count = {}
 max_limit = 5
+# i add recaptcha
 def getMechant(request):
-        user_ip = get_client_ip(request)
-        merchant_key = request.GET.get('merchant_key')
-        
-        if user_ip in users_ips_count:
-            users_ips_count[user_ip]['count'] += 1
-            users_ips_count[user_ip]['last_attempt'] += datetime.now()
-        else:
-            users_ips_count[user_ip] = {"count":1,"last_attempt":datetime.now()}
-        
+        recaptcha_secret_key = "6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI"
+        if request.method == 'POST':
+            user_ip = get_client_ip(request)
+            merchant_key = request.POST.get('merchant_key')
+            recaptcha_token = request.POST.get('g-recaptcha-response')
 
-        if users_ips_count[user_ip] > max_limit:
-            if users_ips_count[user_ip] < datetime.now() + timedelta(minutes=60):
-                return HttpResponse('too many attempted please try again after 60 minutes')
+            # check recaptcha token valid aur not
+            isValidToken = check_token(recaptcha_secret_key,recaptcha_token)
+            if not isValidToken:
+                return HttpResponse('invalid repcaptcha please try again')
+
+            
+            if user_ip in users_ips_count:
+                users_ips_count[user_ip]['count'] += 1
+                users_ips_count[user_ip]['last_attempt'] += datetime.now()
             else:
                 users_ips_count[user_ip] = {"count":1,"last_attempt":datetime.now()}
-        
-        merchantUser = MerchantsKey.objects.filter(key=merchant_key).first()
-        return HttpResponse(dumps(merchant_key),status=200)
+            
+
+            if users_ips_count[user_ip] > max_limit:
+                if users_ips_count[user_ip] < datetime.now() + timedelta(minutes=60):
+                    return HttpResponse('too many attempted please try again after 60 minutes')
+                else:
+                    users_ips_count[user_ip] = {"count":1,"last_attempt":datetime.now()}
+            
+            merchantUser = MerchantsKey.objects.filter(key=merchant_key).first()
+            return HttpResponse(dumps(merchant_key),status=200)
+        greeting = {}
+        greeting['sitekey'] = recaptcha_secret_key
+        return render(request,'transaction/getmerchangt.html',greeting)
+
+
+
 
 @login_required(login_url='/account/login/')
 def transaction_list(request):

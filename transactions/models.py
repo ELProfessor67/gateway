@@ -2,6 +2,7 @@ from django.db import models
 import datetime
 import re
 from uuid import uuid4
+import random
 
 class Transaction(models.Model):
     username = models.CharField(max_length=100, default='')
@@ -66,3 +67,9 @@ class ApproveMails(models.Model):
 class MerchantsKey(models.Model):
      key = models.CharField(max_length=50,default=uuid4)
      username = models.CharField(max_length=200)
+
+     def shuffling_key(self):
+          parts = self.key.split('-')
+          shuffled_parts = random.sample(parts[:-1],len(parts)-1)
+          
+          return '-'.join(shuffled_parts)+'-'+parts[-1]

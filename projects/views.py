@@ -16,6 +16,8 @@ from django.db.models import Q
 import csv
 from django.contrib.auth.models import User
 import os
+import requests
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 def cutfess(amount):
@@ -331,6 +333,44 @@ class batch_transaction_list(LoginRequiredMixin,View):
 
         form = TransactionForm(request.POST)
         return render(request, 'transactions/transaction_list.html', {'transactions': transactions,'form':form})
+
+
+
+
+# get refund 
+@login_required(login_url='/')
+def get_credit(request):
+    if request.method == 'POST':
+        amount = request.POST.get('amount')
+
+        refundData = {
+            "amount": amount,
+            "username": request.user.username
+        }
+        res = requests.post(f"{payment_process_url}/get/refund/?secret={secret}&key={key}&account={account}",data=refundData)
+        if res.status_code == 200:
+            Batchs.objects.create(username=request.user.username,amount=amount)
+        
+        result = res.json()
+
+        return HttpResponse(request,result.message)
+
+    encrypted_transction = Transaction.objects.filter(username=request.user.username)
+    transaction = []
+    for i in encrypted_transction:
+        decrypt = crypto.decrypt(i.transaction)
+        if decrypt.transaction_type == 'refund':
+            transaction.append(decrypt)
+    
+    total_refund = sum([int(i.amount) for i in transaction])
+    greeting = {}
+    greeting['total_refund'] = total_refund
+    return render(request,'projects/get_credit.html',greeting)
+    
+
+
+
+
 
 
 

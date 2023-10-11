@@ -1,0 +1,55 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+    <link href="{% static 'libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+
+    <!-- dropzone css -->
+    <link href="{% static 'libs/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block contents %}
+
+
+<form class="needs-validation" method='post'>
+    {% csrf_token %}         
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">  
+                    <div class="mb-3">
+                        <label for="projectname-input" class="form-label">Batch Name</label>
+                        
+                        <input id="projectname-input" type="text" class="form-control" placeholder="Enter project name..." required name="name">
+                        <div class="invalid-feedback">Please enter a batch name.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="projectname-input" class="form-label">Description</label>
+                        
+                        <input id="projectname-input"  type="text" class="form-control" placeholder="Enter project name..." required name="description">
+                        <div class="invalid-feedback">Please enter a  description.</div>
+                    </div>
+                    <div class="text-end mb-4">
+                        <button type="submit" class="btn btn-primary">Create Batch</button>
+                    </div>
+                </div>
+            </div>            
+        </div>
+    </div>
+    <!-- end row -->
+</form>
+
+{% endblock %}
+
+{% block extra_javascript %}
+
+    <!-- bootstrap datepicker -->
+    <script src="{% static 'libs/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js' %}"></script>
+
+    <!-- dropzone plugin -->
+    <script src="{% static 'libs/dropzone/dist/min/dropzone.min.js' %}"></script>
+
+    <script src="{% static 'js/pages/project-create.init.js' %}"></script>
+
+{% endblock %}
