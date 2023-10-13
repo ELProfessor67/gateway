@@ -260,6 +260,10 @@ def generateKey(request):
         return redirect('/settings/generate_key/')
     
     users_keys = MerchantsKey.objects.filter(username=request.user.username)
+    if len(users_keys) >= 1:
+        users_keys = [users_keys[0]]
+
     greeting['keys'] = users_keys
+    greeting['btn'] = len(users_keys) == 0
     return render(request,'dashboard/generatekey.html',greeting)
     
