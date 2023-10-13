@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.urls import reverse
 from django.contrib.auth import login,logout
 from transactions.models import ApproveMails
+import requests
 from django.contrib.auth.forms import (
     AdminPasswordChangeForm,
     UserChangeForm,
@@ -10,33 +11,61 @@ from django.contrib.auth.forms import (
     AuthenticationForm
 )
 from .forms import RegistrationForm
+from django.contrib import messages
 
-def account_login(request):
-	if(request.method=='POST'):
+def check_token(recaptcha_secret_key,recaptcha_token):
+    data = {
+        'secret':recaptcha_secret_key,
+        'response':recaptcha_token
+    }
+    res = requests.post('https://www.google.com/recaptcha/api/siteverify',data=data)
+    result = res.json()
+    if result['success']:
+        return True
+    else:
+        return False
+	
+recaptcha_secret_key = "6LeBXZooAAAAAHchFf5EBPFgyUBLI-bCSFv8VjQ0"
+recaptcha_site_key = "6LeBXZooAAAAAIHbtqWafsINysZ5MZk8fWvpfODb"
 
-		form = AuthenticationForm(data=request.POST)
-		if form.is_valid():
-			user = form.get_user()
-			login(request,user)
-			return redirect('/%2Faccount/dashboard2')
-			#return render(request,'account/login.html',{'form':form})def login_view(request):
-	# if(request.method=='POST'):
 
-	# 	form = AuthenticationForm(data=request.POST)
-	# 	if form.is_valid():
-	# 		user = form.get_user()
-	# 		login(request,user)
-			# return redirect(reverse('projects:projects-projectslist'))
-			#return render(request,'account/login.html',{'form':form})
+# def account_login(request):
+# 	if(request.method=='POST'):
 
-	else:	
-		form = AuthenticationForm()
-	return render(request,'account/login.html',{'form':form})
+# 		recaptcha_token = request.POST.get('g-recaptcha-response')
+# 		isValidToken = check_token(recaptcha_secret_key,recaptcha_token)
+# 		if not isValidToken:
+# 			return HttpResponse('invalid repcaptcha please try again')
+	
+# 		form = AuthenticationForm(data=request.POST)		
+# 		if form.is_valid():
+# 			user = form.get_user()
+# 			login(request,user)
+# 			return redirect('/%2Faccount/dashboard2')
+# 			#return render(request,'account/login.html',{'form':form})def login_view(request):
+# 	# if(request.method=='POST'):
+
+# 	# 	form = AuthenticationForm(data=request.POST)
+# 	# 	if form.is_valid():
+# 	# 		user = form.get_user()
+# 	# 		login(request,user)
+# 			# return redirect(reverse('projects:projects-projectslist'))
+# 			#return render(request,'account/login.html',{'form':form})
+
+# 	else:	
+# 		form = AuthenticationForm()
+# 	return render(request,'account/login.html',{'form':form})
 
 
 def login_view(request):
 	if(request.method=='POST'):
+		recaptcha_token = request.POST.get('g-recaptcha-response')
+		isValidToken = check_token(recaptcha_secret_key,recaptcha_token)
 
+		if not isValidToken:
+			messages.error(request,'Invalid recaptcha')
+			return redirect('/')
+		
 		form = AuthenticationForm(data=request.POST)
 		if form.is_valid():
 			user = form.get_user()
@@ -55,7 +84,7 @@ def login_view(request):
 
 	else:	
 		form = AuthenticationForm()
-	return render(request,'account/login.html',{'form':form})
+	return render(request,'account/login.html',{'form':form,'recaptcha_site_key':recaptcha_site_key})
 
 def signup_view(request):
 	form = RegistrationForm()

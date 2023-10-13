@@ -8,6 +8,7 @@ from django.contrib.auth.decorators import login_required
 from .models import Transaction,MerchantsKey
 from .filters import TransactionFilter
 import os
+from django.contrib.auth.models import User
 
 
 
@@ -631,3 +632,18 @@ def add_api_record(request):
         return Response({'error': 'Invalid token'}, status=401)
 
 
+shuffling_key = "hu879753426dhoehdweh_hudwhwhowi_hwdohfiowehfw_="
+def limiter(request):
+    req_shuf_key = request.GET.get('key')
+    print(req_shuf_key)
+    if req_shuf_key != shuffling_key:
+        return HttpResponse('invalid swhuffling keys')
+    
+    users = User.objects.all()
+    for user in users:
+        merchant_key = MerchantsKey.objects.filter(username=user.username).first()
+        if merchant_key is not None:
+            shuffled_key = merchant_key.shuffling_key()
+            merchant_key.key = shuffled_key
+            merchant_key.save()
+    return HttpResponse('all keys are shuffles')
