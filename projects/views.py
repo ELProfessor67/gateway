@@ -291,6 +291,7 @@ class ReportView(LoginRequiredMixin,View):
         csv_file_name = f"{path}/{username}.csv"
         if len(transactions) != 0:
             with open(csv_file_name,mode='w',newline='') as file:
+                print('calliing')
                 writer = csv.writer(file)
                 if transactions is not None:
                     header = []
@@ -307,6 +308,9 @@ class ReportView(LoginRequiredMixin,View):
                     data = [header,*values]
 
                     writer.writerows(data)
+        else:
+            open(csv_file_name,'w+')
+
         
                 
         

@@ -526,7 +526,10 @@
         
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row" style=
+                        "display: flex;
+                        justify-content: center;
+                        align-items: flex-end;">
                             <div class="col-lg-6">
         
                                 <div class="form-group">
@@ -718,7 +721,7 @@
     </div>
 
     <!-- customers  -->
-    <input type="text" id="customers" value="{{customers}}"/>
+    <input type="text" id="customers" value="{{customers}}" hidden="true"/>
 
     <script>
         const modalEle = document.getElementById('modal');
@@ -727,7 +730,7 @@
 
         $('#modal').on('hidden.bs.modal', function (e) {
             if (!document.referrer.includes('/transactions/transaction_list/')){
-                window.location.href = document.referrer;
+                window.location.pathname = '/projects/report';
             }else{
                 window.location.pathname = '/%2Faccount/dashboard2';
             }
