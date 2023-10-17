@@ -267,3 +267,9 @@ def generateKey(request):
     greeting['btn'] = len(users_keys) == 0
     return render(request,'dashboard/generatekey.html',greeting)
     
+
+def help(request):
+    return render(request,'dashboard/help.html');
+
+def profile(request):
+    return render(request,'dashboard/profile.html');
