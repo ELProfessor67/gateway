@@ -11,6 +11,7 @@ from json import dumps
 from collections import defaultdict
 from math import trunc
 from django.db.models import Q
+from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 payment_process_url = 'https://payment-processor.onrender.com'
 # payment_process_url = 'http://localhost:4000'
@@ -272,4 +273,35 @@ def help(request):
     return render(request,'dashboard/help.html');
 
 def profile(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        user = User.objects.filter(username=request.user.username).first()
+
+        if user is not None:
+            user.email = email
+            user.first_name = first_name
+            user.last_name = last_name
+            user.save()
+            return redirect('/profile')
+
     return render(request,'dashboard/profile.html');
+
+
+def changepassword(request):
+    if request.method == 'POST':
+        password = request.POST.get('password')
+        cpassword = request.POST.get('cpassword')
+
+        if password != cpassword:
+            return render(request,'dashboard/changepassword.html',{'error':'confirm password does not match'})
+
+        user = User.objects.filter(username=request.user.username).first()
+
+        if user is not None:
+            user.set_password(password)
+            user.save()
+
+        return render(request,'dashboard/changepassword.html',{'message':'password change successfully'})
+    return render(request,'dashboard/changepassword.html')
