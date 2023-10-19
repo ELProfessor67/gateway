@@ -71,7 +71,20 @@
                 </p>
             </div>
         </div>
+        <div class="p-4 bg-dark">
+            <p class="text-white" style="margin: 0%;">For Contacting Us Contact Us at <span class="text-primary">help@trifecta.com<span></p>
+        </div>
     </section>
+    <script>
+        const createBtn = document.getElementById('create-transaction-id');
+        const hidePath = ['/profile/','/help/','/change-password/','/profile','/help','/change-password']
+        const pathname = window.location.pathname;
+        if (hidePath.includes(pathname)){
+            createBtn.style.display = 'none';
+        }else{
+            createBtn.style.display = 'block';
+        }
+    </script>
     <!--Section: FAQ-->
 </div>
 {% endblock %}

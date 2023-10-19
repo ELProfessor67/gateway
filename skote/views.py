@@ -13,6 +13,7 @@ from math import trunc
 from django.db.models import Q
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.hashers import check_password
 payment_process_url = 'https://payment-processor.onrender.com'
 # payment_process_url = 'http://localhost:4000'
 secret = 'b4b94b39-7601-47c0-a7ab-39861ba9d4e3'
@@ -293,11 +294,15 @@ def changepassword(request):
     if request.method == 'POST':
         password = request.POST.get('password')
         cpassword = request.POST.get('cpassword')
+        opassword = request.POST.get('opassword')
 
         if password != cpassword:
             return render(request,'dashboard/changepassword.html',{'error':'confirm password does not match'})
 
         user = User.objects.filter(username=request.user.username).first()
+
+        if not check_password(opassword,user.password):
+            return render(request,'dashboard/changepassword.html',{'error':'old password incorrect'}) 
 
         if user is not None:
             user.set_password(password)

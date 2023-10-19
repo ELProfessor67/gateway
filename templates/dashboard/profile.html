@@ -18,14 +18,14 @@
                 <form method="post" class="p-2 mt-2">
                         {% csrf_token %}
                         <div class="my-2">
-                            <input type="text" class="form-control" value="{{user.first_name}}" name="first_name" />
+                            <input type="text" class="form-control" placeholder="Enter Your First Name" value="{{user.first_name}}" name="first_name" required />
                         </div>
 
                         <div class="my-2">
-                            <input type="text" class="form-control" value="{{user.last_name}}" name="last_name" />
+                            <input type="text" class="form-control" placeholder="Enter Your Last Name" value="{{user.last_name}}" name="last_name" required />
                         </div>
                         <div class="my-2">
-                            <input type="text" class="form-control" value="{{user.email}}" name="email"/>
+                            <input type="text" class="form-control" placeholder="Enter Your Email" value="{{user.email}}" name="email" required />
                         </div>
                         <div class="my-2">
                             <p class="text-dark">if you change your password please <a href="/change-password" class="text-primary">click here</a></p>
@@ -35,4 +35,14 @@
             </div>
         </div>
     </div>
+    <script>
+        const createBtn = document.getElementById('create-transaction-id');
+        const hidePath = ['/profile/','/help/','/change-password/','/profile','/help','/change-password']
+        const pathname = window.location.pathname;
+        if (hidePath.includes(pathname)){
+            createBtn.style.display = 'none';
+        }else{
+            createBtn.style.display = 'block';
+        }
+    </script>
 {% endblock %}
