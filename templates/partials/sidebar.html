@@ -71,15 +71,23 @@
                 </a>
                 
               </li>
+
+              <li>
+                <a href="/transactions/add_bank_account/"  class=" waves-effect">
+                  <i class="bx bx-briefcase-alt-2"></i>
+                  <span key="t-projects">Bank Account</span>
+                </a>
+                
+              </li>
        
           
-              <li>
+              {% comment %} <li>
                 <a href="{% url 'projects:gift' %}"  class=" waves-effect">
                   <i class="bx bx-gift"></i>
                   <span key="t-projects">Gift Report</span>
                 </a>
                 
-              </li>
+              </li> {% endcomment %}
         
               <li>
                 <a href="{% url 'projects:batches' %}"  class=" waves-effect">
@@ -127,13 +135,13 @@
                 </ul>
               </li>
 
-              <li>
+              {% comment %} <li>
                 <a href="{% url 'projects:send_payment' %}"  class=" waves-effect">
                   <i class="bx bxs-credit-card"></i>
                   <span key="t-projects">Send Payment Request</span>
                 </a>
                 
-              </li>
+              </li> {% endcomment %}
 
               <!-- <li>
                 <a href="{% url 'projects:settings' %}"  class=" waves-effect">
@@ -166,6 +174,8 @@
                 </a>
                 
               </li>
+
+
 
               {% if user.is_superuser %}
               <li>

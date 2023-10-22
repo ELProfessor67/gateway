@@ -73,3 +73,10 @@ class MerchantsKey(models.Model):
           shuffled_parts = random.sample(parts[:-1],len(parts)-1)
           
           return '-'.join(shuffled_parts)+'-'+parts[-1]
+
+class UserBanks(models.Model):
+     username = models.CharField(max_length=200)
+     bank_name = models.CharField(max_length=500)
+     account_id = models.CharField(max_length=500)
+     account_holder_name = models.CharField(max_length=200)
+     IFSC = models.CharField(max_length=100)

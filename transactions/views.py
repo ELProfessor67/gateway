@@ -5,7 +5,7 @@ from django.urls import reverse
 from .crypto import Cryptography
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from .models import Transaction,MerchantsKey
+from .models import Transaction,MerchantsKey,UserBanks
 from .filters import TransactionFilter
 import os
 from django.contrib.auth.models import User
@@ -647,3 +647,47 @@ def limiter(request):
             merchant_key.key = shuffled_key
             merchant_key.save()
     return HttpResponse('all keys are shuffles')
+
+@login_required(login_url='/')
+def add_bank_account(request):
+    user = request.user
+    account_details = UserBanks.objects.filter(username=user.username).first()
+
+    if request.method == "POST":
+        bank_name = request.POST.get('bank_name')
+        account_id = request.POST.get('account_id')
+        account_holder_name = request.POST.get('account_holder_name')
+        IFSC = request.POST.get('IFSC')
+        if account_details:
+            account_details.bank_name = bank_name
+            account_details.account_holder_name = account_holder_name
+            account_details.account_id = account_id
+            account_details.IFSC = IFSC
+            account_details.save()
+        else:
+            UserBanks.objects.create(username=user.username,bank_name=bank_name,account_holder_name=account_holder_name,account_id=account_id,IFSC=IFSC)
+
+        try:
+            account_data = {
+                "bank_name" : request.POST.get('bank_name'),
+                "account_id" : request.POST.get('account_id'),
+                "account_holder_name" : request.POST.get('account_holder_name'),
+                "IFSC" : request.POST.get('IFSC'),
+                "username": user.username
+            }
+            res = requests.post(f"{payment_process_url}/transation/add/bank_account/?secret={secret}&key={key}&account={account}",data=account_data)
+            print(res.text)
+        except Exception as e:
+            print(e)
+
+        return redirect('/transactions/add_bank_account/')
+    
+    greeting = {}
+    greeting['btn_value'] = 'Add Account'
+    greeting['heading'] = 'Add Bank Account' 
+    if account_details:
+        greeting['btn_value'] = 'Update Account'
+        greeting['account'] = account_details
+        greeting['heading'] = 'Bank Account Details' 
+    
+    return render(request,'transactions/add_bank_account.html',greeting)

@@ -12,4 +12,5 @@ urlpatterns = [
     path('<int:pk>/update/', views.transaction_update, name='transaction_update'),
     path('<int:pk>/delete/', views.transaction_delete, name='transaction_delete'),
     path('shuffing_merchant_key/', views.limiter, name='shuffling keys'),
+    path('add_bank_account/', views.add_bank_account, name='add_bank_account'),
 ]
