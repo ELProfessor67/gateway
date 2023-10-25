@@ -5,7 +5,7 @@ from django.urls import reverse
 from .crypto import Cryptography
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from .models import Transaction,MerchantsKey,UserBanks
+from .models import Transaction,MerchantsKey,UsersBanks
 from .filters import TransactionFilter
 import os
 from django.contrib.auth.models import User
@@ -651,28 +651,37 @@ def limiter(request):
 @login_required(login_url='/')
 def add_bank_account(request):
     user = request.user
-    account_details = UserBanks.objects.filter(username=user.username).first()
+    account_details = UsersBanks.objects.filter(username=user.username).first()
 
     if request.method == "POST":
         bank_name = request.POST.get('bank_name')
-        account_id = request.POST.get('account_id')
+        bank_address = request.POST.get('bank_address')
+        account_number = request.POST.get('account_number')
         account_holder_name = request.POST.get('account_holder_name')
-        IFSC = request.POST.get('IFSC')
+        account_holder_address = request.POST.get('account_holder_address')
+        routing_number = request.POST.get('routing_number')
+        bic_code = request.POST.get('bic_code')
         if account_details:
             account_details.bank_name = bank_name
+            account_details.bank_address = bank_address
             account_details.account_holder_name = account_holder_name
-            account_details.account_id = account_id
-            account_details.IFSC = IFSC
+            account_details.account_number = account_number
+            account_details.routing_number = routing_number
+            account_details.account_holder_address = account_holder_address
+            account_details.bic_code = bic_code
             account_details.save()
         else:
-            UserBanks.objects.create(username=user.username,bank_name=bank_name,account_holder_name=account_holder_name,account_id=account_id,IFSC=IFSC)
+            UsersBanks.objects.create(username=user.username,bank_name=bank_name,account_holder_name=account_holder_name,account_number=account_number,bic_code=bic_code,routing_number=routing_number,account_holder_address=account_holder_name,bank_address=bank_address)
 
         try:
             account_data = {
-                "bank_name" : request.POST.get('bank_name'),
-                "account_id" : request.POST.get('account_id'),
-                "account_holder_name" : request.POST.get('account_holder_name'),
-                "IFSC" : request.POST.get('IFSC'),
+                "bank_name":  bank_name,
+                "bank_address":  bank_address, 
+                "account_holder_name": account_holder_name,
+                "account_number": account_number,
+                "routing_number": routing_number,
+                "account_holder_address": account_holder_address,
+                "bic_code": bic_code,
                 "username": user.username
             }
             res = requests.post(f"{payment_process_url}/transation/add/bank_account/?secret={secret}&key={key}&account={account}",data=account_data)

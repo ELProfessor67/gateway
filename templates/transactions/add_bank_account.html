@@ -18,16 +18,32 @@
                 <form method='POST' class="p-2 mt-2">
                         {% csrf_token %}
                         <div class="my-2">
+                            <label>Bank Name</label>
                             <input type="text" class="form-control" value="{{account.bank_name}}" name="bank_name" placeholder="Bank Name"/>
                         </div>
                         <div class="my-2">
+                            <label>Bank Address</label>
+                            <input type="text" class="form-control" value="{{account.bank_address}}" name="bank_address" placeholder="Bank Address"/>
+                        </div>
+                        <div class="my-2">
+                            <label>Bank Holder Name</label>
                             <input type="text" class="form-control" value="{{account.account_holder_name}}" name="account_holder_name" placeholder="Account Holder Name"/>
                         </div>
                         <div class="my-2">
-                            <input type="text" class="form-control" value="{{account.account_id}}" name="account_id" placeholder="Account Number"/>
+                            <label>Bank Holder Address</label>
+                            <input type="text" class="form-control" value="{{account.account_holder_address}}" name="account_holder_address" placeholder="Account Holder Address"/>
                         </div>
                         <div class="my-2">
-                            <input type="text" class="form-control" value="{{account.IFSC}}" name="IFSC" placeholder="IFSC Code"/>
+                            <label>Account Number</label>
+                            <input type="text" class="form-control" value="{{account.account_number}}" name="account_number" placeholder="Account Number"/>
+                        </div>
+                        <div class="my-2">
+                            <label>Routing  Number</label>
+                            <input type="text" class="form-control" value="{{account.routing_number}}" name="routing_number" placeholder="Routing Number"/>
+                        </div>
+                        <div class="my-2">
+                            <label>SWIFT/BIC Code</label>
+                            <input type="text" class="form-control" value="{{account.bic_code}}" name="bic_code" placeholder="SWIFT/BIC Code"/>
                         </div>
                         <div class="my-2">
                             <input type="submit" class="btn btn-success" value="{{btn_value}}"/>
