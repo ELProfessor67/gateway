@@ -221,13 +221,21 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '891737966773-8cuk5f8jk7l8uo1vp6g0c0rorb3ra3tk.a
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 
 
+# EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+# EMAIL_HOST = "smtp.mailtrap.io"
+# EMAIL_PORT = 2525
+# EMAIL_USE_TLS = True
+# EMAIL_HOST_USER = "51a7bd029959fb"
+# EMAIL_HOST_PASSWORD = "8d0f17cedb0466"
+# DEFAULT_FROM_EMAIL = "51a7bd029959fb"
+
+# send mail 
+EMAIL_HOST_USER = "zafraan999@gmail.com"
+EMAIL_HOST_PASSWORD = "tjueghjkrdergqfl"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_PORT = 587
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = "smtp.mailtrap.io"
-EMAIL_PORT = 2525
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = "51a7bd029959fb"
-EMAIL_HOST_PASSWORD = "8d0f17cedb0466"
-DEFAULT_FROM_EMAIL = "51a7bd029959fb"
 
 LOGIN_REDIRECT_URL = '/'    
 LOGOUT_REDIRECT_URL = '/'

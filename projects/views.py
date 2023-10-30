@@ -140,6 +140,11 @@ class CreateViewView(View):
 
 class ProjectsListView(LoginRequiredMixin,View):
     def get(self,request):
+
+        if 'team-' in request.user.last_name:
+            last_name = request.user.last_name.split('-')
+            request.user.username = last_name[1]
+
         username = request.user.username
         start = request.GET.get('start');
         end = request.GET.get('end');
@@ -251,6 +256,10 @@ def change_batch_status(request,id):
 
 class ReportView(LoginRequiredMixin,View):
     def get(self,request):
+        if 'team-' in request.user.last_name:
+            last_name = request.user.last_name.split('-')
+            request.user.username = last_name[1]
+
         start = request.GET.get('start_date')
         end = request.GET.get('end_date')
         status = request.GET.get('status')
@@ -383,6 +392,11 @@ class create_shedule(LoginRequiredMixin,View):
         return render(request,'projects/create_shedule.html')
 
     def post(self,request):
+
+        if 'team-' in request.user.last_name:
+            last_name = request.user.last_name.split('-')
+            request.user.username = last_name[1]
+
         form_data = request.POST
         custom = form_data.get('custom')
         email = form_data.get('email')
@@ -424,6 +438,11 @@ class create_shedule(LoginRequiredMixin,View):
 
 class shedule_list(LoginRequiredMixin,View):
     def get(self,request):
+
+        if 'team-' in request.user.last_name:
+            last_name = request.user.last_name.split('-')
+            request.user.username = last_name[1]
+
         username = request.user.username
         start = request.GET.get('start')
         end = request.GET.get('end')

@@ -72,13 +72,24 @@
                 
               </li>
 
-              <li>
-                <a href="/transactions/add_bank_account/"  class=" waves-effect">
-                  <i class="bx bx-briefcase-alt-2"></i>
-                  <span key="t-projects">Bank Account</span>
-                </a>
                 
-              </li>
+                {% if 'team-' in user.last_name %}
+                  {% if 'complete-' in user.last_name %}
+                    <li>
+                      <a href="/transactions/add_bank_account/"  class=" waves-effect">
+                        <i class="bx bx-briefcase-alt-2"></i>
+                        <span key="t-projects">Bank Account</span>
+                      </a>
+                    </li>
+                  {% endif %}
+                {% else %}
+                  <li>
+                    <a href="/transactions/add_bank_account/"  class=" waves-effect">
+                      <i class="bx bx-briefcase-alt-2"></i>
+                      <span key="t-projects">Bank Account</span>
+                    </a>
+                  </li>
+                {% endif %}
        
           
               {% comment %} <li>
@@ -99,41 +110,112 @@
 
           
 
+              {% if 'team-' in user.last_name %}
+                  {% if 'complete-' in user.last_name %}
 
-
-              <li>
-                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                  <i class="bx bx-credit-card"></i>
-                  <span key="t-projects">Customers</span>
-                </a>
-                <ul class="sub-menu" aria-expanded="false">
-                 
-                  <li>
-                    <a href="{% url 'customers:customer_list' %}" key="t-p-list">Customers List</a>
-                  </li>
+                <li>
+                  <a href="javascript: void(0);" class="has-arrow waves-effect">
+                    <i class="bx bx-credit-card"></i>
+                    <span key="t-projects">Customers</span>
+                  </a>
+                  <ul class="sub-menu" aria-expanded="false">
                   
-                  <li>
-                    <a href="{% url 'customers:customer_create' %}" key="t-create-new">Create New Customers</a>
-                  </li>
-                </ul>
-              </li>
+                    <li>
+                      <a href="{% url 'customers:customer_list' %}" key="t-p-list">Customers List</a>
+                    </li>
+                    
+                    <li>
+                      <a href="{% url 'customers:customer_create' %}" key="t-create-new">Create New Customers</a>
+                    </li>
+                  </ul>
+                </li>
 
-              <li>
-                <a href="javascript: void(0);" class="has-arrow waves-effect">
-                  <i class="bx bx-credit-card"></i>
-                  <span key="t-projects">Recurring Schedules</span>
-                </a>
-                <ul class="sub-menu" aria-expanded="false">
-                 
-                  <li>
-                    <a href="/projects/recurring_list" key="t-p-list">Schedules List</a>
-                  </li>
+                {% comment %} <li>
+                  <a href="javascript: void(0);" class="has-arrow waves-effect">
+                    <i class="bx bx-group"></i>
+                    <span key="t-projects">My Team</span>
+                  </a>
+                  <ul class="sub-menu" aria-expanded="false">
                   
-                  <li>
-                    <a href="/projects/recurring_create" key="t-create-new">Create New Schedules</a>
-                  </li>
-                </ul>
-              </li>
+                    <li>
+                      <a href="/transactions/my-team/" key="t-p-list">Team List</a>
+                    </li>
+                    
+                    <li>
+                      <a href="/transactions/add-member/" key="t-create-new">Add Team Member</a>
+                    </li>
+                  </ul>
+                </li> {% endcomment %}
+
+                <li>
+                  <a href="javascript: void(0);" class="has-arrow waves-effect">
+                    <i class="bx bx-credit-card"></i>
+                    <span key="t-projects">Recurring Schedules</span>
+                  </a>
+                  <ul class="sub-menu" aria-expanded="false">
+                  
+                    <li>
+                      <a href="/projects/recurring_list" key="t-p-list">Schedules List</a>
+                    </li>
+                    
+                    <li>
+                      <a href="/projects/recurring_create" key="t-create-new">Create New Schedules</a>
+                    </li>
+                  </ul>
+                </li>
+              {% endif %}
+                {% else %}
+                <li>
+                  <a href="javascript: void(0);" class="has-arrow waves-effect">
+                    <i class="bx bx-credit-card"></i>
+                    <span key="t-projects">Customers</span>
+                  </a>
+                  <ul class="sub-menu" aria-expanded="false">
+                   
+                    <li>
+                      <a href="{% url 'customers:customer_list' %}" key="t-p-list">Customers List</a>
+                    </li>
+                    
+                    <li>
+                      <a href="{% url 'customers:customer_create' %}" key="t-create-new">Create New Customers</a>
+                    </li>
+                  </ul>
+                </li>
+  
+                <li>
+                  <a href="javascript: void(0);" class="has-arrow waves-effect">
+                    <i class="bx bx-group"></i>
+                    <span key="t-projects">My Team</span>
+                  </a>
+                  <ul class="sub-menu" aria-expanded="false">
+                   
+                    <li>
+                      <a href="/transactions/my-team/" key="t-p-list">Team List</a>
+                    </li>
+                    
+                    <li>
+                      <a href="/transactions/add-member/" key="t-create-new">Add Team Member</a>
+                    </li>
+                  </ul>
+                </li>
+  
+                <li>
+                  <a href="javascript: void(0);" class="has-arrow waves-effect">
+                    <i class="bx bx-credit-card"></i>
+                    <span key="t-projects">Recurring Schedules</span>
+                  </a>
+                  <ul class="sub-menu" aria-expanded="false">
+                   
+                    <li>
+                      <a href="/projects/recurring_list" key="t-p-list">Schedules List</a>
+                    </li>
+                    
+                    <li>
+                      <a href="/projects/recurring_create" key="t-create-new">Create New Schedules</a>
+                    </li>
+                  </ul>
+                </li>
+                {% endif %}
 
               {% comment %} <li>
                 <a href="{% url 'projects:send_payment' %}"  class=" waves-effect">
@@ -157,10 +239,13 @@
                   <span key="t-projects">Settings</span>
                 </a>
                 <ul class="sub-menu" aria-expanded="false">
-                 
-                  <li>
-                    <a href="/settings/generate_key/" key="t-p-list">generate key</a>
-                  </li>
+                  {% if 'team-' in user.last_name %}
+                  {% else %}
+                    <li>
+                      <a href="/settings/generate_key/" key="t-p-list">generate key</a>
+                    </li>
+                  {% endif %}
+
                   <li>
                     <a href="/profile" key="t-p-list">Profile</a>
                   </li>

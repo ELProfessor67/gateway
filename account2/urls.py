@@ -1,4 +1,4 @@
-from django.urls import re_path
+from django.urls import re_path,path
 from . import views
 app_name='account'
 urlpatterns = [
@@ -9,4 +9,5 @@ urlpatterns = [
 
 
 	re_path(r'^logout/', views.logout_view,name='logout'),    
+    re_path(r'^verify-user/',views.verify,name='verify account')
 ]

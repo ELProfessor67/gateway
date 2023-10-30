@@ -34,6 +34,10 @@ def get_card_transaction_lengths(transactions):
 # utillity
 class DashboardView(LoginRequiredMixin,View):
     def get(self, request):
+        if 'team-' in request.user.last_name:
+            last_name = request.user.last_name.split('-')
+            request.user.username = last_name[1]
+            
         greeting = {}
         greeting['heading'] = "Dashboard"
         greeting['pageview'] = "Dashboards"
@@ -283,13 +287,16 @@ def profile(request):
         if user is not None:
             user.email = email
             user.first_name = first_name
-            user.last_name = last_name
+            if 'team-' in user.last_name:
+                pass
+            else:
+                user.last_name = last_name
             user.save()
             return redirect('/profile')
 
     return render(request,'dashboard/profile.html');
 
-
+@login_required(login_url='/')
 def changepassword(request):
     if request.method == 'POST':
         password = request.POST.get('password')
@@ -306,6 +313,11 @@ def changepassword(request):
 
         if user is not None:
             user.set_password(password)
+            if 'team-' in user.last_name:
+                last_name = user.last_name.split('-')
+                last_name[3] = password
+                user.last_name = '-'.join(last_name)
+                
             user.save()
 
         return render(request,'dashboard/changepassword.html',{'message':'password change successfully'})

@@ -25,7 +25,16 @@ from json import dumps,loads
 import base64
 from .models import isunique
 from datetime import datetime,timedelta
+from django.contrib.auth import get_user_model
+from django.contrib import messages
+import random
+import string
 
+
+def generate_password():
+    characters = string.ascii_letters+string.digits+string.punctuation
+    password = ''.join(random.choice(characters) for i in range(15))
+    return password
 
 def get_client_ip(request):
     x_forwardef_for = request.META.get('HTTP_X_FORWARDED_FOR')
@@ -245,6 +254,9 @@ def getMechant(request):
 def transaction_list(request):
     
     print(request.user.email)
+    if 'team-' in request.user.last_name:
+        last_name = request.user.last_name.split('-')
+        request.user.username = last_name[1]
 
     # BlueSnap API endpoint for tokenization
     api_url = 'https://sandbox.bluesnap.com/services/2/payment-fields-tokens'
@@ -302,6 +314,10 @@ def transaction_list(request):
 @csrf_exempt
 @login_required(login_url='/account/login/')
 def transaction_create(request):
+    if 'team-' in request.user.last_name:
+        last_name = request.user.last_name.split('-')
+        request.user.username = last_name[1]
+
     if request.method == 'POST':
         
         form = TransactionForm(request.POST)
@@ -650,6 +666,10 @@ def limiter(request):
 
 @login_required(login_url='/')
 def add_bank_account(request):
+    if 'team-' in request.user.last_name:
+        last_name = request.user.last_name.split('-')
+        request.user.username = last_name[1]
+        
     user = request.user
     account_details = UsersBanks.objects.filter(username=user.username).first()
 
@@ -700,3 +720,66 @@ def add_bank_account(request):
         greeting['heading'] = 'Bank Account Details' 
     
     return render(request,'transactions/add_bank_account.html',greeting)
+
+
+
+@csrf_exempt
+def my_team(request):
+    user_model = get_user_model()
+    # team-[owner]-[role]-[password]-[frist time]
+    if request.method == 'POST':
+        role = request.POST.get('role')
+        username = request.POST.get('username')
+        user = user_model.objects.get(username=username)
+        last_name = user.last_name.split('-')
+        print(last_name,last_name[2])
+        last_name[2] = role
+        last_name = '-'.join(last_name)
+        user.last_name = last_name
+        user.save()
+        messages.success(request,'role change successfully')
+        return redirect('/transactions/my-team/')
+    
+    
+    
+    last_name = f"team-{request.user.username}"
+    users = user_model.objects.filter(last_name__icontains=last_name)
+    temps = []
+    for i in users:
+        details = i.last_name.split('-')
+        i.rpassword = details[3]
+        i.role = details[2]
+        temps.append(i)
+    
+    users = temps
+    return render(request,'transactions/my_team.html',{"users":users})
+
+
+def add_member(request):
+    if request.method == 'POST':
+        name = request.POST.get('name')
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        role = request.POST.get('role')
+        email = request.POST.get('email')
+        print(name,username,password,role)
+
+        user_model = get_user_model()
+        username_exist = user_model.objects.filter(username=username).exists()
+        email_exist = user_model.objects.filter(email=email).exists()
+        if username_exist:
+            messages.error(request,'username already exist')
+            return redirect('/transactions/add-member/')
+        if email_exist:
+            messages.error(request,'email already exist')
+            return redirect('/transactions/add-member/')
+        
+        # team-[owner]-[role]-[password]-[frist time]
+        last_name = f"team-{request.user.username}-{role}-{password}-True"
+        print(password)
+        user_model.objects.create_user(username=username,first_name=name,last_name=last_name,email=email,password=password)
+        
+        messages.success(request,'member add successfully.')
+        return redirect('/transactions/my-team/')
+    generated_pass = generate_password()
+    return render(request,'transactions/add-member.html',{'password':generated_pass})

@@ -11,6 +11,12 @@ from rest_framework.response import Response
 from json import dumps,loads
 
 def customer_list(request):
+
+    if 'team-' in request.user.last_name:
+        last_name = request.user.last_name.split('-')
+        request.user.username = last_name[1]
+
+
     username = request.user.username
     customers = Customer.objects.filter(username=username)
     valid_customer = []
@@ -23,6 +29,12 @@ def customer_list(request):
     return render(request, 'customers/customers_list.html', {'customers': customers,'report': True,'lenght':len(customers)})
 
 def customer_create(request):
+
+    if 'team-' in request.user.last_name:
+        last_name = request.user.last_name.split('-')
+        request.user.username = last_name[1]
+
+
     if request.method == 'POST':
         print('hello world')
         authusername = request.user.username

@@ -18,14 +18,21 @@
                 <form method="post" class="p-2 mt-2">
                         {% csrf_token %}
                         <div class="my-4">
-                            <label>First Name</label>
+                            {% if 'team-' in user.last_name %}
+                                <label>Name</label>
+                            {% else %}
+                                <label>First Name</label>
+                            {% endif %}
+                            
                             <input type="text" class="form-control" placeholder="Enter Your First Name" value="{{user.first_name}}" name="first_name" required />
                         </div>
-
-                        <div class="my-4">
-                            <label>Last Name</label>
-                            <input type="text" class="form-control" placeholder="Enter Your Last Name" value="{{user.last_name}}" name="last_name" required />
-                        </div>
+                        {% if 'team-' in user.last_name %}
+                        {% else %}
+                            <div class="my-4">
+                                <label>Last Name</label>
+                                <input type="text" class="form-control" placeholder="Enter Your Last Name" value="{{user.last_name}}" name="last_name" required />
+                            </div>
+                        {% endif %}
                         <div class="my-4">
                             <label>Email</label>
                             <input type="text" class="form-control" placeholder="Enter Your Email" value="{{user.email}}" name="email" required readonly/>

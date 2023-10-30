@@ -1,0 +1,79 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+<link href="{% static 'libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+
+<!-- dropzone css -->
+<link href="{% static 'libs/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block contents %}
+    <div class="container">
+        <div class="p-2">
+            <div class="py-2 px-4 d-flex justify-content-end">
+                <a href="/transactions/add-member/" class="btn btn-success text-white">Add Member</a>
+            </div>
+            {% for message in messages %}                           
+                <div class="alert {{ message.tags }} mb-4 text-center" role="alert">
+                    <strong>{{ message }}</strong>
+                </div>
+            {% endfor %}
+            <div class="py-2 mt-4">
+                <div class="table-responsive">
+                    <table class="table transaction-list-table align-middle table-nowrap dt-responsive nowrap w-100 table-borderless" id="transactionList-table">
+                        <thead class="table-light">
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Username</th>
+                                <th scope="col">Password</th>
+                                <th scope="col">Role</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user in users %}
+                            <tr>
+                                <td scope="col">{{forloop.counter}}</td>
+                                <td scope="col">{{user.first_name}}</td>
+                                <td scope="col">{{user.email}}</td>
+                                <td scope="col">{{user.username}}</td>
+                                <td scope="col">{{user.rpassword}}</td>
+                                <td scope="col">
+                                    <form action="" method="post">
+                                        <input type="text" value="{{user.username}}" name="username" hidden="true"/>
+                                        <select name="role" class="form-control select-box" data-value="{{user.role}}">
+                                            <option value="transaction_only">Transaction Only</option>
+                                            <option value="complete">Complete</option>
+                                        </select>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const createBtn = document.getElementById('create-transaction-id');
+        const hidePath = ['/profile/','/help/','/change-password/','/profile','/help','/change-password','/transactions/my-team/','/transactions/my-team']
+        const pathname = window.location.pathname;
+        if (hidePath.includes(pathname)){
+            createBtn.style.display = 'none';
+        }else{
+            createBtn.style.display = 'block';
+        }
+
+        const selectBox = document.querySelectorAll('.select-box');
+
+        selectBox.forEach(selectEle => {
+            selectEle.value = selectEle.getAttribute('data-value');
+            selectEle.addEventListener('change',function(){
+                this.form.submit();
+            });
+        });
+    </script>
+{% endblock %}

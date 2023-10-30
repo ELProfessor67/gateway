@@ -50,3 +50,11 @@ class Shedules(models.Model):
     end = models.DateField(default='')
     after = models.IntegerField(default=1)
     afterwith = models.IntegerField(default=1)
+
+
+class OTP_Object(models.Model):
+    username = models.CharField(max_length=200)
+    otp = models.IntegerField()
+    created_at = models.DateTimeField(default=datetime.datetime.now)
+    attempt = models.IntegerField(default=0)
+
