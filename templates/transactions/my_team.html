@@ -28,7 +28,7 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Username</th>
-                                <th scope="col">Password</th>
+                                {% comment %} <th scope="col">Password</th> {% endcomment %}
                                 <th scope="col">Role</th>
                             </tr>
                         </thead>
@@ -39,7 +39,7 @@
                                 <td scope="col">{{user.first_name}}</td>
                                 <td scope="col">{{user.email}}</td>
                                 <td scope="col">{{user.username}}</td>
-                                <td scope="col">{{user.rpassword}}</td>
+                                {% comment %} <td scope="col">{{user.rpassword}}</td> {% endcomment %}
                                 <td scope="col">
                                     <form action="" method="post">
                                         <input type="text" value="{{user.username}}" name="username" hidden="true"/>
