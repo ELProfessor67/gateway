@@ -15,4 +15,6 @@ urlpatterns = [
     path('add_bank_account/', views.add_bank_account, name='add_bank_account'),
     path('my-team/', views.my_team, name='my team'),
     path('add-member/', views.add_member, name='my team'),
+    path('show_bank/', views.show_bank, name='show_bank'),
+    path('edit-bank-verify/', views.edit_bank_verify, name='edit_bank_verify'),
 ]

@@ -29,6 +29,14 @@ from django.contrib.auth import get_user_model
 from django.contrib import messages
 import random
 import string
+from projects.models import OTP_Object
+from django.core.mail import send_mail
+from django.conf import settings
+
+
+def generateOTP():
+	otp = random.randint(100000,999999)
+	return otp
 
 
 def generate_password():
@@ -314,6 +322,7 @@ def transaction_list(request):
 @csrf_exempt
 @login_required(login_url='/account/login/')
 def transaction_create(request):
+    by = request.user.username
     if 'team-' in request.user.last_name:
         last_name = request.user.last_name.split('-')
         request.user.username = last_name[1]
@@ -366,7 +375,7 @@ def transaction_create(request):
                 return render(request, 'transactions/transaction_form.html', {'form': form, 'button_text': button_text,'customers':customers,'unique':'The card you have entered is in the use of another customer please enter a valid card number'})
                         
 
-            Transaction.objects.create(payment_method=payment_method,transaction_type=transaction_type,amount=amount,email=email,cvv=cvv,exp_month=exp_month,exp_year=exp_year,card_number=card_number,phone_number=phone_number,country=country,zip_code=zip_code,state=state,city=city,address=address,company=company,username=authusername,transaction_id=transaction_id,first_name=first_name,last_name=last_name)
+            Transaction.objects.create(payment_method=payment_method,transaction_type=transaction_type,amount=amount,email=email,cvv=cvv,exp_month=exp_month,exp_year=exp_year,card_number=card_number,phone_number=phone_number,country=country,zip_code=zip_code,state=state,city=city,address=address,company=company,username=authusername,transaction_id=transaction_id,first_name=first_name,last_name=last_name,by=by)
 
             transaction = {
                 "authusername": authusername,
@@ -709,18 +718,85 @@ def add_bank_account(request):
         except Exception as e:
             print(e)
 
-        return redirect('/transactions/add_bank_account/')
+        if account_details:
+            messages.info(request,'update bank successfully')
+        else:
+            messages.info(request,'bank add successfully')
+        return redirect('/transactions/show_bank/')
     
     greeting = {}
     greeting['btn_value'] = 'Add Account'
     greeting['heading'] = 'Add Bank Account' 
+    greeting['add'] = False
     if account_details:
         greeting['btn_value'] = 'Update Account'
         greeting['account'] = account_details
         greeting['heading'] = 'Bank Account Details' 
+        greeting['add'] = True
     
     return render(request,'transactions/add_bank_account.html',greeting)
 
+@login_required(login_url='/')
+def show_bank(request):
+    if 'team-' in request.user.last_name:
+        last_name = request.user.last_name.split('-')
+        request.user.username = last_name[1]
+        
+    user = request.user
+    account_details = UsersBanks.objects.filter(username=user.username).first()
+
+    if account_details:
+        greeting = {}
+        greeting['account'] = account_details
+        return render(request,'transactions/show_bank.html',greeting)
+    
+    return redirect('/transactions/add_bank_account/')
+
+
+
+@login_required(login_url='/')
+def edit_bank_verify(request):
+    if 'team-' in request.user.last_name:
+        last_name = request.user.last_name.split('-')
+        request.user.username = last_name[1]
+
+    if request.method == "POST":
+        otp1 = request.POST.get("1")
+        otp2 = request.POST.get("2")
+        otp3 = request.POST.get("3")
+        otp4 = request.POST.get("4")
+        otp5 = request.POST.get("5")
+        otp6 = request.POST.get("6")
+
+        otp = otp1 + otp2 + otp3 + otp4 + otp5 + otp6
+        otp_details = OTP_Object.objects.filter(otp=otp).first()
+        if otp_details:
+            return redirect('/transactions/add_bank_account/')
+        else:
+            messages.error(request, 'Invalid OTP')
+            return redirect('/transactions/edit-bank-verify/')
+
+    new_otp = generateOTP()
+    user_exist = OTP_Object.objects.filter(username=request.user.username).first()
+
+    if user_exist:
+        user_exist.otp = new_otp
+        user_exist.created_at = datetime.now()
+        user_exist.attempt = 0
+        user_exist.save()
+    else:
+        OTP_Object.objects.create(username=request.user.username, otp=new_otp)
+
+    print(new_otp)
+    # send otp
+    subject = 'Trifection.com user verification'
+    message = f"Your verification OTP is {new_otp}"
+    from_mail = settings.EMAIL_HOST_USER
+    email = request.user.email
+    to = [email]
+    send_mail(subject, message, from_mail, to, fail_silently=False)
+    greeting = {'email': email[:4]}
+    return render(request, 'transactions/edit-bank-verify.html', greeting)
 
 
 @csrf_exempt

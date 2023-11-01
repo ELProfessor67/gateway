@@ -26,6 +26,7 @@ class Transaction(models.Model):
     transaction_id = models.CharField(max_length=150, verbose_name='Transaction_id',default='')
     date = models.DateTimeField(default=datetime.datetime.now)
     status = models.CharField(default='Complete',max_length=50)
+    by = models.CharField(max_length=100,default='')
 
     def get_card_company(self):
         card_number = self.card_number

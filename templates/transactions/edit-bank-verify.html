@@ -1,0 +1,153 @@
+{% extends 'account/base.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load socialaccount %}
+{% block title %}Login{% endblock title %}
+{% block content %}
+    <body>
+        <style type="text/css">
+            .bg-soft *{ color:#fff !important }
+            form{ padding-top:20px }
+            form input, label{ margin-top:15px; } 
+            .card-body{ border:1px solid #ccc; }
+            .btn-primary { margin-left:12px !important }
+            .inputs-container
+            {
+                gap: 1rem;
+                justify-content: center;
+                align-items: center;
+            }
+            .inputs-container input
+            {
+                height: 45px;
+                width: 45px;
+                outline: none;
+                border: 1px solid grey;
+                border-radius: .3rem;
+                font-size: 1.5rem;
+                text-align: center;
+            }
+
+            .inputs-container input::-webkit-inner-spin-button,
+            .inputs-container input::-webkit-outer-spin-button
+            {
+                display: none;
+            }
+
+            .btn-verify:disabled
+            {
+                opacity: .6;
+            }
+
+        </style>
+        <div class="account-pages">
+            <div class="container my-5 pt-sm-2">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-6 col-xl-5">
+                        <div class="card overflow-hidden">
+                            <div class="bg-primary bg-soft ">
+                                <div class="row">
+                                    <div class="col-9">
+                                        <div class="text-primary p-4">
+                                            <h4 class="text-primary">Verification</h4>
+                                            <p>Enter the OTP you received at</p>
+                                            <h6>{{email}}******@gmail.com</h6>
+                                        </div>
+                                    </div>
+                                    <div class="col-3 align-self-end">
+                                        <img src="{% static 'images/profile-img.png' %}" alt="" class="img-fluid">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body pt-0"> 
+                            
+                                <div class="p-2">
+                                    <style>
+                                        button, input{ width:250px; }
+                                    </style>
+                                    <form class="form-horizontal" action="" method="POST">
+                                        {% csrf_token %}
+                                        {% for message in messages %}
+                                            {% if message.tags == "alert-info" %}
+                                                <input type="text" hidden="true" value="{{message}}" name="email"/>
+                                            {% endif %}
+
+                                            {% if message.tags != "alert-info" %}
+                                                <div class="alert {{ message.tags }} mb-4 text-center" role="alert">
+                                                    <strong>{{ message }}</strong>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                        
+                                        <div class="d-flex inputs-container">
+                                            <input type="number" class="input" name="1"/>
+                                            <input type="number" disabled class="input" name="2"/>
+                                            <input type="number" disabled class="input" name="3"/>
+                                            <input type="number" disabled class="input" name="4"/>
+                                            <input type="number" disabled class="input" name="5"/>
+                                            <input type="number" disabled class="input" name="6"/>
+                                        </div>
+                                        
+                                        <div class="g-recaptcha d-flex justify-content-center py-2" data-sitekey="{{recaptcha_site_key}}"></div>
+                                        <div class="mt-3 d-grid" style="text-align: center;">
+                                            <button disabled class="btn btn-primary waves-effect waves-light btn-verify" type="submit">Verify</button>
+                                        </div>
+                                        <div>
+                                            
+                                        </div>
+                                    </form>
+                                </div>
+            
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end account-pages -->
+        <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+        <script>
+            const inputs = document.querySelectorAll('.input');
+            const btn = document.querySelector('.btn-verify');
+
+            inputs.forEach((input,index1) => {
+                input.addEventListener('keyup',(e) => {
+                    const nextInput = input.nextElementSibling;
+                    const prevInput = input.previousElementSibling;
+                    const currentInput = input;
+
+                    if(currentInput.value.length > 1){
+                        currentInput.value = "";
+                        return;
+                    }
+
+                    if(nextInput && nextInput.hasAttribute("disabled") && currentInput.value !== ""){
+                        nextInput.removeAttribute("disabled");
+                        nextInput.focus();
+                    }
+
+                    if(e.key === "Backspace"){
+                        inputs.forEach((input2,index2) => {
+                            if(index1 <= index2 && prevInput){
+                                input2.setAttribute("disabled",true);
+                                index2.value = "";
+                                currentInput.value = "";
+                                prevInput.focus();
+                            }
+                        })
+                    }
+
+                    console.log(!inputs[5].disabled && inputs[5].value !== "")
+                    if(!inputs[5].disabled && inputs[5].value !== ""){
+                        btn.removeAttribute("disabled");
+                    }else{
+                        btn.setAttribute("disabled",true);
+                    }
+                    
+                });
+            });
+
+            window.addEventListener('load', () => inputs[0].focus());
+        </script>
+    
+{% endblock content %}

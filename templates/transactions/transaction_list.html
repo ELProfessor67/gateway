@@ -539,6 +539,7 @@ function confirmDelete() {
                                 <th scope="col">Bluesnap Trans.ID</th>
                                 <th scope="col">Email</th>
                                 <th scope="col">Date</th>
+                                <th scope="col">Transaction By</th>
                                 <th scope="col">status</th>
                             </tr>
                         </thead>
@@ -566,6 +567,7 @@ function confirmDelete() {
                                      <td>{{ transaction.transaction_id }}</td>
                                     <td>{{ transaction.email }}</td>
                                     <td>{{ transaction.date }}</td>
+                                    <td>Transaction By {{ transaction.by }}</td>
                                     {% if transaction.status == "Complete" %}
                                         <th scope="col">
                                             <span class="py-1 px-2 rounded text-white" style="background: green;">{{transaction.status}}</span>
