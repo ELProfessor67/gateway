@@ -339,9 +339,13 @@ function confirmDelete() {
                                             
                                             <div class="col-lg-6">
                                                 <div class="form-group">
-                                                    <label for="{{ form.transaction_type.id_for_label }}">Transaction Type</label>
+                                                    <label for="{{ form.transaction_type.id_for_label }}">Transaction Type {{default}}</label>
                                                     {{ form.transaction_type|add_class:'form-control' }}
                                                 </div>
+
+                                                <script>
+                                                    console.log("{{default}}")
+                                                </script>
 
                                             </div>
                                         </div>

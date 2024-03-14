@@ -522,6 +522,9 @@
                                 <div class="form-group">
                                     <label for="{{ form.transaction_type.id_for_label }}">Transaction Type</label>
                                     {{ form.transaction_type|add_class:'form-control' }}
+                                    <script>
+                                        document.getElementById("id_transaction_type").value = "{{default}}";
+                                    </script>
                                 </div>
         
                             </div>

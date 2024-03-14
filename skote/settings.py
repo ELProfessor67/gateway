@@ -95,6 +95,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware'
     
 ]
 
@@ -229,9 +230,9 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 # EMAIL_HOST_PASSWORD = "8d0f17cedb0466"
 # DEFAULT_FROM_EMAIL = "51a7bd029959fb"
 
-# send mail 
-EMAIL_HOST_USER = "zafraan999@gmail.com"
-EMAIL_HOST_PASSWORD = "tjueghjkrdergqfl"
+# send mail
+EMAIL_HOST_USER = "wi223488@gmail.com"
+EMAIL_HOST_PASSWORD = "adyzymlggypmgkfo"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

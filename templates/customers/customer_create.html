@@ -32,6 +32,7 @@
             <div class="col-md-6">
                 
                 <div class="row">
+                    {% if fields.first_name %}
                     <div class="col-lg-6">
                      
                         <div class="form-group">
@@ -40,6 +41,9 @@
                         </div>
 
                     </div>
+                    {% endif %}
+
+                    {% if fields.last_name %}
                     <div class="col-lg-6">
 
                         <div class="form-group">
@@ -48,11 +52,12 @@
                         </div>
 
                     </div>
+                    {% endif %}
 
                 </div>
 
                 <div class="row">
-                    
+                    {% if fields.company %}
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="{{ form.company.id_for_label }}">Company</label>
@@ -60,6 +65,8 @@
                         </div>
                      
                     </div>
+                    {% endif %}
+                    {% if fields.address %}
                      <div class="col-lg-6">
 
                         <div class="form-group">
@@ -68,6 +75,7 @@
                         </div>
                      
                     </div>
+                    {% endif %}
 
                 </div>
 
@@ -75,14 +83,16 @@
 
                 <div class="row">
                     
-
+                    {% if fields.city %}
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="{{ form.city.id_for_label }}">City</label>
                             {{ form.city|add_class:'form-control' }}
                         </div>
                     </div>
+                    {% endif %}
 
+                    {% if fields.state %}
                      <div class="col-lg-6">
 
                         <div class="form-group">
@@ -91,12 +101,13 @@
                         </div>
                      
                     </div>
+                    {% endif %}
 
                 </div>
 
                 <div class="row">
                                                     
-
+                    {% if fields.zip_code %}
                     <div class="col-lg-6">
 
                         <div class="form-group">
@@ -105,25 +116,28 @@
                         </div>
 
                     </div>
-
+                    {% endif %}
+                    {% if fields.country %}
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="{{ form.country.id_for_label }}">Country</label>
                             {{ form.country|add_class:'form-control' }}
                         </div>
                     </div>
+                    {% endif %}
 
                 </div>
                 
                 <div class="row">
                                                     
-
+                    {% if fields.phone_number %}
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="{{ form.phone_number.id_for_label }}">Phone Number</label>
                             {{ form.phone_number|add_class:'form-control' }}
                         </div>
                     </div>
+                    {% endif %}
 
                 </div>
                 
@@ -170,8 +184,9 @@
                     </div>
                 </div> -->
                 <div class="row">
+                   
                     <div class="col-lg-6">
-
+                        {% if fields.card_number %}
                         <div class="form-group">
                             <label for="{{ form.card_number.id_for_label }}">Card Number</label>
                             <input type="text" class="form-control" id="id_card_number" name="card_number" maxlength="16"/>
@@ -184,8 +199,9 @@
                             </div>
                             {% endif %}
                         </div>
-                        
+                        {% endif %}
                     </div>
+                    {% if fields.exp_month %}
                     <div class="col-lg-2">
                         
                         <div class="form-group">
@@ -196,23 +212,26 @@
                         </div>
                         
                     </div>
+                    {% endif %}
                     <div class="col-lg-2">
-                        
+                        {% if fields.exp_year %}
                         <div class="form-group">
                             <label for="{{ form.exp_year.id_for_label }}">Exp Year</label>
                             <!-- {{ form.exp_year|add_class:'form-control' }} -->
                             <input type="text" class="form-control" id="id_exp_year" name="exp_year" maxlength="4"/>
                             <div class="" id="expyearerror"></div>
                         </div>
+                        {% endif %}
                         
                     </div>
                     <div class="col-lg-2">
-                        
+                        {% if fields.cvv %}
                         <div class="form-group">
                             <label for="{{ form.cvv.id_for_label }}">CVV</label>
                             <input type="text" class="form-control" id="id_cvv" name="cvv" maxlength="3"/>
                             <!-- {{ form.cvv|add_class:'form-control' }} -->
                         </div>
+                        {% endif %}
 
                     </div>
 
@@ -221,7 +240,7 @@
 
 
                 <div class="row">
-                    
+                    {% if fields.email %}
                     <div class="col-lg-12">
 
                         <div class="form-group">
@@ -235,6 +254,7 @@
                         </div> {% endcomment %}
 
                     </div>
+                    {% endif %}
 
                    
 

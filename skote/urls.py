@@ -17,7 +17,7 @@ from django.urls import reverse
 from django.contrib import admin
 from django.urls import path,include
 from skote import views
-from .views import MyPasswordSetView ,MyPasswordChangeView, generateKey, help, profile,changepassword
+from .views import MyPasswordSetView ,MyPasswordChangeView, generateKey, help, profile,changepassword,editCustomerFields
 from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView
 
@@ -92,6 +92,7 @@ urlpatterns = [
     path('settings/generate_key/',generateKey,name="generate merchant key"),
     path('help/',help,name="help page"),
     path('profile/',profile,name="profile"),
+    path('customers-fields/',editCustomerFields,name="customers-fields"),
     path('change-password',changepassword,name="changepassword")
 
 ]

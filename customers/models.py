@@ -27,3 +27,37 @@ class Customer(models.Model):
 
     cards = models.TextField(default='[]')
 
+
+
+class AllowField(models.Model):
+    username = models.CharField(max_length=100, default='')
+    first_name = models.BooleanField(default=True)
+    last_name = models.BooleanField(default= True)
+    company = models.BooleanField(default= True)
+    address = models.BooleanField(default= True)
+    city = models.BooleanField(default= True)
+    state = models.BooleanField(default= True)
+    zip_code = models.BooleanField(default= True)
+    country = models.BooleanField(default= True)
+    phone_number = models.BooleanField(default= True)
+    card_number = models.BooleanField(default= True)
+    exp_year = models.BooleanField(default= True)
+    exp_month = models.BooleanField(default= True)
+    cvv = models.BooleanField(default= True)
+    email = models.BooleanField(default= True)
+
+
+# first_name = models.BooleanField(default= True)
+#     last_name = 
+#     company = 
+#     address = 
+#     city = 
+#     state = 
+#     zip_code = 
+#     country = 
+#     phone_number = 
+#     card_number = 
+#     exp_year = 
+#     exp_month = 
+#     cvv = 
+#     email = 

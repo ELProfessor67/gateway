@@ -19,6 +19,7 @@ payment_process_url = 'https://payment-processor.onrender.com'
 secret = 'b4b94b39-7601-47c0-a7ab-39861ba9d4e3'
 key = 'fb83f5f6-8141-4bc2-94a3-2b8d748ab2d4'
 account = '800000'
+from customers.models import AllowField, Customer
 
 def get_card_transaction_lengths(transactions):
     card_transaction_lengths = defaultdict(int)
@@ -294,7 +295,68 @@ def profile(request):
             user.save()
             return redirect('/profile')
 
-    return render(request,'dashboard/profile.html');
+    return render(request,'dashboard/profile.html')
+
+@login_required(login_url='/')
+def editCustomerFields(request):
+    fields_object = {
+        'first_name': True,
+        'last_name': True,
+        'company': True,
+        'address': True,
+        'city': True,
+        'state': True,
+        'zip_code': True,
+        'country': True,
+        'phone_number': True,
+        'card_number': True,
+        'exp_year': True,
+        'exp_month': True,
+        'cvv': True,
+        'email': True
+    }
+    fields = AllowField.objects.filter(username=request.user.username).first()
+    if request.method == "POST":
+        
+        for i in fields_object:
+            if request.POST.get(i) == 'on':
+                fields_object[i] = True
+            else:
+                fields_object[i] = False
+        
+        if fields == None:
+            fields = AllowField.objects.create(
+                first_name = fields_object.get('first_name'),
+                last_name = fields_object.get('last_name'),
+                company = fields_object.get('company'),
+                address = fields_object.get('address'),
+                city = fields_object.get('city'),
+                state = fields_object.get('state'),
+                zip_code = fields_object.get('zip_code'),
+                country = fields_object.get('country'),
+                phone_number = fields_object.get('phone_number'),
+                card_number = fields_object.get('card_number'),
+                exp_year = fields_object.get('exp_year'),
+                exp_month = fields_object.get('exp_month'),
+                cvv = fields_object.get('cvv'),
+                email = fields_object.get('email'),
+                username = request.user.username
+            )
+            fields.save()
+        else:
+            fields = AllowField.objects.filter(username=request.user.username).first()
+            for field_name, field_value in fields_object.items():
+                setattr(fields, field_name, field_value)
+
+            fields.save()
+        print(fields,"oihoihoih")
+    if fields == None:
+        fields = fields_object
+        
+
+    return render(request,'dashboard/customize-customer-fields.html',{'fields': fields})
+
+    
 
 @login_required(login_url='/')
 def changepassword(request):

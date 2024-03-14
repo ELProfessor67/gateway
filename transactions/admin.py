@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Transaction, ApproveMails,MerchantsKey
+from .models import Transaction, ApproveMails,MerchantsKey,MerchantsFee
 # Register your models here.
 
 class TransactionsAdmin(admin.ModelAdmin):
@@ -17,3 +17,4 @@ class ApproveMailsAdmin(admin.ModelAdmin):
 admin.site.register(Transaction,TransactionsAdmin)
 admin.site.register(ApproveMails,ApproveMailsAdmin)
 admin.site.register(MerchantsKey)
+admin.site.register(MerchantsFee)

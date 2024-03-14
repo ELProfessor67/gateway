@@ -27,6 +27,8 @@ class Transaction(models.Model):
     date = models.DateTimeField(default=datetime.datetime.now)
     status = models.CharField(default='Complete',max_length=50)
     by = models.CharField(max_length=100,default='')
+    fee = models.FloatField(default=0)
+    total = models.FloatField(default=0)
 
     def get_card_company(self):
         card_number = self.card_number
@@ -91,3 +93,12 @@ class UsersBanks(models.Model):
      account_holder_address = models.CharField(max_length=500)
      routing_number = models.CharField(max_length=100)
      bic_code = models.CharField(max_length=100,default='3454')
+
+
+class TransactionDefaultType(models.Model):
+     username = models.CharField(max_length=200)
+     default = models.CharField(max_length=500)
+
+class MerchantsFee(models.Model):
+     username = models.CharField(max_length=200)
+     fee_in_percent = models.FloatField(default=10)

@@ -1,0 +1,241 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+<link href="{% static 'libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+
+<!-- dropzone css -->
+<link href="{% static 'libs/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'css/checkbox.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block contents %}
+    <div class="container">
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="w-75 h-75 bg-light rounded p-4 mt-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="text-center text-dark fs-5" style="font-size: 2rem; margin: 0;">Transaction Default Type</h2>
+                </div>
+                <form method="post" class="p-2 mt-2">
+                        {% csrf_token %}
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                      {% if default == "refund" %}
+                                        <input id="cbx-12" type="radio" name="default_transaction_type" checked value="refund"/>
+                                      {% else %}
+                                        <input id="cbx-12" type="radio" name="default_transaction_type" value="refund"/>
+                                      {% endif %}
+
+      
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Refund</p>
+
+                        </div>
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                        {% if default == "charge" %}
+                                      <input id="cbx-12" type="radio" name="default_transaction_type" checked value="charge"/>
+                                      {% else %}
+                                      <input id="cbx-12" type="radio" name="default_transaction_type" value="charge"/>
+                                      {% endif %}
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Charge</p>
+
+                        </div>
+
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                        {% if default == "save" %}
+                                      <input id="cbx-12" type="radio" name="default_transaction_type" checked value="save"/>
+                                      {% else %}
+                                      <input id="cbx-12" type="radio" name="default_transaction_type" value="save"/>
+                                      {% endif %}
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Save</p>
+
+                        </div>
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                        {% if default == "auth_only" %}
+                                      <input id="cbx-12" type="radio" name="default_transaction_type" checked value="auth_only"/>
+                                      {% else %}
+                                      <input id="cbx-12" type="radio" name="default_transaction_type" value="auth_only"/>
+                                      {% endif %}
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Auth Only</p>
+
+                        </div>
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                        {% if default == "post_auth" %}
+                                      <input id="cbx-12" type="radio" name="default_transaction_type" checked value="post_auth"/>
+                                      {% else %}
+                                      <input id="cbx-12" type="radio" name="default_transaction_type" value="post_auth"/>
+                                      {% endif %}
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Post Auth</p>
+
+                        </div>
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                        {% if default == "gift_issue" %}
+                                      <input id="cbx-12" type="radio" name="default_transaction_type" checked value="gift_issue"/>
+                                      {% else %}
+                                      <input id="cbx-12" type="radio" name="default_transaction_type" value="gift_issue"/>
+                                      {% endif %}
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">gift_issue</p>
+                        </div>
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                        {% if default == "gift_redeem" %}
+                                      <input id="cbx-12" type="radio" name="default_transaction_type" checked value="gift_redeem"/>
+                                      {% else %}
+                                      <input id="cbx-12" type="radio" name="default_transaction_type" value="gift_redeem"/>
+                                      {% endif %}
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Gift Redeem</p>
+                        </div>
+                     
+                        <button class="btn btn-success m-auto">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const createBtn = document.getElementById('create-transaction-id');
+        const hidePath = ['/profile/','/help/','/change-password/','/profile','/help','/change-password']
+        const pathname = window.location.pathname;
+        if (hidePath.includes(pathname)){
+            createBtn.style.display = 'none';
+        }else{
+            createBtn.style.display = 'block';
+        }
+    </script>
+{% endblock %}

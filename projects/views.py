@@ -20,9 +20,9 @@ import requests
 from django.contrib.auth.decorators import login_required
 # Create your views here.
 
-def cutfess(amount):
+def cutfess(amount,percent):
     amount = int(amount)
-    return (amount*2)/100
+    return (amount*percent)/100
 
 
 # for hashing transactions
@@ -290,9 +290,10 @@ class ReportView(LoginRequiredMixin,View):
         transactions = Transaction.objects.filter(query).values()
         
         for i in range(len(transactions)):
-            fee = cutfess(transactions[i].get('amount'))
-            transactions[i]['fee'] = fee
-            transactions[i]['total'] = int(transactions[i].get('amount'))-fee
+            if transactions[i].get('fee') == None:
+                fee = cutfess(transactions[i].get('amount'))
+                transactions[i]['fee'] = fee
+                transactions[i]['total'] = int(transactions[i].get('amount'),2)-fee
             
         length = len(transactions)
         

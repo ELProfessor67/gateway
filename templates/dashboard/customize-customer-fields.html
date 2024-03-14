@@ -1,0 +1,453 @@
+{% extends 'partials/base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+<link href="{% static 'libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+
+<!-- dropzone css -->
+<link href="{% static 'libs/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
+<link href="{% static 'css/checkbox.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block contents %}
+    <div class="container">
+        <div class="d-flex justify-content-center align-items-center">
+            <div class="w-75 h-75 bg-light rounded p-4 mt-4">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h2 class="text-center text-dark fs-5" style="font-size: 2rem; margin: 0;">Manage Columns</h2>
+                </div>
+                <form method="post" class="p-2 mt-2">
+                        {% csrf_token %}
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                      {% if fields.first_name %}
+                                        <input id="cbx-12" type="checkbox" name="first_name" checked/>
+                                      {% else %}
+                                        <input id="cbx-12" type="checkbox" name="first_name" />
+                                      {% endif %}
+
+      
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">First Name</p>
+
+                        </div>
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                      {% if fields.last_name %}
+                                      <input id="cbx-12" type="checkbox" name="last_name" checked/>
+                                      {% else %}
+                                      <input id="cbx-12" type="checkbox" name="last_name"/>
+                                      {% endif %}
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Last Name</p>
+
+                        </div>
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                      {% if fields.company %}
+                                      <input id="cbx-12" type="checkbox" name="company" checked/>
+                                      {% else %}
+                                      <input id="cbx-12" type="checkbox" name="company"/>
+                                      {% endif %}
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Company</p>
+
+                        </div>
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                      {% if fields.address %}
+                                      <input id="cbx-12" type="checkbox" name="address" checked/>
+                                      {% else %}
+                                      <input id="cbx-12" type="checkbox" name="address"/>
+                                      {% endif %}
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Address</p>
+
+                        </div>
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                      {% if fields.city %}
+                                      <input id="cbx-12" type="checkbox" name="city" checked/>
+                                      {% else %}
+                                      <input id="cbx-12" type="checkbox" name="city"/>
+                                      {% endif %}
+                                    
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">City</p>
+
+                        </div>
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                      {% if fields.state %}
+                                      <input id="cbx-12" type="checkbox" name="state" checked/>
+                                      {% else %}
+                                      <input id="cbx-12" type="checkbox" name="state"/>
+                                      {% endif %}
+                                    
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">State</p>
+
+                        </div>
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                      {% if fields.zip_code %}
+                                      <input id="cbx-12" type="checkbox" name="zip_code" checked/>
+                                      {% else %}
+                                      <input id="cbx-12" type="checkbox" name="zip_code"/>
+                                      {% endif %}
+                                     
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Zip Code</p>
+
+                        </div>
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                      {% if fields.country %}
+                                      <input id="cbx-12" type="checkbox" name="country" checked/>
+                                      {% else %}
+                                      <input id="cbx-12" type="checkbox" name="country"/>
+                                      {% endif %}
+                                      
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Country</p>
+
+                        </div>
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                      {% if fields.phone_number %}
+                                      <input id="cbx-12" type="checkbox" name="phone_number" checked/>
+                                      {% else %}
+                                      <input id="cbx-12" type="checkbox" name="phone_number"/>
+                                      {% endif %}
+                                   
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Phone Number</p>
+                        </div>
+
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                      {% if fields.card_number %}
+                                      <input id="cbx-12" type="checkbox" name="card_number" checked/>
+                                      {% else %}
+                                      <input id="cbx-12" type="checkbox" name="card_number"/>
+                                      {% endif %}
+                                      
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Card Number</p>
+                        </div>
+
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                      {% if fields.exp_year %}
+                                      <input id="cbx-12" type="checkbox" name="exp_year" checked/>
+                                      {% else %}
+                                      <input id="cbx-12" type="checkbox" name="exp_year"/>
+                                      {% endif %}
+                                      
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Exp Month</p>
+                        </div>
+
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                      {% if fields.exp_month %}
+                                      <input id="cbx-12" type="checkbox" name="exp_month" checked/>
+                                      {% else %}
+                                      <input id="cbx-12" type="checkbox" name="exp_month"/>
+                                      {% endif %}
+                                     
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Exp Year</p>
+                        </div>
+
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                      {% if fields.cvv %}
+                                      <input id="cbx-12" type="checkbox" name="cvv" checked/>
+                                      {% else %}
+                                      <input id="cbx-12" type="checkbox" name="cvv"/>
+                                      {% endif %}
+                                      
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">CVV</p>
+                        </div>
+
+                        <div class="my-2 d-flex column-gap-3">
+                            <div>
+                                <div class="checkbox-wrapper-12">
+                                    <div class="cbx">
+                                      {% if fields.email %}
+                                      <input id="cbx-12" type="checkbox" name="email" checked/>
+                                      {% else %}
+                                      <input id="cbx-12" type="checkbox" name="email"/>
+                                      {% endif %}
+                                      
+                                      <label for="cbx-12"></label>
+                                      <svg width="15" height="14" viewbox="0 0 15 14" fill="none">
+                                        <path d="M2 8.36364L6.23077 12L13 2"></path>
+                                      </svg>
+                                    </div>
+                                    <!-- Gooey-->
+                                    <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+                                      <defs>
+                                        <filter id="goo-12">
+                                          <fegaussianblur in="SourceGraphic" stddeviation="4" result="blur"></fegaussianblur>
+                                          <fecolormatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 22 -7" result="goo-12"></fecolormatrix>
+                                          <feblend in="SourceGraphic" in2="goo-12"></feblend>
+                                        </filter>
+                                      </defs>
+                                    </svg>
+                                  </div>
+                            </div>
+                            <p class="fs-4 align-items-center ml-2">Email</p>
+                        </div>
+                        <button class="btn btn-success m-auto">Update</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const createBtn = document.getElementById('create-transaction-id');
+        const hidePath = ['/profile/','/help/','/change-password/','/profile','/help','/change-password']
+        const pathname = window.location.pathname;
+        if (hidePath.includes(pathname)){
+            createBtn.style.display = 'none';
+        }else{
+            createBtn.style.display = 'block';
+        }
+    </script>
+{% endblock %}

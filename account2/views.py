@@ -42,6 +42,7 @@ recaptcha_site_key = "6LeBXZooAAAAAIHbtqWafsINysZ5MZk8fWvpfODb"
 
 
 def login_view(request):
+	
 	if(request.method=='POST'):
 		recaptcha_token = request.POST.get('g-recaptcha-response')
 		isValidToken = check_token(recaptcha_secret_key,recaptcha_token)

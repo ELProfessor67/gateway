@@ -5,7 +5,7 @@ from django.urls import reverse
 from .crypto import Cryptography
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from .models import Transaction,MerchantsKey,UsersBanks
+from .models import Transaction,MerchantsKey,UsersBanks,TransactionDefaultType,MerchantsFee
 from .filters import TransactionFilter
 import os
 from django.contrib.auth.models import User
@@ -52,9 +52,9 @@ def get_client_ip(request):
         ip = request.META.get('REMOTE_ADDR')
     return ip
 
-def cutfess(amount):
+def cutfess(amount,percent):
     amount = int(amount)
-    return (amount*2)/100
+    return (amount*percent)/100
 
 def check_token(recaptcha_secret_key,recaptcha_token):
     data = {
@@ -307,15 +307,16 @@ def transaction_list(request):
         transactions = Transaction.objects.filter(username = request.user.username).values()
     
     for i in range(len(transactions)):
-        fee = cutfess(transactions[i].get('amount'))
-        transactions[i]['fee'] = fee
-        transactions[i]['total'] = int(transactions[i].get('amount'))-fee
+        if transactions[i].get('fee') == None:
+            fee = cutfess(transactions[i].get('amount'),2)
+            transactions[i]['fee'] = fee
+            transactions[i]['total'] = int(transactions[i].get('amount'))-fee
 
     form = TransactionForm(request.POST)
     
     transaction_filter = TransactionFilter(request.GET, queryset=Transaction.objects.all())
+
     
-    print(transaction_filter)
     return render(request, 'transactions/transaction_list.html', {'transactions': transactions,'filter': transaction_filter ,'form':form})
 
 
@@ -355,6 +356,18 @@ def transaction_create(request):
             cvv = request.POST['cvv']
             email = request.POST['email']
             customer = request.POST.get('customer')
+
+
+            # //checking fee in given or not 
+            cut_off = 0
+            cut_off_model = MerchantsFee.objects.filter(username=request.user.username).first()
+            if cut_off_model != None:
+                cut_off = cut_off_model.fee_in_percent
+            else:
+                cut_off = 2
+            
+            fee = cutfess(amount,cut_off)
+            total = int(amount)-fee
             
             # print('unique',isunique(card_number,request.user.username))
             if not isunique(card_number,request.user.username):
@@ -375,7 +388,7 @@ def transaction_create(request):
                 return render(request, 'transactions/transaction_form.html', {'form': form, 'button_text': button_text,'customers':customers,'unique':'The card you have entered is in the use of another customer please enter a valid card number'})
                         
 
-            Transaction.objects.create(payment_method=payment_method,transaction_type=transaction_type,amount=amount,email=email,cvv=cvv,exp_month=exp_month,exp_year=exp_year,card_number=card_number,phone_number=phone_number,country=country,zip_code=zip_code,state=state,city=city,address=address,company=company,username=authusername,transaction_id=transaction_id,first_name=first_name,last_name=last_name,by=by)
+            Transaction.objects.create(fee=fee,total=total,payment_method=payment_method,transaction_type=transaction_type,amount=amount,email=email,cvv=cvv,exp_month=exp_month,exp_year=exp_year,card_number=card_number,phone_number=phone_number,country=country,zip_code=zip_code,state=state,city=city,address=address,company=company,username=authusername,transaction_id=transaction_id,first_name=first_name,last_name=last_name,by=by)
 
             transaction = {
                 "authusername": authusername,
@@ -396,7 +409,9 @@ def transaction_create(request):
                 "exp_month": exp_month,
                 "cvv": cvv,
                 "email": email,
-                "transaction_id": transaction_id
+                "transaction_id": transaction_id,
+                "fee": fee,
+                "total": total
             }
 
             # encryted transactions 
@@ -466,7 +481,16 @@ def transaction_create(request):
         customers[customer.get('first_name')] = customer
     customers = dumps(customers)
     button_text = "Add Transaction"
-    return render(request, 'transactions/transaction_form.html', {'form': form, 'button_text': button_text,'customers':customers})
+    
+    default_model = TransactionDefaultType.objects.filter(username=request.user.username).first()
+    default = ""
+    if default_model == None:
+        default = "Refund"
+    else:
+        default = default_model.default
+    
+    print(default,"dw0yd8ew09yed8wy")
+    return render(request, 'transactions/transaction_form.html', {'form': form, 'button_text': button_text,'customers':customers,'default':default})
 
 
 def transaction_create_ajax(request):
@@ -859,3 +883,30 @@ def add_member(request):
         return redirect('/transactions/my-team/')
     generated_pass = generate_password()
     return render(request,'transactions/add-member.html',{'password':generated_pass})
+
+
+
+@login_required(login_url='/')
+def default_transaction_type(request):
+    default_model = TransactionDefaultType.objects.filter(username=request.user.username).first()
+    default = ""
+    if default_model == None:
+        default = "Refund"
+    else:
+        default = default_model.default
+
+    if request.method == "POST":
+        if default_model == None:
+            default_model = TransactionDefaultType.objects.create(
+                username = request.user.username,
+                default = request.POST.get('default_transaction_type')
+            )
+            default_model.save()
+        else:
+            default_model = TransactionDefaultType.objects.filter(username=request.user.username).first()
+            default_model.default = request.POST.get('default_transaction_type')
+            default_model.save()
+        default = default_model.default
+
+
+    return render(request,'dashboard/default_transaction_type.html',{'default':default})

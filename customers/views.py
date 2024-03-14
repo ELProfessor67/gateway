@@ -9,6 +9,7 @@ from transactions.forms import TransactionForm
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from json import dumps,loads
+from .models import AllowField
 
 def customer_list(request):
 
@@ -38,20 +39,20 @@ def customer_create(request):
     if request.method == 'POST':
         print('hello world')
         authusername = request.user.username
-        first_name = request.POST['first_name']
-        last_name = request.POST['last_name']
-        company = request.POST['company']
-        address = request.POST['address']
-        city = request.POST['city']
-        state = request.POST['state']
-        zip_code = request.POST['zip_code']
-        country = request.POST['country']
-        phone_number = request.POST['phone_number']
-        exp_year = request.POST['exp_year']
-        exp_month = request.POST['exp_month']
-        cvv = request.POST['cvv']
-        email = request.POST['email']
-        card_number=request.POST['card_number']
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        company = request.POST.get('company')
+        address = request.POST.get('address')
+        city = request.POST.get('city')
+        state = request.POST.get('state')
+        zip_code = request.POST.get('zip_code')
+        country = request.POST.get('country')
+        phone_number = request.POST.get('phone_number')
+        exp_year = request.POST.get('exp_year')
+        exp_month = request.POST.get('exp_month')
+        cvv = request.POST.get('cvv')
+        email = request.POST.get('email')
+        card_number=request.POST.get('card_number')
         cards = []
         if card_number and exp_month and exp_year and cvv:
             
@@ -70,7 +71,26 @@ def customer_create(request):
         return redirect('/customers/customers_list/')
     form = CustomerForm()
     button_text = "Add Transaction"
-    return render(request, 'customers/customer_create.html', {'form': form, 'button_text': button_text})
+    fields = AllowField.objects.get(username=request.user.username)
+    fields_object = {
+        'first_name': True,
+        'last_name': True,
+        'company': True,
+        'address': True,
+        'city': True,
+        'state': True,
+        'zip_code': True,
+        'country': True,
+        'phone_number': True,
+        'card_number': True,
+        'exp_year': True,
+        'exp_month': True,
+        'cvv': True,
+        'email': True
+    }
+    if fields == None:
+        fields = fields_object
+    return render(request, 'customers/customer_create.html', {'form': form, 'button_text': button_text,'fields': fields})
 
 # def customer_detail(request, pk):
 #     customer = get_object_or_404(Customer, pk=pk)
