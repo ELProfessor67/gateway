@@ -823,6 +823,56 @@ def edit_bank_verify(request):
     return render(request, 'transactions/edit-bank-verify.html', greeting)
 
 
+
+@login_required(login_url='/')
+def verify_user(request):
+    if 'team-' in request.user.last_name:
+        last_name = request.user.last_name.split('-')
+        request.user.username = last_name[1]
+
+    if request.method == "POST":
+        otp1 = request.POST.get("1")
+        otp2 = request.POST.get("2")
+        otp3 = request.POST.get("3")
+        otp4 = request.POST.get("4")
+        otp5 = request.POST.get("5")
+        otp6 = request.POST.get("6")
+
+        otp = otp1 + otp2 + otp3 + otp4 + otp5 + otp6
+        otp_details = OTP_Object.objects.filter(otp=otp).first()
+        url = request.GET.get('next')
+        print(url)
+        if url == None:
+            url = '/%2Faccount/dashboard2'
+        if otp_details:
+            return redirect(url)
+        else:
+            messages.error(request, 'Invalid OTP')
+            return redirect(f"/transactions/verify-user?next={url}")
+
+    new_otp = generateOTP()
+    user_exist = OTP_Object.objects.filter(username=request.user.username).first()
+
+    if user_exist:
+        user_exist.otp = new_otp
+        user_exist.created_at = datetime.now()
+        user_exist.attempt = 0
+        user_exist.save()
+    else:
+        OTP_Object.objects.create(username=request.user.username, otp=new_otp)
+
+    print(new_otp)
+    # send otp
+    subject = 'Trifection.com user verification'
+    message = f"Your verification OTP is {new_otp}"
+    from_mail = settings.EMAIL_HOST_USER
+    email = request.user.email
+    to = [email]
+    send_mail(subject, message, from_mail, to, fail_silently=False)
+    greeting = {'email': email[:4]}
+    return render(request, 'transactions/verify.html', greeting)
+
+
 @csrf_exempt
 def my_team(request):
     user_model = get_user_model()

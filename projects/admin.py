@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Batchs, Shedules
+from .models import Batchs, Shedules, OTP_Object
 # Register your models here.
 
 class BatchsAdmin(admin.ModelAdmin):
@@ -9,3 +9,4 @@ class BatchsAdmin(admin.ModelAdmin):
 
 admin.site.register(Batchs,BatchsAdmin)
 admin.site.register(Shedules)
+admin.site.register(OTP_Object)

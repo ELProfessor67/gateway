@@ -12,13 +12,16 @@ from django.contrib.auth.forms import (
 )
 from .forms import RegistrationForm
 from django.contrib import messages
-from projects.models import OTP_Object
+from projects.models import OTP_Object, Token_Object
 import random
 import datetime
 from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+import os
+import hashlib
+import base64
 
 def generateOTP():
 	otp = random.randint(100000,999999)
@@ -150,3 +153,71 @@ def verify(request):
 			return redirect('/account/verify-user')
 
 	return render(request,'account/verification_sent.html')
+
+
+
+
+def forgot_password(request):
+	print(request)
+	if request.method == "POST":
+		email = request.POST.get('email')
+
+		random_bytes = os.urandom(20)
+		# random_bytes = str(base64.b64encode(random_bytes).decode('utf-8'))
+		# print(random_bytes)
+		hashed_bytes = hashlib.sha256(random_bytes).hexdigest()
+
+		user_model = get_user_model()
+		user = user_model.objects.filter(email=email).first()
+		if user == None:
+			return render(request, 'account/reset_passwoes.html', {"message": f"No User Exist"})
+
+		user_exist = Token_Object.objects.filter(username=user.username).first()
+		print(str(hashed_bytes))
+		if user_exist:                                                
+			user_exist.reset_token = str(hashed_bytes)
+			user_exist.created_at = datetime.datetime.now()
+			user_exist.save()
+		else:
+			Token_Object.objects.create(username=user.username,reset_token=str(hashed_bytes))
+
+
+		subject = 'Trifection.com reset password link'
+		referer = request.META.get('HTTP_ORIGIN')
+		url = f"{referer}/account/forgot-password?token={hashed_bytes}"
+		print(url)
+		message = f"your reset link is {url}"
+		from_mail = settings.EMAIL_HOST_USER
+		email = user.email
+		to = [email]
+		send_mail(subject,message,from_mail,to,fail_silently=False)
+		return render(request, 'account/reset_passwoes.html', {"message": f"Reset link sent to your email {email}"})
+	return render(request,'account/reset_passwoes.html')
+
+
+
+
+def reset_password(request):
+	if request.method == "POST":
+		token = request.GET.get("token")
+		password = request.POST.get('password')
+		cpassword = request.POST.get('cpassword')
+
+		if(cpassword != password):
+			return render(request,'account/forgot_password.html',{"message": "password and confirm password does not match"})
+
+		token_details = Token_Object.objects.filter(reset_token=token).first()
+		if token_details:
+			user_model = get_user_model()
+			user = user_model.objects.get(username=token_details.username)
+			user.set_password(password)
+			user.save()
+			token_details.reset_token = ""
+			token_details.save()
+
+				
+			return render(request,'account/forgot_password.html',{"message": "password reset successfully"})
+		else:
+			return render(request,'account/forgot_password.html',{"message": "Invalid Reset Token"})
+		print(token_deatils)
+	return render(request,'account/forgot_password.html')

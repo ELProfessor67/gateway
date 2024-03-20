@@ -57,4 +57,9 @@ class OTP_Object(models.Model):
     otp = models.IntegerField()
     created_at = models.DateTimeField(default=datetime.datetime.now)
     attempt = models.IntegerField(default=0)
+    reset_token = models.CharField(max_length=200,default='hhhhhhh')
 
+class Token_Object(models.Model):
+    username = models.CharField(max_length=200)
+    created_at = models.DateTimeField(default=datetime.datetime.now)
+    reset_token = models.CharField(max_length=200,default='hhhhhhh')

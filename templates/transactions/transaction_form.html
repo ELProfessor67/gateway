@@ -1,6 +1,6 @@
 
 
-{% extends 'partials/base.html' %}
+{% extends 'partials/new_base.html' %}
 {% load static %}
 
 {% load widget_tweaks %}
@@ -38,7 +38,7 @@
                      
                         <div class="form-group">
                             <label for="{{ form.first_name.id_for_label }}">First Name</label>
-                            {{ form.first_name|add_class:'form-control' }}
+                            {{ form.first_name|add_class:'form-control input-default' }}
                         </div>
 
                     </div>
@@ -46,7 +46,7 @@
 
                         <div class="form-group">
                             <label for="{{ form.last_name.id_for_label }}">Last Name</label>
-                            {{ form.last_name|add_class:'form-control' }}
+                            {{ form.last_name|add_class:'form-control input-default' }}
                         </div>
 
                     </div>
@@ -58,7 +58,7 @@
                     <div class="col-lg-6">
                         <div class="form-group">
                             <label for="{{ form.company.id_for_label }}">Company</label>
-                            {{ form.company|add_class:'form-control' }}
+                            {{ form.company|add_class:'form-control input-default' }}
                         </div>
                      
                     </div>
@@ -362,7 +362,7 @@
             <form method="POST" action="/transactions/create/" class="my_form">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">Add new transaction</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <button type="button" class="close" style="padding: 0 1rem;border: none; background: none;" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
               </button>
             </div>
@@ -380,7 +380,7 @@
                              
                                 <div class="form-group">
                                     <label for="{{ form.first_name.id_for_label }}">First Name</label>
-                                    {{ form.first_name|add_class:'form-control' }}
+                                    {{ form.first_name|add_class:'form-control input-default' }}
                                     <datalist id="customers-list">
 
                                     </datalist>
@@ -391,7 +391,7 @@
         
                                 <div class="form-group">
                                     <label for="{{ form.last_name.id_for_label }}">Last Name</label>
-                                    {{ form.last_name|add_class:'form-control' }}
+                                    {{ form.last_name|add_class:'form-control input-default' }}
                                 </div>
         
                             </div>
@@ -403,7 +403,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="{{ form.company.id_for_label }}">Company</label>
-                                    {{ form.company|add_class:'form-control' }}
+                                    {{ form.company|add_class:'form-control input-default' }}
                                 </div>
                              
                             </div>
@@ -411,7 +411,7 @@
         
                                 <div class="form-group">
                                     <label for="{{ form.address.id_for_label }}">Address</label>
-                                    {{ form.address|add_class:'form-control' }}
+                                    {{ form.address|add_class:'form-control input-default' }}
                                 </div>
                              
                             </div>
@@ -426,7 +426,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="{{ form.city.id_for_label }}">City</label>
-                                    {{ form.city|add_class:'form-control' }}
+                                    {{ form.city|add_class:'form-control input-default' }}
                                 </div>
                             </div>
         
@@ -434,7 +434,7 @@
         
                                 <div class="form-group">
                                     <label for="{{ form.state.id_for_label }}">State</label>
-                                    {{ form.state|add_class:'form-control' }}
+                                    {{ form.state|add_class:'form-control input-default' }}
                                 </div>
                              
                             </div>
@@ -448,7 +448,7 @@
         
                                 <div class="form-group">
                                     <label for="{{ form.zip_code.id_for_label }}">Zip Code</label>
-                                    {{ form.zip_code|add_class:'form-control' }}
+                                    {{ form.zip_code|add_class:'form-control input-default' }}
                                 </div>
         
                             </div>
@@ -456,7 +456,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="{{ form.country.id_for_label }}">Country</label>
-                                    {{ form.country|add_class:'form-control' }}
+                                    {{ form.country|add_class:'form-control input-default' }}
                                 </div>
                             </div>
         
@@ -468,7 +468,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="{{ form.phone_number.id_for_label }}">Phone Number</label>
-                                    {{ form.phone_number|add_class:'form-control' }}
+                                    {{ form.phone_number|add_class:'form-control input-default' }}
                                 </div>
                             </div>
         
@@ -494,7 +494,7 @@
         
                                 <div class="form-group">
                                     <label for="{{ form.amount.id_for_label }}">Amount</label>
-                                    {{ form.amount|add_class:'form-control' }}
+                                    {{ form.amount|add_class:'form-control input-default' }}
                                 </div>
         
                             </div>
@@ -506,7 +506,7 @@
         
                                 <div class="form-group">
                                     <label for="{{ form.payment_method.id_for_label }}">Payment Method</label>
-                                    {{ form.payment_method|add_class:'form-control2' }}
+                                    {{ form.payment_method|add_class:'' }}
                                 </div>
         
                             </div>
@@ -521,7 +521,7 @@
                             <div class="col-lg-6">
                                 <div class="form-group">
                                     <label for="{{ form.transaction_type.id_for_label }}">Transaction Type</label>
-                                    {{ form.transaction_type|add_class:'form-control' }}
+                                    {{ form.transaction_type|add_class:'form-control input-default' }}
                                     <script>
                                         document.getElementById("id_transaction_type").value = "{{default}}";
                                     </script>
@@ -537,7 +537,7 @@
         
                                 <div class="form-group">
                                     <label for="{{ form.card_number.id_for_label }}">Card Number</label>
-                                    {{ form.card_number|add_class:'form-control' }}
+                                    {{ form.card_number|add_class:'form-control input-default' }}
                                     <p style='color: red;' id="unique">{{unique}}</p>
                                     <script>
                                         const unique = document.getElementById('unique');
@@ -561,7 +561,7 @@
         
                                 <div class="form-group">
                                     <label for="{{ form.exp_month.id_for_label }}">Exp Month</label>
-                                    {{ form.exp_month|add_class:'form-control' }}
+                                    {{ form.exp_month|add_class:'form-control input-default' }}
                                     <div class="expmondaterror" id="expmondaterror"></div>
                                 </div>
                             
@@ -570,7 +570,7 @@
         
                                 <div class="form-group">
                                     <label for="{{ form.exp_year.id_for_label }}">Exp Year</label>
-                                    {{ form.exp_year|add_class:'form-control' }}
+                                    {{ form.exp_year|add_class:'form-control input-default' }}
                                     <div class="" id="expyearerror"></div>
                                 </div>
                             
@@ -579,7 +579,7 @@
         
                                 <div class="form-group">
                                     <label for="{{ form.cvv.id_for_label }}">CVV</label>
-                                    {{ form.cvv|add_class:'form-control' }}
+                                    {{ form.cvv|add_class:'form-control input-default' }}
                                 </div>
         
                             </div>
@@ -594,12 +594,12 @@
         
                                 <div class="form-group">
                                     <label for="{{ form.email.id_for_label }}">Email</label>
-                                    {{ form.email|add_class:'form-control' }}
+                                    {{ form.email|add_class:'form-control input-default' }}
                                 </div>
         
                                 {% comment %} <div class="form-group" style="display:none1">
                                     <label for="{{ form.transaction_id.id_for_label }}">transaction_id</label>
-                                    {{ form.transaction_id|add_class:'form-control' }}
+                                    {{ form.transaction_id|add_class:'form-control input-default' }}
                                 </div> {% endcomment %}
         
                             </div>

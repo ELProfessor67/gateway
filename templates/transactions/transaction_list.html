@@ -1,4 +1,4 @@
-{% extends 'partials/base.html' %}
+{% extends 'partials/new_base.html' %}
 {% load static %}
 {% load widget_tweaks %}
 
@@ -60,42 +60,35 @@ function confirmDelete() {
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <div class="row mb-2">
+                <div class="row mb-5">
                     <div class="col-sm">
                         <div class="search-box me-2 d-inline-block">
                             <div class="position-relative">
                              
                                 {% if not report %}
-                                <form method="get">
-                                    <div class="filter-form">
-                                        {{ filter.form.as_p }}
-                                        <button class="btn btn-success" type="submit">Filter</button>
-                                    </div>
-                                </form>
+                               
 
                                 {% else %}
                                 {% load static %}
-                                <div class="d-flex justify-content-end align-items-center">
-                                    <a class="btn btn-success" href="/static/csv/{{username}}.csv" download>Export CSV</a>
-                                </div>
+                                
                                 <form method="get" onsubmit="submit()" id="customform">
-                                    <div class="d-flex align-items-center">
+                                    <div class="d-flex align-items-center gap-4">
                                         <div class="d-flex" style="flex-direction: column">
                                             <label class="fs-4 text-dark" style="font-size: 1.3rem; margin-bottom: 0.2rem !important">Start</label>
-                                            <input type="date" class="py-2 px-2 rounded mr-2 border-1" name="start_date" id="start_date"/>
+                                            <input type="date" class="form-control input-default " name="start_date" id="start_date"/>
                                         </div>
                                         <div class="d-flex" style="flex-direction: column">
                                             <label class="fs-4 text-dark" style="font-size: 1.3rem; margin-bottom: 0.2rem !important">End</label>
-                                            <input type="date" class="py-2 px-2 rounded mr-2" name="end_date" id="end_date"/>
+                                            <input type="date" class="form-control input-default" name="end_date" id="end_date"/>
                                         </div>
                     
-                                        <select name="status" id="custom-status" class="py-2 px-2 rounded mr-2" style="margin-bottom: -2rem; display: block !important;">
+                                        <select name="status" id="custom-status" class="form-control input-default" style="margin-bottom: -2rem; display: block !important;">
                                             <option value="all" selected>All</option>
                                             <option value="Complete">Complete</option>
                                             <option value="Failed">Failed</option>
                                         </select>
 
-                                        <select name="transaction_type" id="transaction_type" class="py-2 px-2 rounded mr-2" style="margin-bottom: -2rem;">
+                                        <select name="transaction_type" id="transaction_type" class="form-control input-default" style="margin-bottom: -2rem;">
                                             <option value="all" selected>All</option>
                                             <option value="charge">Charge</option>
                                             <option value="save">Save</option>
@@ -106,8 +99,12 @@ function confirmDelete() {
                                             <option value="gift_redeem">Gift Redeem</option>
                                         </select>
 
-                                        <input type="text" style="margin-bottom: -2rem;" class="py-2 px-2 rounded" placeholder="search by card number" id="card_number" name="card_number"/>
-                                        <input type="text" style="margin-bottom: -2rem;" class="py-2 px-2 rounded ml-2" placeholder="search by account holder name" id="holder_name" name="holder_name"/>
+                                        <input type="text" style="margin-bottom: -2rem;" class="form-control input-default" placeholder="search by card number" id="card_number" name="card_number"/>
+                                        <input type="text" style="margin-bottom: -2rem;" class="form-control input-default" placeholder="search by account holder name" id="holder_name" name="holder_name"/>
+
+                                        <div class="d-flex justify-content-end align-items-center" style="margin-bottom: -2rem;">
+                                            <a class="btn btn-primary" href="/static/csv/{{username}}.csv" style="white-space: pre;" download>Export CSV</a>
+                                        </div>
                                     </div>
                                 </form>
                                 <script>
@@ -187,516 +184,193 @@ function confirmDelete() {
                 <div class="">
 
 
-
-                    <!-- Modal -->
-                    <div class="modal fade bs-example-modal-xl" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-xl" role="document">
-                        <div class="modal-content">
-                          <form method="POST" action="http://127.0.0.1:8000/transactions/create_ajax/" class="my_form">
-                          <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Add new transaction</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
-                          <div class="modal-body">
-                        
-                                <div class="message_box" style="text-align: center;"></div>
-
-                                {% csrf_token %}
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        
-                                        <div class="row">
-                                            <div class="col-lg-6">
-                                             
-                                                <div class="form-group">
-                                                    <label for="{{ form.first_name.id_for_label }}">First Name</label>
-                                                    {{ form.first_name|add_class:'form-control' }}
-                                                </div>
-
-                                            </div>
-                                            <div class="col-lg-6">
-
-                                                <div class="form-group">
-                                                    <label for="{{ form.last_name.id_for_label }}">Last Name</label>
-                                                    {{ form.last_name|add_class:'form-control' }}
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-                                        <div class="row">
-                                            
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="{{ form.company.id_for_label }}">Company</label>
-                                                    {{ form.company|add_class:'form-control' }}
-                                                </div>
-                                             
-                                            </div>
-                                             <div class="col-lg-6">
-
-                                                <div class="form-group">
-                                                    <label for="{{ form.address.id_for_label }}">Address</label>
-                                                    {{ form.address|add_class:'form-control' }}
-                                                </div>
-                                             
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="row">
-                                            
-
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="{{ form.city.id_for_label }}">City</label>
-                                                    {{ form.city|add_class:'form-control' }}
-                                                </div>
-                                            </div>
-
-                                             <div class="col-lg-6">
-
-                                                <div class="form-group">
-                                                    <label for="{{ form.state.id_for_label }}">State</label>
-                                                    {{ form.state|add_class:'form-control' }}
-                                                </div>
-                                             
-                                            </div>
-
-                                        </div>
-
-                                        <div class="row">
-                                                                            
-
-                                            <div class="col-lg-6">
-
-                                                <div class="form-group">
-                                                    <label for="{{ form.zip_code.id_for_label }}">Zip Code</label>
-                                                    {{ form.zip_code|add_class:'form-control' }}
-                                                </div>
-
-                                            </div>
-
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="{{ form.country.id_for_label }}">Country</label>
-                                                    {{ form.country|add_class:'form-control' }}
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        
-                                        <div class="row">
-                                                                            
-
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="{{ form.phone_number.id_for_label }}">Phone Number</label>
-                                                    {{ form.phone_number|add_class:'form-control' }}
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                        
-                                    </div>
-                                    <div class="col-md-6">
-
-
-                                        <div class="row">
-                                            
-                                            <div class="col-lg-12">
-
-                                                <div class="form-group">
-                                                    <label for="{{ form.amount.id_for_label }}">Amount</label>
-                                                    {{ form.amount|add_class:'form-control' }}
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-                                        <div class="row">
-                                            
-                                            <div class="col-lg-12">
-
-                                                <div class="form-group">
-                                                    <label for="{{ form.payment_method.id_for_label }}">Payment Method</label>
-                                                    {{ form.payment_method|add_class:'form-control2' }}
-                                                </div>
-
-                                            </div>
-
-
-                                        </div>
-
-
-                                         
-                                        <div class="row">
-                                            
-                                            <div class="col-lg-6">
-                                                <div class="form-group">
-                                                    <label for="{{ form.transaction_type.id_for_label }}">Transaction Type {{default}}</label>
-                                                    {{ form.transaction_type|add_class:'form-control' }}
-                                                </div>
-
-                                                <script>
-                                                    console.log("{{default}}")
-                                                </script>
-
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-lg-6">
-
-                                                <div class="form-group">
-                                                    <label for="{{ form.card_number.id_for_label }}">Card Number</label>
-                                                    {{ form.card_number|add_class:'form-control' }}
-
-                                                    <div class="cardNumberError" id="cardNumberError"></div>
-                                                    {% if form.card_number.errors %}
-                                                        <div class="invalid-feedback">
-                                                            {{ form.card_number.errors}}
-                                                        </div>
-                                                    {% endif %}
-                                                </div>
-
-                                            </div>
-                                            <div class="col-lg-2">
-
-                                                <div class="form-group">
-                                                    <label for="{{ form.exp_month.id_for_label }}">Exp Month</label>
-                                                    {{ form.exp_month|add_class:'form-control' }}
-                                                </div>
-                                            
-                                            </div>
-                                            <div class="col-lg-2">
-
-                                                <div class="form-group">
-                                                    <label for="{{ form.exp_year.id_for_label }}">Exp Year</label>
-                                                    {{ form.exp_year|add_class:'form-control' }}
-                                                </div>
-                                            
-                                            </div>
-                                            <div class="col-lg-2">
-
-                                                <div class="form-group">
-                                                    <label for="{{ form.cvv.id_for_label }}">CVV</label>
-                                                    {{ form.cvv|add_class:'form-control' }}
-                                                </div>
-
-                                            </div>
-
-                                        </div>
-
-
-
-                                        <div class="row">
-                                            
-                                            <div class="col-lg-12">
-
-                                                <div class="form-group">
-                                                    <label for="{{ form.email.id_for_label }}">Email</label>
-                                                    {{ form.email|add_class:'form-control' }}
-                                                </div>
-
-                                                <div class="form-group" style="display:none">
-                                                    <label for="{{ form.transaction_id.id_for_label }}">transaction_id</label>
-                                                    {{ form.transaction_id|add_class:'form-control' }}
-                                                </div>
-
-                                            </div>
-
-                                           
-
-                                        </div>
-
-                                        
-                                        <script>
-                                            $(document).ready(function() {
-                                          // Get the card number input element
-                                          var cardNumberInput = jQuery('#id_card_number');
-
-                                          // Add event listener for input change
-                                          cardNumberInput.on('input', function() {
-                                            var cardNumber = cardNumberInput.val();
-
-                                            // Check if the card number has exactly 16 digits
-                                            if (cardNumber.length !== 16) {
-                                              jQuery('#cardNumberError').html('<span style="color:red">Card number must be 16 digits.</span>');
-                                              cardNumberInput.addClass('is-invalid');
-                                            } else {
-                                              jQuery('#cardNumberError').text('');
-                                              cardNumberInput.removeClass('is-invalid');
-                                            }
-                                          });
-                                        });
-                                        </script>
-
-
-                                        <script type="text/javascript">
-                                            jQuery(document).ready(function() {
-                                                
-                                                var id_transaction_id = jQuery("#id_transaction_id").val();
-                                                if(id_transaction_id=="")
-                                                {
-                                                    jQuery("#id_transaction_id").val('111');
-                                                }
-                                                // Attach submit event listener to the form
-                                                jQuery('form').submit(function(event) {
-                                                    event.preventDefault(); // Prevent form submission
-
-                                                    // Get the form data
-                                                    var mythis   = jQuery(this); 
-                                                    var formData = jQuery(this).serialize();
-                                                    
-                                                    jQuery(".message_box").html('Please wait...');
-                                                    
-                                                    jQuery(".process").html('Please wait...');
-                                                    jQuery(".process").prop('disabled',true);
-                                                    
-                                                    jQuery.ajax({
-                                                        url: mythis.attr('action'),  // URL from the form's action attribute
-                                                        type: mythis.attr('method'), // HTTP method (GET or POST)
-                                                        data: formData,               // Form data to be sent
-                                                        success: function(response) {
-                                                            // Handle the successful response
-                                                            
-                                                            jQuery(".process").prop('disabled',false);
-                                                            jQuery(".process").html('Process');
-
-                                                            console.log(response);
-                                                            var msg = (response);
-                                                            
-                                                            console.log(msg.success);
-
-                                                            if(msg.success)
-                                                            {
-                                                                jQuery(".message_box").html('<div class="alert alert-success">Transaction Completed !</div>');
-                                                                alert('Transaction Completed!');
-                                                                setTimeout(function(){
-                                                                    jQuery('.close').click();
-                                                                    window.location.href=window.location.href;
-                                                                },1000);
-                                                            }
-                                                            else
-                                                            {
-                                                               jQuery(".message_box").html('<div class="alert alert-danger">'+msg.message+'</div>'); 
-                                                            }
-                                                           
-
-                                                            // Perform any additional actions as needed
-                                                        },
-                                                        error: function(xhr, errmsg, err) {
-                                                            // Handle the error
-                                                            console.log(xhr.status + ": " + xhr.responseText);
-                                                        }
-                                                    });
-                                                });
-                                            });
-                                        </script>
-
-                                    </div>
-                                </div>
-                             
-
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary process" >Process</button>
-                          </div>
-
-                          </form>
-
-
-                        </div>
-                      </div>
-                    </div>
-
-
                     <input type="number" value={{length}} id="length" hidden="true"/>
-                    <div class="table-responsive">
-                        <table class="table transaction-list-table align-middle table-nowrap dt-responsive nowrap w-100 table-borderless" id="transactionList-table">
-                        <thead class="table-light">
-                            <tr>
-                                <th scope="col" style="width: 60px">#</th>
-                                <th scope="col">First Name</th>
-                                <th scope="col">Last Name</th>
-                                <th scope="col">Company</th>
-                                <th scope="col">Address</th>
-                                <th scope="col">City</th>
-                                <th scope="col">State</th>
-                                <th scope="col">Zip Code</th>
-                                <th scope="col">Country</th>
-                                <th scope="col">Phone Number</th>
-                                <th scope="col">Amount</th>
-                                <th scope="col">Fees</th>
-                                <th scope="col">Total</th>
-                                <th scope="col">Payment Method</th>
-                                <th scope="col">Transaction Type</th>
-                                <th scope="col">Card Number</th>
-                                <th scope="col">Expiration Date</th>
-                                <th scope="col">CVV</th>
-                                <th scope="col">Bluesnap Trans.ID</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Transaction By</th>
-                                <th scope="col">status</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for transaction in transactions %}
-                                <tr>
-                                    <td id="btn{{forloop.counter}}" style="cursor: pointer;">{{ forloop.counter }}</td>
-                                    <td>{{ transaction.first_name }}</td>
-                                    <td>{{ transaction.last_name }}</td>
-                                    <td>{{ transaction.company }}</td>
-                                    <td>{{ transaction.address }}</td>
-                                    <td>{{ transaction.city }}</td>
-                                    <td>{{ transaction.state }}</td>
-                                    <td>{{ transaction.zip_code }}</td>
-                                    <td>{{ transaction.country }}</td>
-                                    <td>{{ transaction.phone_number }}</td>
-                                    <td>{{ transaction.amount }}</td>
-                                    <td>{{ transaction.fee }}</td>
-                                    <td>{{ transaction.total }}</td>
-                                    <td>{{ transaction.payment_method }}</td>
-                                    <td>{{ transaction.transaction_type }}</td>
-                                    <td>xxxx xxxx xxxx {{ transaction.card_number|slice:"-4:" }}</td>
-                                    <td>xx / xxxx</td>
-                                    <td>xxx</td>
-                                     <td>{{ transaction.transaction_id }}</td>
-                                    <td>{{ transaction.email }}</td>
-                                    <td>{{ transaction.date }}</td>
-                                    <td>Transaction By {{ transaction.by }}</td>
-                                    {% if transaction.status == "Complete" %}
-                                        <th scope="col">
-                                            <span class="py-1 px-2 rounded text-white" style="background: green;">{{transaction.status}}</span>
-                                        </th>
-                                    {% endif %}
-
-                                    {% if transaction.status == "Failed" %}
-                                        <th scope="col">
-                                            <span class="py-1 px-2 rounded text-white" style="background: red;">{{transaction.status}}</span>
-                                        </th>
-                                    {% endif %}
-                                </tr>
-                                {% if report %}
-                                    <!-- Modal -->
-                                    <div class="modal fade" id="modal{{forloop.counter}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                        <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close{{forloop.counter}}">X</button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">First Name</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.first_name}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Last Name</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.last_name}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Company</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.company}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Address</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.address}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">City</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.city}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">State</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.state}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Zip Code</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.zip_code}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Country</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.country}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Phone Number</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.phone_number}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Amount</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.amount}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Fee</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.fee}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Total</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.total}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Payment Method</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.payment_method}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Transaction Type</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.transaction_type}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Card Number</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.card_number}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Expiration Date</p>
-                                                    <p class="fs-4 text-gray-400">{{ transaction.exp_month }} / {{ transaction.exp_year }}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">CVV</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.cvv}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Trans.ID</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.transaction_id}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Email</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.email}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">Date</p>
-                                                    <p class="fs-4 text-gray-400">{{transaction.date}}</p>
-                                                </div>
-                                                <div class="d-flex justify-content-between align-items-center mb-2">
-                                                    <p class="fs-4 text-dark">status</p>
+                    <div class="col-lg-12">
+                        <div >
+                            <div >                           
+                                <div class="table-responsive">
+                                    <table class="table table-responsive-md" id="transactionList-table">
+                                        <thead>
+                                            <tr>
+                                                <th style="padding: 0 4rem 0 0;">#</th>
+                                                <th style="padding: 0 4rem 0 0;">First Name</th>
+                                                <th style="padding: 0 4rem 0 0;">Last Name</th>
+                                                <th style="padding: 0 4rem 0 0;">Company</th>
+                                                <th style="padding: 0 4rem 0 0;">Address</th>
+                                                <th style="padding: 0 4rem 0 0;">City</th>
+                                                <th style="padding: 0 4rem 0 0;">State</th>
+                                                <th style="padding: 0 4rem 0 0;">Zip Code</th>
+                                                <th style="padding: 0 4rem 0 0;">Country</th>
+                                                <th style="padding: 0 4rem 0 0;">Phone Number</th>
+                                                <th style="padding: 0 4rem 0 0;">Amount</th>
+                                                <th style="padding: 0 4rem 0 0;">Fees</th>
+                                                <th style="padding: 0 4rem 0 0;">Total</th>
+                                                <th style="padding: 0 4rem 0 0;">Payment Method</th>
+                                                <th style="padding: 0 4rem 0 0;">Transaction Type</th>
+                                                <th style="padding: 0 4rem 0 0;">Card Number</th>
+                                                <th style="padding: 0 4rem 0 0;">Expiration Date</th>
+                                                <th style="padding: 0 4rem 0 0;">CVV</th>
+                                                <th style="padding: 0 4rem 0 0;">Bluesnap Trans.ID</th>
+                                                <th style="padding: 0 4rem 0 0;">Email</th>
+                                                <th style="padding: 0 4rem 0 0;">Date</th>
+                                                <th style="padding: 0 4rem 0 0;">Transaction By</th>
+                                                <th style="padding: 0 4rem 0 0;">status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for transaction in transactions %}
+                                                <tr>
+                                                    <td style="padding: 0 4rem 0 0;"id="btn{{forloop.counter}}" style="cursor: pointer;">{{ forloop.counter }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.first_name }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.last_name }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.company }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.address }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.city }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.state }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.zip_code }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.country }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.phone_number }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.amount }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.fee }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.total }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.payment_method }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.transaction_type }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">xxxx xxxx xxxx {{ transaction.card_number|slice:"-4:" }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">xx / xxxx</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">xxx</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.transaction_id }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.email }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">{{ transaction.date }}</td>
+                                                    <td style="white-space: pre; padding: 0 4rem 0 0;">Transaction By {{ transaction.by }}</td>
                                                     {% if transaction.status == "Complete" %}
+                                                        <th scope="col">
                                                             <span class="py-1 px-2 rounded text-white" style="background: green;">{{transaction.status}}</span>
+                                                        </th>
                                                     {% endif %}
 
                                                     {% if transaction.status == "Failed" %}
-                                                        <span class="py-1 px-2 rounded text-white" style="background: red;">{{transaction.status}}</span>
+                                                        <th scope="col">
+                                                            <span class="py-1 px-2 rounded text-white" style="background: red;">{{transaction.status}}</span>
+                                                        </th>
                                                     {% endif %}
-                                                    
-                                                </div>
-                                            </div>
-                                        </div>
-                                        </div>
-                                    </div>
-                                {% endif %}
-                            {% empty %}
-                                <tr>
-                                    <td colspan="18" class="text-center">No transactions.</td>
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+                                                </tr>
+                                                {% if report %}
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="modal{{forloop.counter}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                                        <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                            <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close{{forloop.counter}}">X</button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">First Name</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.first_name}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Last Name</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.last_name}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Company</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.company}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Address</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.address}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">City</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.city}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">State</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.state}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Zip Code</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.zip_code}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Country</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.country}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Phone Number</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.phone_number}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Amount</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.amount}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Fee</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.fee}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Total</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.total}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Payment Method</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.payment_method}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Transaction Type</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.transaction_type}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Card Number</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.card_number}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Expiration Date</p>
+                                                                    <p class="fs-4 text-gray-400">{{ transaction.exp_month }} / {{ transaction.exp_year }}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">CVV</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.cvv}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Trans.ID</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.transaction_id}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Email</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.email}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">Date</p>
+                                                                    <p class="fs-4 text-gray-400">{{transaction.date}}</p>
+                                                                </div>
+                                                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                                                    <p class="fs-4 text-dark">status</p>
+                                                                    {% if transaction.status == "Complete" %}
+                                                                            <span class="py-1 px-2 rounded text-white" style="background: green;">{{transaction.status}}</span>
+                                                                    {% endif %}
+
+                                                                    {% if transaction.status == "Failed" %}
+                                                                        <span class="py-1 px-2 rounded text-white" style="background: red;">{{transaction.status}}</span>
+                                                                    {% endif %}
+                                                                    
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        </div>
+                                                    </div>
+                                                {% endif %}
+                                            {% empty %}
+                                                <tr>
+                                                    <td colspan="18" class="text-center">No transactions.</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
                     <script>
                         const len = +document.getElementById('length').value;

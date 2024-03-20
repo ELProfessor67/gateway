@@ -1,52 +1,57 @@
-{% extends 'partials/base.html' %}
+{% extends 'partials/new_base.html' %}
 {% load static %}
 {% block extra_css %}
 
 
-    <!-- DataTables -->
-    <link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />
+<!-- DataTables -->
+<link href="{% static 'libs/datatables.net-bs4/css/dataTables.bootstrap4.min.css' %}" rel="stylesheet"
+    type="text/css" />
 
-    <!-- Responsive datatable examples -->
-    <link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet" type="text/css" />  
+<!-- Responsive datatable examples -->
+<link href="{% static 'libs/datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css' %}" rel="stylesheet"
+    type="text/css" />
 
 {% endblock %}
 
 {% block contents %}
 <div class="row">
     <div class="col-lg-12">
-        <div class="card">
-            <div class="card-body">
-                <div class="row mb-2">
+        <div class="">
+            <div class="card">
+                <div class="card-body">
+                <div class="row mb-3">
                     <div class="col-sm">
                         <form class="search-box me-2 d-inline-block">
-                            <div class="w-100 d-flex">
+                            <div class="w-100 d-flex gap-4">
                                 <div class="d-flex flex-column mr-2">
-                                    <label class="mb-1 fs-3" for="start">start</label>
-                                    <input type="date" name="start" class="p-2" id="start"/>
+                                    <label class="mb-2" for="start">start</label>
+                                    <input type="date" name="start" class="form-control input-default" id="start" />
                                 </div>
                                 <div class="d-flex flex-column">
-                                    <label class="mb-1 fs-3" for="end">end</label>
-                                    <input type="date" name="end" class="p-2" id="end"/>
+                                    <label class="mb-2" for="end">end</label>
+                                    <input type="date" name="end" class="form-control input-default" id="end" />
+                                </div>
+                                <div style="transform: translateY(1.8rem);">
+                                    <a href="/static/csv/{{username}}.csv" download class="btn btn-primary btn-rounded"
+                                        id="addProject-btn"><i class="mdi mdi-plus me-1"></i>Export CSV</a>
                                 </div>
                             </div>
                         </form>
                     </div>
                     <!-- end col -->
-                    <div class="col-sm-auto">
-                        <div class="text-sm-end">
-                            <a href="/static/csv/{{username}}.csv" download class="btn btn-success btn-rounded" id="addProject-btn"><i class="mdi mdi-plus me-1"></i>Export CSV</a>
-                        </div>
-                    </div>
+
                     <!-- end col -->
                 </div>
                 <!-- end row -->
                 <div class="">
                     <div class="table-responsive">
-                        <table class="table project-list-table align-middle table-nowrap dt-responsive nowrap w-100 table-borderless" id="projectList-table">
-                            <thead class="table-light">
+                        <table
+                            class="table project-list-table align-middle table-nowrap dt-responsive nowrap w-100 table-borderless"
+                            id="projectList-table">
+                            <thead class="">
                                 <tr>
                                     <th scope="col" style="width: 60px">#</th>
-        
+
                                     <th scope="col">Total</th>
                                     <th scope="col">Sales</th>
                                     <th scope="col">Credit</th>
@@ -58,16 +63,18 @@
                                 {% for batch in batchs %}
                                 <tr>
                                     <th scope="col" style="width: 60px">
-                                        <a href="/projects/list/{{batch.id}}" class="text-decoration-none">{{forloop.counter}}</a>
+                                        <a href="/projects/list/{{batch.id}}"
+                                            class="text-decoration-none">{{forloop.counter}}</a>
                                     </th>
-                                   
-                                    
+
+
                                     <th scope="col">{{batch.total}}$</th>
                                     <th scope="col">{{batch.sales}}$</th>
                                     <th scope="col">{{batch.credit}}$</th>
                                     <th scope="col">{{batch.date}}</th>
                                     <th scope="col">
-                                        <a href="/projects/list/{{batch.id}}" class="text-decoration-none">View all Transaction</a>
+                                        <a href="/projects/list/{{batch.id}}" class="text-decoration-none">View all
+                                            Transaction</a>
                                     </th>
                                     <!-- {% if batch.status == "Pending" %}
                                         <th scope="col">
@@ -92,140 +99,164 @@
                         </table>
                     </div>
                 </div>
-
-
-
-                <!-- graphs  -->
-                <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-                <div class="py-4 px-2 mt-5" style="display: grid; grid-template-columns: 1fr 1fr;">
-                    <div>
-                        <input id="sale_data" value="{{sale_data}}" type="text" hidden="true"/>
-                        <h3 class="fs-5 text-center mb-5">Sales Summary By Card Type</h3>
-                        <div class="dought_graph w-75 m-auto">
-                            <canvas id="dought_graph_1"/>
-                        </div>
-                    </div>
-                    <div>
-                        <input id="credit_data" value="{{credit_data}}" type="text" hidden="true"/>
-                        <h4 class="fs-5 text-center mb-5">Credit Summary By Card Types</h4>
-                        <div class="dought_graph w-75 m-auto">
-                            <canvas id="dought_graph_2"/>
-                        </div>
-                    </div>
-                </div>
-
-                <script>
-
-                    const doughnut1 = document.getElementById('dought_graph_1');
-                    const doughnut2 = document.getElementById('dought_graph_2');
-                    const sale_data = JSON.parse(document.getElementById('sale_data').value)
-                    const credit_data = JSON.parse(document.getElementById('credit_data').value)
-
-                    datalabels1 = Object.keys(sale_data);
-                    datalabels2 = Object.keys(credit_data);
-                    datasets1 = []
-                    datasets2 = []
-
-                    datalabels1.forEach(element => {
-                        datasets1.push(sale_data[element])
-                    });
-
-                    datalabels2.forEach(element => {
-                        datasets2.push(credit_data[element])
-                    });
-
-                    const data1 = {
-                        labels: datalabels1,
-                        datasets: [{
-                            label: 'Sales Summary',
-                            data: datasets1,
-                            backgroundColor: [
-                            'rgb(255, 99, 132)',
-                            'rgb(54, 162, 235)',
-                            'rgb(255, 205, 86)'
-                            ],
-                            hoverOffset: 4
-                        }]
-                    };
-
-                    const data2 = {
-                        labels: datalabels2,
-                        datasets: [{
-                            label: 'Credit Summary',
-                            data: datasets2,
-                            backgroundColor: [
-                            'rgb(255, 99, 132)',
-                            'rgb(54, 162, 235)',
-                            'rgb(255, 205, 86)'
-                            ],
-                            hoverOffset: 4
-                        }]
-                    };
-
-                    const config1 = {
-                        type: 'doughnut',
-                        data: data1,
-                    };
-
-                    const config2 = {
-                        type: 'doughnut',
-                        data: data2,
-                    };
-
-                    new Chart(doughnut1,config1);
-                    new Chart(doughnut2,config2);
-
-
-                    // on change submit 
-                    const startinput = document.getElementById('start');
-                    const endinput = document.getElementById('end');
-
-                    function change(){
-                        this.form.submit();
-                    }
-
-                    startinput.onchange = change;
-                    endinput.onchange = change
-
-                    const params = new URLSearchParams(window.location.search);
-                    const startvalue = params.get('start');
-                    const endvalue = params.get('end');
-
-                    if(startvalue) startinput.value = startvalue;
-                    if(endvalue) endinput.value = endvalue;
-                </script>
+            </div>
             </div>
         </div>
-        <!-- end card -->
+
+
+
+        <!-- graphs  -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <div class="py-4 px-2 mt-5 row gap-4" style="display: grid; grid-template-columns: 1fr 1fr;">
+            <div class="card">
+                <div class="card-header pb-0 border-0">
+                    <div>
+                        <h4 class="card-title mb-2">Sales Summary By Card Type</h4>
+                        <span class="fs-12">Cards Graph</span>
+                    </div>
+                </div>
+                <div class="card-body pb-0 pt-3">
+                    <div class="dought_graph w-75 m-auto">
+                        <canvas id="dought_graph_1" />
+                    </div>
+                </div>
+                <input id="sale_data" value="{{sale_data}}" type="text" hidden="true" />
+            </div>
+            <div class="card">
+                <div class="card-header pb-0 border-0">
+                    <div>
+                        <h4 class="card-title mb-2">Credit Summary By Card Type</h4>
+                        <span class="fs-12">Cards Graph</span>
+                    </div>
+                </div>
+                <div class="card-body pb-0 pt-3">
+                    <div class="dought_graph w-75 m-auto">
+                        <canvas id="dought_graph_2" />
+                    </div>
+                </div>
+                <input id="sale_data" value="{{credit_data}}" type="text" hidden="true" />
+            </div>
+        </div>
+
+        <script>
+
+            const doughnut1 = document.getElementById('dought_graph_1');
+            const doughnut2 = document.getElementById('dought_graph_2');
+            const sale_data = JSON.parse(document.getElementById('sale_data').value)
+            const credit_data = JSON.parse(document.getElementById('credit_data').value)
+
+            datalabels1 = Object.keys(sale_data);
+            datalabels2 = Object.keys(credit_data);
+            datasets1 = []
+            datasets2 = []
+
+            datalabels1.forEach(element => {
+                datasets1.push(sale_data[element])
+            });
+
+            datalabels2.forEach(element => {
+                datasets2.push(credit_data[element])
+            });
+
+            const data1 = {
+                labels: datalabels1,
+                datasets: [{
+                    label: 'Sales Summary',
+                    data: datasets1,
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)'
+                    ],
+                    hoverOffset: 4
+                }]
+            };
+
+            const data2 = {
+                labels: datalabels2,
+                datasets: [{
+                    label: 'Credit Summary',
+                    data: datasets2,
+                    backgroundColor: [
+                        'rgb(255, 99, 132)',
+                        'rgb(54, 162, 235)',
+                        'rgb(255, 205, 86)'
+                    ],
+                    hoverOffset: 4
+                }]
+            };
+
+            const config1 = {
+                type: 'doughnut',
+                data: data1,
+            };
+
+            const config2 = {
+                type: 'doughnut',
+                data: data2,
+            };
+
+            new Chart(doughnut1, config1);
+            new Chart(doughnut2, config2);
+
+
+            // on change submit 
+            const startinput = document.getElementById('start');
+            const endinput = document.getElementById('end');
+
+            function change() {
+                this.form.submit();
+            }
+
+            startinput.onchange = change;
+            endinput.onchange = change
+
+            const params = new URLSearchParams(window.location.search);
+            const startvalue = params.get('start');
+            const endvalue = params.get('end');
+
+            if (startvalue) startinput.value = startvalue;
+            if (endvalue) endinput.value = endvalue;
+        </script>
+
+
+
+
+
+
+
+
     </div>
 </div>
 <!-- end row -->
 {% endblock %}
 
-{% block extra_content %}          
+{% block extra_content %}
 <!-- Modal -->
 <div class="modal fade" id="removeItemModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-sm">
         <div class="modal-content">
             <div class="modal-body px-4 py-5 text-center">
-                <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close position-absolute end-0 top-0 m-3" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
                 <div class="avatar-sm mb-4 mx-auto">
                     <div class="avatar-title bg-primary text-primary bg-opacity-10 font-size-20 rounded-3">
                         <i class="mdi mdi-trash-can-outline"></i>
                     </div>
                 </div>
                 <p class="text-muted font-size-16 mb-4">Are you Sure You want to Remove this Order ?</p>
-                
+
                 <div class="hstack gap-2 justify-content-center mb-0">
                     <button type="button" class="btn btn-danger" id="remove-item">Remove Now</button>
-                    <button type="button" class="btn btn-secondary" id="close-removeProjectModal" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-secondary" id="close-removeProjectModal"
+                        data-bs-dismiss="modal">Close</button>
                 </div>
             </div>
         </div>
     </div>
 </div>
-<!-- end removeItemModal -->  
- {% endblock %}
+<!-- end removeItemModal -->
+{% endblock %}
 
 
 
@@ -233,15 +264,15 @@
 {% block extra_javascript %}
 
 
-    <!-- Required datatable js -->
-    {% comment %} <script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js'%}"></script>
-    <script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
-    
-    <!-- Responsive examples -->
-    <script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js'%}"></script>
-    <script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js'%}"></script>
+<!-- Required datatable js -->
+{% comment %}
+<script src="{% static 'libs/datatables.net/js/jquery.dataTables.min.js'%}"></script>
+<script src="{% static 'libs/datatables.net-bs4/js/dataTables.bootstrap4.min.js'%}"></script>
 
-    <script src="{% static 'js/pages/project-list.init.js'%}"></script> {% endcomment %}
+<!-- Responsive examples -->
+<script src="{% static 'libs/datatables.net-responsive/js/dataTables.responsive.min.js'%}"></script>
+<script src="{% static 'libs/datatables.net-responsive-bs4/js/responsive.bootstrap4.min.js'%}"></script>
+
+<script src="{% static 'js/pages/project-list.init.js'%}"></script> {% endcomment %}
 
 {% endblock %}
-

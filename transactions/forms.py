@@ -49,7 +49,7 @@ class TransactionForm(forms.ModelForm):
         ]
         
         widgets = {
-            'amount': forms.Textarea(attrs={'rows': 1, 'cols': 30}),
+            'amount': forms.TextInput(attrs={'rows': 1, 'cols': 30}),
             'payment_method': forms.RadioSelect(choices=[('credit', 'Credit Card'), ('check', 'Check')]),
             'transaction_type': forms.Select(choices=[('refund', 'Refund'),('charge','Charge'),('save','Save'),('auth_only','Auth Only'),('post_auth','Post Auth'),('gift_issue','Gift Issue'),('gift_redeem','Gift Redeem')]),
         }

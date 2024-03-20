@@ -1,4 +1,4 @@
-{% extends 'partials/base.html' %}
+{% extends 'partials/new_base.html' %}
 {% load static %}
 {% load widget_tweaks %}
 
@@ -60,54 +60,31 @@ function confirmDelete() {
     <div class="col-lg-12">
         <div class="card">
             <div class="card-body">
-                <div class="row mb-2">
-                    <div class="col-sm">
-                        <div class="search-box me-2 d-inline-block">
-                            <div class="position-relative">
-                    
-                                <form method="get">
-                                    <div class="filter-form">
-                                        {{ filter.form.as_p }}
-                                        <button class="btn btn-success" type="submit">Filter</button>
-                                    </div>
-                                </form>
-
-
-                            </div>
-                        </div>
-                    </div>
-                    <!-- end col -->
-                    <!-- <div class="col-sm-auto">
-                        <div class="text-sm-end">
-                            <a href="javascript" class="btn btn-success btn-rounded" data-toggle="modal" data-target="#exampleModal"  id="addTransaction-btn"><i class="mdi mdi-plus me-1"></i> Add New Transaction</a>
-                        </div>
-                    </div> -->
-                    <!-- end col -->
-                </div>
+                
                 <!-- end row -->
 
                     <input type="text" value={{length}} id="length" hidden="true"/>
                     <div class="table-responsive">
                         <table class="table transaction-list-table align-middle table-nowrap dt-responsive nowrap w-100 table-borderless" id="transactionList-table">
-                        <thead class="table-light">
+                        <thead class="">
                             <tr>
-                                <th scope="col" style="width: 60px">#</th>
-                                <th scope="col">customer ID</th>
-                                <th scope="col">First Name</th>
-                                <th scope="col">Last Name</th>
-                                <th scope="col">Company</th>
-                                <th scope="col">Address</th>
-                                <th scope="col">City</th>
-                                <th scope="col">State</th>
-                                <th scope="col">Zip Code</th>
-                                <th scope="col">Country</th>
-                                <th scope="col">Phone Number</th>
-                                <!-- <th scope="col">Card Number</th> -->
-                                <!-- <th scope="col">Expiration Date</th> -->
-                                <!-- <th scope="col">CVV</th> -->
-                                <th scope="col">Email</th>
-                                <th scope="col">Date</th>
-                                <th scope="col">Action</th>
+                                <th style="padding-left: 4rem;" scope="col" style="width: 60px">#</th>
+                                <th style="padding-left: 4rem;" scope="col">customer ID</th>
+                                <th style="padding-left: 4rem;" scope="col">First Name</th>
+                                <th style="padding-left: 4rem;" scope="col">Last Name</th>
+                                <th style="padding-left: 4rem;" scope="col">Company</th>
+                                <th style="padding-left: 4rem;" scope="col">Address</th>
+                                <th style="padding-left: 4rem;" scope="col">City</th>
+                                <th style="padding-left: 4rem;" scope="col">State</th>
+                                <th style="padding-left: 4rem;" scope="col">Zip Code</th>
+                                <th style="padding-left: 4rem;" scope="col">Country</th>
+                                <th style="padding-left: 4rem;" scope="col">Phone Number</th>
+                                <!-- <th style="padding-left: 4rem;" scope="col">Card Number</th> -->
+                                <!-- <th style="padding-left: 4rem;" scope="col">Expiration Date</th> -->
+                                <!-- <th style="padding-left: 4rem;" scope="col">CVV</th> -->
+                                <th style="padding-left: 4rem;" scope="col">Email</th>
+                                <th style="padding-left: 4rem;" scope="col">Date</th>
+                                <th style="padding-left: 4rem;" scope="col">Action</th>
         
                             </tr>
                         </thead>
@@ -115,23 +92,23 @@ function confirmDelete() {
                             <input hidden="true" type="number" value="{{lenght}}" id="lenght"/>
                             {% for customer in customers %}
                                 <tr>
-                                    <td id="btn{{forloop.counter}}" style="cursor: pointer;">{{ forloop.counter }}</td>
-                                    <td>{{ customer.customer_id }}</td>
-                                    <td>{{ customer.first_name }}</td>
-                                    <td>{{ customer.last_name }}</td>
-                                    <td>{{ customer.company }}</td>
-                                    <td>{{ customer.address }}</td>
-                                    <td>{{ customer.city }}</td>
-                                    <td>{{ customer.state }}</td>
-                                    <td>{{ customer.zip_code }}</td>
-                                    <td>{{ customer.country }}</td>
-                                    <td>{{ customer.phone_number }}</td>
-                                    <!-- <td>xxxx xxxx xxxx {{ customer.card_number|slice:"-4:" }}</td> -->
-                                    <!-- <td>{{ customer.exp_month }} / {{ customer.exp_year }}</td> -->
-                                    <!-- <td>{{ customer.cvv }}</td>    -->
-                                    <td>{{ customer.email }}</td>
-                                    <td>{{ customer.date }}</td>
-                                    <td><p class="text-primary" style="cursor: pointer;" id="btn-{{forloop.counter}}">View Cards</p></td>
+                                    <td style="white-space: pre; padding-left: 4rem;" id="btn{{forloop.counter}}" style="cursor: pointer;">{{ forloop.counter }}</td>
+                                    <td style="white-space: pre; padding-left: 4rem;">{{ customer.customer_id }}</td>
+                                    <td style="white-space: pre; padding-left: 4rem;">{{ customer.first_name }}</td>
+                                    <td style="white-space: pre; padding-left: 4rem;">{{ customer.last_name }}</td>
+                                    <td style="white-space: pre; padding-left: 4rem;">{{ customer.company }}</td>
+                                    <td style="white-space: pre; padding-left: 4rem;">{{ customer.address }}</td>
+                                    <td style="white-space: pre; padding-left: 4rem;">{{ customer.city }}</td>
+                                    <td style="white-space: pre; padding-left: 4rem;">{{ customer.state }}</td>
+                                    <td style="white-space: pre; padding-left: 4rem;">{{ customer.zip_code }}</td>
+                                    <td style="white-space: pre; padding-left: 4rem;">{{ customer.country }}</td>
+                                    <td style="white-space: pre; padding-left: 4rem;">{{ customer.phone_number }}</td>
+                                    <!-- <td style="white-space: pre; padding-left: 4rem;">xxxx xxxx xxxx {{ customer.card_number|slice:"-4:" }}</td> -->
+                                    <!-- <td style="white-space: pre; padding-left: 4rem;">{{ customer.exp_month }} / {{ customer.exp_year }}</td> -->
+                                    <!-- <td style="white-space: pre; padding-left: 4rem;">{{ customer.cvv }}</td>    -->
+                                    <td style="white-space: pre; padding-left: 4rem;">{{ customer.email }}</td>
+                                    <td style="white-space: pre; padding-left: 4rem;">{{ customer.date }}</td>
+                                    <td style="white-space: pre; padding-left: 4rem;"><p class="text-primary" style="cursor: pointer;" id="btn-{{forloop.counter}}">View Cards</p></td>
                                     
                                     <!-- Modal -->
                                     <div class="modal fade" id="modal-{{forloop.counter}}" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">

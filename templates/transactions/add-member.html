@@ -1,4 +1,4 @@
-{% extends 'partials/base.html' %}
+{% extends 'partials/new_base.html' %}
 {% load static %}
 
 
@@ -9,61 +9,68 @@
 <link href="{% static 'libs/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
 {% endblock %}
 {% block contents %}
-    <div class="container">
-        <div class="p-2 d-flex justify-content-center align-items-center" style="flex-direction: column;">
-            <div class="py-2 px-4 d-flex justify-content-end w-100">
-                <a href="/transactions/my-team/" class="btn btn-success text-white">Member List</a>
-            </div>
-
-            <div class="w-75 h-75 bg-light rounded p-4 mt-4">
-                <h2 class="text-center">Add Member<h2>
-                    {% for message in messages %}                           
-                        <div class="alert {{ message.tags }} mb-4 text-center" role="alert" style="padding: .5rem; font-size: 1rem;">
-                            <strong>{{ message }}</strong>
-                        </div>
-                    {% endfor %}
-                    <form method='POST' class="p-2 mt-2">
-                        {% csrf_token %}
-                        <div class="my-2">
-                            <label style="font-size: 1.1rem;">Name</label>
-                            <input type="text" class="form-control" name="name" placeholder="Enter Name" required/>
-                        </div>
-                        <div class="my-2">
-                            <label style="font-size: 1.1rem;">Email</label>
-                            <input type="text" class="form-control" name="email" placeholder="Enter Email" required/>
-                        </div>
-                        <div class="my-2">
-                            <label style="font-size: 1.1rem;">Username</label>
-                            <input type="text" class="form-control" name="username" placeholder="Enter Username" required/>
-                        </div>
-                        <div class="my-2">
-                            <label style="font-size: 1.1rem;">Password</label>
-                            <input type="text" class="form-control" value="{{password}}" name="password" placeholder="Enter Password" required/>
-                        </div>
-
-                        <div class="my-2">
-                            <label style="font-size: 1.1rem;">Role</label>
-                            <select class="form-control" name="role" required>
-                                <option value="transaction_only" selected>Transaction Only</option>
-                                <option value="complete">Complete</option>
-                            </select>
-                        </div>
-                        
-                        <div class="my-2">
-                            <input type="submit" class="btn btn-success" value="Add Now"/>
-                        </div>
-                    </form>
-            </div>
+<div class="container">
+    <div class="p-2 d-flex justify-content-center align-items-center" style="flex-direction: column;">
+        <div class="py-2 px-4 d-flex justify-content-end w-100">
+            <a href="/transactions/my-team/" class="btn btn-primary text-white">Member List</a>
         </div>
+
+
+        <div class="w-75 h-75 rounded bg-white p-4" style="box-shadow: 0px 5px 5px 0px rgba(82, 63, 105, 0.05);">
+            <div class="card-header">
+                <h4 class="card-title">Add Membar</h4>
+            </div>
+            {% for message in messages %}
+            <div class="alert {{ message.tags }} mb-4 text-center" role="alert"
+                style="padding: .5rem; font-size: 1rem;">
+                <strong>{{ message }}</strong>
+            </div>
+            {% endfor %}
+            <form method='POST' class="p-2 mt-2">
+                {% csrf_token %}
+                <div class="my-2">
+                    <label style="font-size: 1.1rem;">Name</label>
+                    <input type="text" class="form-control" name="name" placeholder="Enter Name" required />
+                </div>
+                <div class="my-2">
+                    <label style="font-size: 1.1rem;">Email</label>
+                    <input type="text" class="form-control" name="email" placeholder="Enter Email" required />
+                </div>
+                <div class="my-2">
+                    <label style="font-size: 1.1rem;">Username</label>
+                    <input type="text" class="form-control" name="username" placeholder="Enter Username" required />
+                </div>
+                <div class="my-2">
+                    <label style="font-size: 1.1rem;">Password</label>
+                    <input type="text" class="form-control" value="{{password}}" name="password"
+                        placeholder="Enter Password" required />
+                </div>
+
+                <div class="my-2">
+                    <label style="font-size: 1.1rem;">Role</label>
+                    <select class="form-control" name="role" required>
+                        <option value="transaction_only" selected>Transaction Only</option>
+                        <option value="complete">Complete</option>
+                    </select>
+                </div>
+
+                <div class="my-2">
+                    <input type="submit" class="btn btn-primary" value="Add Now" />
+                </div>
+            </form>
+        </div>
+
+
     </div>
-    <script>
-        const createBtn = document.getElementById('create-transaction-id');
-        const hidePath = ['/profile/','/help/','/change-password/','/profile','/help','/change-password','/transactions/my-team/','/transactions/my-team','/transactions/add-member','/transactions/add-member/']
-        const pathname = window.location.pathname;
-        if (hidePath.includes(pathname)){
-            createBtn.style.display = 'none';
-        }else{
-            createBtn.style.display = 'block';
-        }
-    </script>
+</div>
+<script>
+    const createBtn = document.getElementById('create-transaction-id');
+    const hidePath = ['/profile/', '/help/', '/change-password/', '/profile', '/help', '/change-password', '/transactions/my-team/', '/transactions/my-team', '/transactions/add-member', '/transactions/add-member/']
+    const pathname = window.location.pathname;
+    if (hidePath.includes(pathname)) {
+        createBtn.style.display = 'none';
+    } else {
+        createBtn.style.display = 'block';
+    }
+</script>
 {% endblock %}

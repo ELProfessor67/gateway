@@ -1,4 +1,4 @@
-{% extends 'partials/base.html' %}
+{% extends 'partials/new_base.html' %}
 {% load static %}
 
 
@@ -12,14 +12,14 @@
 {% block contents %}
     <div class="container">
         <div class="d-flex justify-content-center align-items-center">
-            <div class="w-75 h-75 bg-light rounded p-4 mt-4">
+            <div class="w-75 h-75 bg-white rounded p-4 mt-4" style="box-shadow: 0px 5px 5px 0px rgba(82, 63, 105, 0.05);">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="text-center text-dark fs-5" style="font-size: 2rem; margin: 0;">Manage Columns</h2>
                 </div>
                 <form method="post" class="p-2 mt-2">
                         {% csrf_token %}
-                        <div class="my-2 d-flex column-gap-3">
-                            <div>
+                        <div class="my-2 d-flex gap-2 align-items-center">
+                            <div style="margin-bottom: .9rem;">
                                 <div class="checkbox-wrapper-12">
                                     <div class="cbx">
                                       {% if fields.first_name %}
@@ -49,8 +49,8 @@
                             <p class="fs-4 align-items-center ml-2">First Name</p>
 
                         </div>
-                        <div class="my-2 d-flex column-gap-3">
-                            <div>
+                        <div class="my-2 d-flex gap-2 align-items-center">
+                            <div style="margin-bottom: .9rem;">
                                 <div class="checkbox-wrapper-12">
                                     <div class="cbx">
                                       {% if fields.last_name %}
@@ -78,8 +78,8 @@
                             <p class="fs-4 align-items-center ml-2">Last Name</p>
 
                         </div>
-                        <div class="my-2 d-flex column-gap-3">
-                            <div>
+                        <div class="my-2 d-flex gap-2 align-items-center">
+                            <div style="margin-bottom: .9rem;">
                                 <div class="checkbox-wrapper-12">
                                     <div class="cbx">
                                       {% if fields.company %}
@@ -107,8 +107,8 @@
                             <p class="fs-4 align-items-center ml-2">Company</p>
 
                         </div>
-                        <div class="my-2 d-flex column-gap-3">
-                            <div>
+                        <div class="my-2 d-flex gap-2 align-items-center">
+                            <div style="margin-bottom: .9rem;">
                                 <div class="checkbox-wrapper-12">
                                     <div class="cbx">
                                       {% if fields.address %}
@@ -136,8 +136,8 @@
                             <p class="fs-4 align-items-center ml-2">Address</p>
 
                         </div>
-                        <div class="my-2 d-flex column-gap-3">
-                            <div>
+                        <div class="my-2 d-flex gap-2 align-items-center">
+                            <div style="margin-bottom: .9rem;">
                                 <div class="checkbox-wrapper-12">
                                     <div class="cbx">
                                       {% if fields.city %}
@@ -166,8 +166,8 @@
                             <p class="fs-4 align-items-center ml-2">City</p>
 
                         </div>
-                        <div class="my-2 d-flex column-gap-3">
-                            <div>
+                        <div class="my-2 d-flex gap-2 align-items-center">
+                            <div style="margin-bottom: .9rem;">
                                 <div class="checkbox-wrapper-12">
                                     <div class="cbx">
                                       {% if fields.state %}
@@ -196,8 +196,8 @@
                             <p class="fs-4 align-items-center ml-2">State</p>
 
                         </div>
-                        <div class="my-2 d-flex column-gap-3">
-                            <div>
+                        <div class="my-2 d-flex gap-2 align-items-center">
+                            <div style="margin-bottom: .9rem;">
                                 <div class="checkbox-wrapper-12">
                                     <div class="cbx">
                                       {% if fields.zip_code %}
@@ -226,8 +226,8 @@
                             <p class="fs-4 align-items-center ml-2">Zip Code</p>
 
                         </div>
-                        <div class="my-2 d-flex column-gap-3">
-                            <div>
+                        <div class="my-2 d-flex gap-2 align-items-center">
+                            <div style="margin-bottom: .9rem;">
                                 <div class="checkbox-wrapper-12">
                                     <div class="cbx">
                                       {% if fields.country %}
@@ -256,8 +256,8 @@
                             <p class="fs-4 align-items-center ml-2">Country</p>
 
                         </div>
-                        <div class="my-2 d-flex column-gap-3">
-                            <div>
+                        <div class="my-2 d-flex gap-2 align-items-center">
+                            <div style="margin-bottom: .9rem;">
                                 <div class="checkbox-wrapper-12">
                                     <div class="cbx">
                                       {% if fields.phone_number %}
@@ -286,8 +286,8 @@
                             <p class="fs-4 align-items-center ml-2">Phone Number</p>
                         </div>
 
-                        <div class="my-2 d-flex column-gap-3">
-                            <div>
+                        <div class="my-2 d-flex gap-2 align-items-center">
+                            <div style="margin-bottom: .9rem;">
                                 <div class="checkbox-wrapper-12">
                                     <div class="cbx">
                                       {% if fields.card_number %}
@@ -316,8 +316,8 @@
                             <p class="fs-4 align-items-center ml-2">Card Number</p>
                         </div>
 
-                        <div class="my-2 d-flex column-gap-3">
-                            <div>
+                        <div class="my-2 d-flex gap-2 align-items-center">
+                            <div style="margin-bottom: .9rem;">
                                 <div class="checkbox-wrapper-12">
                                     <div class="cbx">
                                       {% if fields.exp_year %}
@@ -346,8 +346,8 @@
                             <p class="fs-4 align-items-center ml-2">Exp Month</p>
                         </div>
 
-                        <div class="my-2 d-flex column-gap-3">
-                            <div>
+                        <div class="my-2 d-flex gap-2 align-items-center">
+                            <div style="margin-bottom: .9rem;">
                                 <div class="checkbox-wrapper-12">
                                     <div class="cbx">
                                       {% if fields.exp_month %}
@@ -376,8 +376,8 @@
                             <p class="fs-4 align-items-center ml-2">Exp Year</p>
                         </div>
 
-                        <div class="my-2 d-flex column-gap-3">
-                            <div>
+                        <div class="my-2 d-flex gap-2 align-items-center">
+                            <div style="margin-bottom: .9rem;">
                                 <div class="checkbox-wrapper-12">
                                     <div class="cbx">
                                       {% if fields.cvv %}
@@ -406,8 +406,8 @@
                             <p class="fs-4 align-items-center ml-2">CVV</p>
                         </div>
 
-                        <div class="my-2 d-flex column-gap-3">
-                            <div>
+                        <div class="my-2 d-flex gap-2 align-items-center">
+                            <div style="margin-bottom: .9rem;">
                                 <div class="checkbox-wrapper-12">
                                     <div class="cbx">
                                       {% if fields.email %}
@@ -435,7 +435,7 @@
                             </div>
                             <p class="fs-4 align-items-center ml-2">Email</p>
                         </div>
-                        <button class="btn btn-success m-auto">Update</button>
+                        <button class="btn btn-primary m-auto">Update</button>
                 </form>
             </div>
         </div>

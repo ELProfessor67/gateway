@@ -71,7 +71,7 @@ def customer_create(request):
         return redirect('/customers/customers_list/')
     form = CustomerForm()
     button_text = "Add Transaction"
-    fields = AllowField.objects.get(username=request.user.username)
+    fields = AllowField.objects.filter(username=request.user.username).first()
     fields_object = {
         'first_name': True,
         'last_name': True,

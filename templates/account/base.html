@@ -6,12 +6,12 @@
     <head>
         
         <meta charset="utf-8" />
-        <title>{% block title %}{% endblock title %} | Skote - Admin & Dashboard Template</title>
+        <title>{% block title %}{% endblock title %} | Trifacta - Admin & Dashboard Template</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
         <meta content="Themesbrand" name="author" />
         <!-- App favicon -->
-        <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}">
+        <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
         {% block extra_css %}
         {% endblock extra_css %}
         <!-- Bootstrap Css -->
@@ -20,6 +20,12 @@
         <link href="{% static 'css/icons.min.css' %}" rel="stylesheet" type="text/css" />
         <!-- App Css-->
         <link href="{% static 'css/app.min.css' %}" id="app-style" rel="stylesheet" type="text/css" />
+
+
+        <link href="{% static 'vendor/jquery-nice-select/css/nice-select.css' %}" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'vendor/nouislider/nouislider.min.css' %}">
+        <!-- Style css -->
+        <link href="{% static 'css/style.css' %}" rel="stylesheet">
 
     </head>
 

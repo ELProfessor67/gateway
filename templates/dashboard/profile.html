@@ -1,4 +1,4 @@
-{% extends 'partials/base.html' %}
+{% extends 'partials/new_base.html' %}
 {% load static %}
 
 
@@ -11,7 +11,7 @@
 {% block contents %}
     <div class="container">
         <div class="d-flex justify-content-center align-items-center">
-            <div class="w-75 h-75 bg-light rounded p-4 mt-4">
+            <div class="w-75 h-75 bg-white rounded p-4 mt-4" style="box-shadow: 0px 5px 5px 0px rgba(82, 63, 105, 0.05);">
                 <div class="d-flex justify-content-between align-items-center">
                     <h2 class="text-center text-dark fs-5" style="font-size: 2rem; margin: 0;">Profile Details</h2>
                 </div>
@@ -40,7 +40,7 @@
                         <div class="my-4">
                             <p class="text-dark">if you change your password please <a href="/change-password" class="text-primary">click here</a></p>
                         </div>
-                        <button class="btn btn-success m-auto">Update</button>
+                        <button class="btn btn-primary m-auto">Update</button>
                 </form>
             </div>
         </div>

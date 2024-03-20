@@ -1,0 +1,95 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
+    <meta content="Themesbrand" name="author" />
+
+    <title>{{heading}} | Trifecta - User & Dashboard</title>
+
+    <!-- App favicon -->
+    <link rel="shortcut icon" href="{% static 'images/favicon.png' %}">
+    {% block css %}
+    {% block extra_css %}
+    {% endblock %}
+
+
+
+    <!-- Mobile Specific -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- favicon -->
+
+
+
+    <link href="{% static 'vendor/jquery-nice-select/css/nice-select.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'vendor/nouislider/nouislider.min.css' %}">
+    <!-- Style css -->
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+    {% endblock css %}
+</head>
+
+
+<body data-sidebar="dark" data-layout-mode="light">
+    {% include 'partials/Loader.html' %}
+
+    <div id="main-wrapper">
+
+        {% include 'partials/new_header.html' %}
+        <div class="content-body">
+            <!-- row -->
+            <div class="container-fluid">
+                {% block contents %}
+                {% endblock %}
+            </div>
+        </div>
+
+        <div class="footer">
+
+            <div class="copyright">
+                <p>Copyright © 2024 &amp;| All Right Reseved.</p>
+            </div>
+        </div>
+        <!--**********************************
+            Sidebar end
+        ***********************************-->
+
+    </div>
+
+    {% block javascript %}
+    <script src="{% static 'vendor/global/global.min.js' %}"></script>
+    <script src="{% static 'vendor/chart-js/chart.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery-nice-select/js/jquery.nice-select.min.js' %}"></script>
+
+    <!-- Apex Chart -->
+    <script src="{% static 'vendor/apexchart/apexchart.js' %}"></script>
+    <script src="{% static 'vendor/nouislider/nouislider.min.js' %}"></script>
+    <script src="{% static 'vendor/wnumb/wNumb.js' %}"></script>
+
+    <!-- Dashboard 1 -->
+    <script src="{% static 'js/dashboard/dashboard-1.js' %}"></script>
+
+    <script src="{% static 'js/custom.min.js'%}"></script>
+    <script src="{% static 'js/dlabnav-init.js'%}"></script>
+    <script src="{% static 'js/demo.js'%}"></script>
+    <script src="{% static 'js/styleSwitcher.js'%}"></script>
+    <script src="{% static 'libs/jquery/dist/jquery.min.js' %}"></script>
+    <script src="{% static 'libs/bootstrap/dist/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'libs/metismenu/dist/metisMenu.min.js' %}"></script>
+    <script src="{% static 'libs/simplebar/dist/simplebar.min.js' %}"></script>
+    <script src="{% static 'libs/node-waves/dist/waves.min.js' %}"></script>
+
+
+    <script src="{% static 'js/app.js' %}"></script>
+
+
+    {% block extra_javascript %}
+    {% endblock %}
+    {% endblock javascript %}
+</body>
+
+</html>
