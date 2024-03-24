@@ -22,6 +22,7 @@ from django.contrib.auth import get_user_model
 import os
 import hashlib
 import base64
+from transactions.models import Default_page
 
 def generateOTP():
 	otp = random.randint(100000,999999)
@@ -127,6 +128,16 @@ def verify(request):
 
 		otp = otp1+otp2+otp3+otp4+otp5+otp6
 		otp_deatils = OTP_Object.objects.filter(otp=otp).first()
+
+
+		# default = ""
+		default_model = Default_page.objects.filter(username=request.user.username).first()
+		print(default_model.page_default)
+		if default_model != None:
+			default = default_model.page_default
+		else:
+			default = "/%2Faccount/dashboard2"
+
 		if otp_deatils:
 			print(otp_deatils.username)
 			user_model = get_user_model()
@@ -146,7 +157,7 @@ def verify(request):
 					messages.info(request,'please change password')
 					return redirect('/change-password')
 				
-			return redirect('/%2Faccount/dashboard2')
+			return redirect(default)
 		else:
 			messages.error(request,'Invalif OTP')
 			messages.info(request,email)

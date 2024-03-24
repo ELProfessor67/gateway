@@ -21,7 +21,7 @@
                 <div class="card-body">
                 <div class="row mb-3">
                     <div class="col-sm">
-                        <form class="search-box me-2 d-inline-block">
+                        <form class="search-box me-2 d-inline-block" id="customform">
                             <div class="w-100 d-flex gap-4">
                                 <div class="d-flex flex-column mr-2">
                                     <label class="mb-2" for="start">start</label>
@@ -31,6 +31,19 @@
                                     <label class="mb-2" for="end">end</label>
                                     <input type="date" name="end" class="form-control input-default" id="end" />
                                 </div>
+                                <div class="d-flex flex-column">
+                                    <label class="mb-2" for="end">status</label>
+                                    <select name="status" class="form-control input-default" id="box" style="display: block;">
+                                        <option class="">All</option>
+                                        {%if default%}
+                                            <option class="Pending" selected>Pending</option>
+                                        {%else%}
+                                            <option class="Pending">Pending</option>
+                                        {%endif%}
+                                        
+                                        <option class="Complete">Complete</option>
+                                    </select>
+                                </div>
                                 <div style="transform: translateY(1.8rem);">
                                     <a href="/static/csv/{{username}}.csv" download class="btn btn-primary btn-rounded"
                                         id="addProject-btn"><i class="mdi mdi-plus me-1"></i>Export CSV</a>
@@ -38,6 +51,54 @@
                             </div>
                         </form>
                     </div>
+                    <script>
+                        const urlParams = new URLSearchParams(window.location.search);
+                        const startvalue = urlParams.get('start');
+                        const endvalue = urlParams.get('end');
+                        const statusvalue = urlParams.get('status');
+
+                        const start_date = document.getElementById('start');
+                        const end_date = document.getElementById('end');
+                        const status = document.getElementById('box');
+
+                        if (startvalue) start_date.value = startvalue;
+                        if (endvalue) end_date.value = endvalue;
+                        if (statusvalue) status.value = statusvalue;
+                        
+                        const form = document.getElementById('customform');
+
+                        function submit(e){
+                            e.target.submit();
+                        }
+
+                        function change(){
+                            this.form.submit();
+                        }
+
+                        let time;
+                        function debounce(){
+                            
+                        
+                            clearTimeout(time)
+
+                            time = setTimeout(() => {
+                                form.submit(); 
+                            }, 1000);
+                        }
+
+                        
+
+                        // on change submit
+                        start_date.onchange = change;
+                        end_date.onchange = change;
+                        status.onchange = change;
+                        
+                    
+                        
+
+
+                         
+                    </script>
                     <!-- end col -->
 
                     <!-- end col -->
@@ -57,6 +118,8 @@
                                     <th scope="col">Credit</th>
                                     <th scope="col">Due Date</th>
                                     <th scope="col">Action</th>
+                                    <th scope="col">Status</th>
+                                    
                                 </tr>
                             </thead>
                             <tbody>
@@ -76,6 +139,7 @@
                                         <a href="/projects/list/{{batch.id}}" class="text-decoration-none">View all
                                             Transaction</a>
                                     </th>
+                                    <th scope="col">{{batch.status}}</th>
                                     <!-- {% if batch.status == "Pending" %}
                                         <th scope="col">
                                             <span class="py-1 px-2 rounded text-white" style="background: grey;">{{batch.status}}</span>
@@ -115,9 +179,17 @@
                         <span class="fs-12">Cards Graph</span>
                     </div>
                 </div>
-                <div class="card-body pb-0 pt-3">
+                <div class="card-body pb-3 pt-3">
                     <div class="dought_graph w-75 m-auto">
-                        <canvas id="dought_graph_1" />
+                       
+                        {% if sale_data_len != 0 %}
+                            <canvas id="dought_graph_1" />
+                        {%else%}
+                            <div style="height: 18rem; display: flex; justify-content: center; align-items: center;">
+                                <h3 style="font-size: 1.8rem; opacity: .6;">No Data</h3>
+                            </div>
+                        {%endif%}
+                        
                     </div>
                 </div>
                 <input id="sale_data" value="{{sale_data}}" type="text" hidden="true" />
@@ -129,21 +201,28 @@
                         <span class="fs-12">Cards Graph</span>
                     </div>
                 </div>
-                <div class="card-body pb-0 pt-3">
+                <div class="card-body pb-3 pt-3">
                     <div class="dought_graph w-75 m-auto">
-                        <canvas id="dought_graph_2" />
+                        {% if credit_data_len != 0 %}
+                            <canvas id="dought_graph_2" />
+                        {%else%}
+                            <div style="height: 18rem; display: flex; justify-content: center; align-items: center;">
+                                <h3 style="font-size: 1.8rem; opacity: .6;">No Data</h3>
+                            </div>
+                        {%endif%}
                     </div>
                 </div>
-                <input id="sale_data" value="{{credit_data}}" type="text" hidden="true" />
+                <input id="credit_data" value="{{credit_data}}" type="text" hidden="true" />
             </div>
         </div>
 
         <script>
-
+          
             const doughnut1 = document.getElementById('dought_graph_1');
             const doughnut2 = document.getElementById('dought_graph_2');
             const sale_data = JSON.parse(document.getElementById('sale_data').value)
             const credit_data = JSON.parse(document.getElementById('credit_data').value)
+            console.info(sale_data,credit_data)
 
             datalabels1 = Object.keys(sale_data);
             datalabels2 = Object.keys(credit_data);
@@ -201,22 +280,22 @@
 
 
             // on change submit 
-            const startinput = document.getElementById('start');
-            const endinput = document.getElementById('end');
+            // const startinput = document.getElementById('start');
+            // const endinput = document.getElementById('end');
 
-            function change() {
-                this.form.submit();
-            }
+            // function change() {
+            //     this.form.submit();
+            // }
 
-            startinput.onchange = change;
-            endinput.onchange = change
+            // startinput.onchange = change;
+            // endinput.onchange = change
 
-            const params = new URLSearchParams(window.location.search);
-            const startvalue = params.get('start');
-            const endvalue = params.get('end');
+            // const params = new URLSearchParams(window.location.search);
+            // const startvalue = params.get('start');
+            // const endvalue = params.get('end');
 
-            if (startvalue) startinput.value = startvalue;
-            if (endvalue) endinput.value = endvalue;
+            // if (startvalue) startinput.value = startvalue;
+            // if (endvalue) endinput.value = endvalue;
         </script>
 
 

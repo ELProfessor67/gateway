@@ -4,7 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Batchs, Shedules
-from transactions.models import Transaction
+from transactions.models import Transaction, Default_Batch_Status
 from json import dumps,loads
 from transactions.forms import TransactionForm
 from .crypto import Cryptography
@@ -146,11 +146,16 @@ class ProjectsListView(LoginRequiredMixin,View):
             request.user.username = last_name[1]
 
         username = request.user.username
-        start = request.GET.get('start');
-        end = request.GET.get('end');
+        start = request.GET.get('start')
+        end = request.GET.get('end')
+        status = request.GET.get('status')
+        
 
-        query = Q();
+        query = Q()
         query &= Q(username=username)
+
+        if status != None:
+            query &= Q(status=status)
 
         if start and end:
             if start == end:
@@ -164,6 +169,12 @@ class ProjectsListView(LoginRequiredMixin,View):
         #     batchs = Batchs.objects.all().values()
         # else:
         batchs = Batchs.objects.filter(query).values()
+        default_model = Default_Batch_Status.objects.filter(username=request.user.username).first()
+        default = ""
+        if default_model != None:
+            default = default_model.default
+        else:
+            default = False
         
         all_sale_transaction_card = []
         all_credit_trsansaction_card = []
@@ -234,8 +245,12 @@ class ProjectsListView(LoginRequiredMixin,View):
         greeting['pageview'] = "Batch"
         greeting['batchs'] = batchs
         greeting['credit_data'] = dumps(all_credit_trsansaction_card_data)
+        greeting['credit_data_len'] = len(all_credit_trsansaction_card_data.keys())
         greeting['sale_data'] = dumps(all_sale_transaction_card_data)
+        greeting['sale_data_len'] = len(all_sale_transaction_card_data.keys())
         greeting['username'] = username
+        greeting['default'] = default
+        print("ioehdfowehfdoh",len(all_sale_transaction_card_data.keys()),len(all_credit_trsansaction_card_data.keys()))
         return render(request,'projects/projectslist.html',greeting)
 
 

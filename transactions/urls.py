@@ -19,4 +19,6 @@ urlpatterns = [
     path('edit-bank-verify/', views.edit_bank_verify, name='edit_bank_verify'),
     path('default_transaction_type/', views.default_transaction_type, name='default_transaction_type'),
     path('verify-user/', views.verify_user, name='verify-user'),
+    path('general/', views.general, name='verify-user'),
+    path('batch-setting/', views.batchsetting, name='verify-user'),
 ]

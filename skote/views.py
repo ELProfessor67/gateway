@@ -20,6 +20,7 @@ secret = 'b4b94b39-7601-47c0-a7ab-39861ba9d4e3'
 key = 'fb83f5f6-8141-4bc2-94a3-2b8d748ab2d4'
 account = '800000'
 from customers.models import AllowField, Customer
+import math
 
 def get_card_transaction_lengths(transactions):
     card_transaction_lengths = defaultdict(int)
@@ -124,10 +125,12 @@ class DashboardView(LoginRequiredMixin,View):
         # save 
         save_transaction = Transaction.objects.filter(query).filter(transaction_type='save').values()
         greeting['save'] = sum([int(transaction.get('amount')) for transaction in save_transaction])
+        greeting['save_per'] = math.floor((greeting['save']*100)/total)
 
         # charge
         charge_transaction = Transaction.objects.filter(query).filter(transaction_type='charge').values()
         greeting['charge'] = sum([int(transaction.get('amount')) for transaction in charge_transaction])
+        greeting['charge_per'] = math.floor((greeting['charge']*100)/total)
 
         # auth_only
         auth_only_transaction = Transaction.objects.filter(query).filter(transaction_type='auth_only').values()
@@ -136,10 +139,12 @@ class DashboardView(LoginRequiredMixin,View):
         # post_auth
         post_auth_transaction = Transaction.objects.filter(query).filter(transaction_type='post_auth').values()
         greeting['post_auth'] = sum([int(transaction.get('amount')) for transaction in post_auth_transaction])
+        greeting['post_auth_per'] = math.floor((greeting['post_auth']*100)/total)
 
         greeting['chart_transaction'] = dumps(transactions_by_day)
         greeting['doughnut_data'] = dumps(card_transaction_lengths)
         greeting['refund'] = refund
+        greeting['refund_per'] = math.floor((refund*100)/total)
         greeting['orders'] = len(void_transactions)
         greeting['reportdownload'] = f"{payment_process_url}/report/?account={account}&secret={secret}&key={key}"
         return render(request, 'dashboard/dashboard.html',greeting)

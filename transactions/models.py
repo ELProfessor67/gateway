@@ -98,7 +98,16 @@ class UsersBanks(models.Model):
 class TransactionDefaultType(models.Model):
      username = models.CharField(max_length=200)
      default = models.CharField(max_length=500)
+     
 
 class MerchantsFee(models.Model):
      username = models.CharField(max_length=200)
      fee_in_percent = models.FloatField(default=10)
+
+class Default_page(models.Model):
+     username = models.CharField(max_length=200)
+     page_default = models.CharField(max_length=200,default="/%2Faccount/dashboard2")
+
+class Default_Batch_Status(models.Model):
+     username = models.CharField(max_length=200)
+     default = models.BooleanField(default=False)

@@ -281,7 +281,9 @@
 							"#c8c8c8"
 						],
 						 
-						data: [40, 35, 30, 20]
+						
+						data: document.getElementById("polarChart").getAttribute("data-data").split("-").map(ele => +ele)
+
 					}]
 				},
 				options: {

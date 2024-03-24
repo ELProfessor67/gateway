@@ -5,7 +5,7 @@ from django.urls import reverse
 from .crypto import Cryptography
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from .models import Transaction,MerchantsKey,UsersBanks,TransactionDefaultType,MerchantsFee
+from .models import Transaction,MerchantsKey,UsersBanks,TransactionDefaultType,MerchantsFee,Default_page, Default_Batch_Status
 from .filters import TransactionFilter
 import os
 from django.contrib.auth.models import User
@@ -960,3 +960,54 @@ def default_transaction_type(request):
 
 
     return render(request,'dashboard/default_transaction_type.html',{'default':default})
+
+
+
+def general(request):
+    default_model = Default_page.objects.filter(username=request.user.username).first()
+    default = ""
+    if default_model != None:
+        default = default_model.page_default
+    else:
+        default = "/%2Faccount/dashboard2"
+
+    if request.method == "POST":
+        page_default = request.POST.get("page_default")
+        if default_model != None:
+            default_model.page_default = page_default
+            default_model.save()
+        else:
+            Default_page.objects.create(page_default=page_default,username=request.user.username)
+        default = page_default
+
+    return render(request,'transactions/general.html',{'default':default})
+
+
+def batchsetting(request):
+    default_model = Default_Batch_Status.objects.filter(username=request.user.username).first()
+    default = ""
+    if default_model != None:
+        default = default_model.default
+    else:
+        default = False
+
+    if request.method == "POST":
+        page_default = request.POST.get("value")
+        if page_default == 'on':
+            page_default = True
+        else:
+            page_default = False
+
+        if default_model != None:
+            default_model.default = page_default
+            default_model.save()
+        else:
+            Default_Batch_Status.objects.create(default=page_default,username=request.user.username)
+            
+        default = page_default
+
+    return render(request,'transactions/batchsetting.html',{'default':default})
+
+
+
+
