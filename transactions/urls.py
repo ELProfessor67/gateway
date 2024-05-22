@@ -21,4 +21,5 @@ urlpatterns = [
     path('verify-user/', views.verify_user, name='verify-user'),
     path('general/', views.general, name='verify-user'),
     path('batch-setting/', views.batchsetting, name='verify-user'),
+    path('team-activity/', views.activity, name='activity'),
 ]

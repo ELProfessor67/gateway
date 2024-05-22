@@ -1008,6 +1008,13 @@ def batchsetting(request):
 
     return render(request,'transactions/batchsetting.html',{'default':default})
 
-
-
+@login_required(login_url="/")
+def activity(request):
+    activities = Transaction.objects.filter(username = request.user.username)
+    temp = []
+    for i in activities:
+        if i.by != '' and i.by != request.user.username:
+            temp.append(i)
+        
+    return render(request,'transactions/activities.html',{"activities": temp})
 

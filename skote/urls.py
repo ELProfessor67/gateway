@@ -71,6 +71,7 @@ urlpatterns = [
     # path('authentication/',include('authentication.urls')),
     #Pages
     path('pages/',include('pages.urls')),
+    path('items/',include('items.urls')),
     #Components
     path('components/',include('components.urls')),
     # Allauth

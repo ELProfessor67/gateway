@@ -1,0 +1,50 @@
+{% extends 'partials/new_base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+<link href="{% static 'libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+
+<!-- dropzone css -->
+<link href="{% static 'libs/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block contents %}
+<div class="container">
+    <div class="p-2">
+        {% for message in messages %}
+        <div class="alert {{ message.tags }} mb-4 text-center" role="alert">
+            <strong>{{ message }}</strong>
+        </div>
+        {% endfor %}
+        <div class="mt-4">
+            <div class="">
+
+                {%for activity in activities%}
+                    <div class="card" style="padding: 1rem; margin: 1rem 0;">
+                        <p style="margin: 0 !important; font-size: 1rem;">{{activity.by}} create new transaction on {{activity.date}}. transactions amount is {{activity.amount}}$ and payment method is {{activity.payment_method}}.</p>
+                    </div>
+                {%endfor%}
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    const createBtn = document.getElementById('create-transaction-id');
+    const hidePath = ['/profile/', '/help/', '/change-password/', '/profile', '/help', '/change-password', '/transactions/my-team/', '/transactions/my-team']
+    const pathname = window.location.pathname;
+    if (hidePath.includes(pathname)) {
+        createBtn.style.display = 'none';
+    } else {
+        createBtn.style.display = 'block';
+    }
+
+    const selectBox = document.querySelectorAll('.select-box');
+
+    selectBox.forEach(selectEle => {
+        selectEle.value = selectEle.getAttribute('data-value');
+        selectEle.addEventListener('change', function () {
+            this.form.submit();
+        });
+    });
+</script>
+{% endblock %}

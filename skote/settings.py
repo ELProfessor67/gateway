@@ -73,6 +73,7 @@ INSTALLED_APPS = [
     'transactions',
     'customers',
     'components',
+    'items',
     # Third Party App
     'crispy_forms',
     'django.contrib.sites',
@@ -233,7 +234,7 @@ SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = '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'
 
 # send mail
 EMAIL_HOST_USER = "wi223488@gmail.com"
-EMAIL_HOST_PASSWORD = "adyzymlggypmgkfo"
+EMAIL_HOST_PASSWORD = "plyzrdrnshkhscax"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

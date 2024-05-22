@@ -1,0 +1,78 @@
+{% extends 'partials/new_base.html' %}
+{% load static %}
+
+
+{% block extra_css %}
+<link href="{% static 'libs/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css' %}" rel="stylesheet">
+
+<!-- dropzone css -->
+<link href="{% static 'libs/dropzone/dist/min/dropzone.min.css' %}" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block contents %}
+<div class="container">
+    <div class="p-2 d-flex justify-content-center align-items-center" style="flex-direction: column;">
+        <div class="py-2 px-4 d-flex justify-content-end w-100">
+            <a href="/items/all" class="btn btn-primary text-white">Items List</a>
+        </div>
+
+
+        <div class="w-75 h-75 rounded bg-white p-4" style="box-shadow: 0px 5px 5px 0px rgba(82, 63, 105, 0.05);">
+            <div class="card-header">
+                <h4 class="card-title">Add Items</h4>
+            </div>
+            {% for message in messages %}
+            <div class="alert {{ message.tags }} mb-4 text-center" role="alert"
+                style="padding: .5rem; font-size: 1rem;">
+                <strong>{{ message }}</strong>
+            </div>
+            {% endfor %}
+            <form method='POST' class="p-2 mt-2" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="my-2">
+                    <label style="font-size: 1.1rem;">Name</label>
+                    <input type="text" class="form-control" name="name" placeholder="Enter Name" required />
+                </div>
+                <div class="my-2">
+                    <label style="font-size: 1.1rem;">Description</label>
+                    <input type="text" class="form-control" name="description" placeholder="Enter Description" required />
+                </div>
+                <div class="my-2">
+                    <label style="font-size: 1.1rem;">Category</label>
+                    <input type="text" class="form-control" name="category" placeholder="Enter Username" required />
+                </div>
+                <div class="my-2">
+                    <label style="font-size: 1.1rem;">Price</label>
+                    <input type="number" class="form-control"  name="price"
+                        placeholder="Enter Price" required />
+                </div>
+                <div class="my-2">
+                    <label style="font-size: 1.1rem;">Stock</label>
+                    <input type="number" class="form-control"  name="stock"
+                        placeholder="Enter Stock" required />
+                </div>
+                <div class="my-2">
+                    <label style="font-size: 1.1rem;">Image</label>
+                    <input type="file" class="form-control"  name="file" accept="image/*"
+                        placeholder="Enter Stock" required />
+                </div>
+
+                <div class="my-2">
+                    <input type="submit" class="btn btn-primary" value="Add Now" />
+                </div>
+            </form>
+        </div>
+
+
+    </div>
+</div>
+<script>
+    const createBtn = document.getElementById('create-transaction-id');
+    const hidePath = ['/profile/', '/help/', '/change-password/', '/profile', '/help', '/change-password', '/transactions/my-team/', '/transactions/my-team', '/transactions/add-member', '/transactions/add-member/']
+    const pathname = window.location.pathname;
+    if (hidePath.includes(pathname)) {
+        createBtn.style.display = 'none';
+    } else {
+        createBtn.style.display = 'block';
+    }
+</script>
+{% endblock %}
