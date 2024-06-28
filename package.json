@@ -67,7 +67,7 @@
     "datatables.net-select-bs4": "^1.2.5",
     "dragula": "^3.7.2",
     "dropzone": "^5.7.2",
-    "echarts": "^4.7.0",
+    "echarts": "^5.5.1",
     "flot-charts": "^0.8.3",
     "flot.curvedlines": "^1.1.1",
     "gmaps": "^0.4.24",
