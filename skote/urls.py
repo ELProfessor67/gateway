@@ -57,6 +57,8 @@ urlpatterns = [
     path("email/",include("e_mail.urls")),
     #Invoices
     path('invoices/',include('invoices.urls')),
+    path('dispute/',include('dispute.urls')),
+    path('',include('chats.urls')),
     #Projects
     path('projects/',include('projects.urls')),
     #Tasks

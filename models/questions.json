@@ -1,0 +1,52 @@
+[
+  {
+    "question": "How to Set Up an Account",
+    "answer": "Follow these steps:\n1. Download the Approval Form: Visit our website and download the approval form.\n2. Fill Out the Form: Complete all required fields in the form with accurate information.\n3. Send the Form: Email the filled-out form to the admin's email address provided on the website.\n4. Admin Approval: Wait for the admin to review and approve your form.\n5. Receive Email Confirmation: Once approved, you will receive an email notification.\n6. Create Your Account: Use the same email address you provided in the form to create your account on our website.",
+    "in_syllabus": true
+  },
+  {
+    "question": "How to File a Dispute",
+    "answer": "Follow these steps:\n1. Log in to Your Account: First, log in to your account.\n2. Go to the Dispute Section: Navigate to the 'Add Dispute' section.\n3. Fill Out the Form: Complete the dispute form with the required details.\n4. Submit the Form: After filling out the form, submit it.",
+    "in_syllabus": true
+  },
+  {
+    "question": "How to Add a Customer",
+    "answer": "Follow these steps:\n1. Log In: First, log in to your account.\n2. Navigate to Customers Section: Go to the 'Customers' section.\n3. Create New Customer: Click on 'Create New Customer'.\n4. Fill the Form: Complete the form with the required details.\n5. Add the Customer: Submit the form to add the customer.",
+    "in_syllabus": true
+  },
+  {
+    "question": "Why Our System is Secure",
+    "answer": "All data is encrypted using end-to-end encryption to ensure maximum security.",
+    "in_syllabus": true
+  },
+  {
+    "question": "What's the Merchant Key",
+    "answer": "The merchant key is used to connect with the payment processor and should not be shared with anyone to prevent potential leakage of critical details.",
+    "in_syllabus": true
+  },
+  {
+    "question": "How Can I Make the Invoice",
+    "answer": "Follow these steps:\n1. Log In: First, log in to your account.\n2. Navigate to the Invoices Section: Go to the 'Invoices' section.\n3. Add Invoice: Click on 'Add Invoice'.\n4. Fill the Form: Complete the form with the required details to add the invoice.\n5. Copy Invoice Link: In the 'Invoice List' under the 'Invoices' section, you can copy the link to the invoice.",
+    "in_syllabus": true
+  },
+  {
+    "question": "How Can I Set Up My Own Products",
+    "answer": "Follow these steps:\n1. Log In: First, log in to your account.\n2. Navigate to the Items Section: Go to the 'Items' section.\n3. Add Item: Click on 'Add Item'.\n4. Fill the Form: Complete the form with the required details to add the item.\n5. Copy Item Link: In the 'Items List' under the 'Items' section, you can copy the link to the item.\n6. View Orders: If you want to see the orders, go to the 'Order Items' section under 'Items'.",
+    "in_syllabus": true
+  },
+  {
+    "question": "What's the Chargeback Process",
+    "answer": "By default, a charge of 2% is applied. However, when a merchant conducts a high volume of transactions, our team can reduce the fee as a gift.",
+    "in_syllabus": true
+  },
+  {
+    "question": "How to Add an Employee",
+    "answer": "Follow these steps:\n1. Log In: First, log in to your account.\n2. Go to My Team: Navigate to the 'My Team' section.\n3. Add Employee: Click on 'Add Employee'.\n4. Fill the Form: Complete the form with the required details.",
+    "in_syllabus": true
+  },
+  {
+    "question": "How to Add Bank Account",
+    "answer": "Follow these steps:\n1. Log In: First, log in to your account.\n2. Navigate to the Bank Accounts Section: Go to the 'Bank Accounts' section.\n3. Add Bank Account: Click on 'Add Bank Account'.\n4. Fill the Form: Complete the form with the required details to add the bank account.",
+    "in_syllabus": true
+  }
+]

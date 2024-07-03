@@ -35,3 +35,4 @@ whitenoise
 Brotli
 gunicorn
 django-crontab
+scikit-learn
