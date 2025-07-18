@@ -71,7 +71,7 @@
     "flot-charts": "^0.8.3",
     "flot.curvedlines": "^1.1.1",
     "gmaps": "^0.4.24",
-    "gulp-rtlcss": "^1.4.1",
+    "gulp-rtlcss": "^2.0.0",
     "inputmask": "^4.0.9",
     "ion-rangeslider": "^2.3.0",
     "jquery": "^3.5.1",
